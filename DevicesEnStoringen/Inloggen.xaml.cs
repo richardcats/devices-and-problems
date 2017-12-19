@@ -27,39 +27,18 @@ namespace DevicesEnStoringen
 
         private void btnInloggen_Click(object sender, RoutedEventArgs e)
         {
-            DatabaseConnectie conn = new DatabaseConnectie();
-            //conn.OpenConection();
+            Medewerker medewerker = new Medewerker();
+            bool inloggegevensCorrect = medewerker.ControleerInlogGegevens(txtGebruikersnaam.Text, txtWachtwoord.Password);
 
-            SQLiteConnection con = new SQLiteConnection(@"Data Source=C:\Users\Richard\Documents\Visual Studio 2017\Projects\devices-en-storingen\DevicesEnStoringen\Data\DevicesEnStoringen.sqlite;Version=3");
-            try
+            if (inloggegevensCorrect)
             {
-                if (con.State == System.Data.ConnectionState.Closed)
-                    con.Open();
-                string query = "SELECT COUNT(1) FROM Medewerker WHERE Emailadres=@Emailadres AND Wachtwoord=@Wachtwoord";
-                SQLiteCommand sqlCmd = new SQLiteCommand(query, con);
-                sqlCmd.CommandType = System.Data.CommandType.Text;
-                sqlCmd.Parameters.AddWithValue("@Emailadres", txtGebruikersnaam.Text);
-                sqlCmd.Parameters.AddWithValue("@Wachtwoord", txtWachtwoord.Password);
-                int count = Convert.ToInt32(sqlCmd.ExecuteScalar());
-
-                if (count == 1)
-                {
-                    MainWindow mainwindow = new MainWindow();
-                    mainwindow.Show();
-                    this.Close();
-                }
-                else
-                {
-                    MessageBox.Show("Gebruikersnaam of wachtwoord is incorrect");
-                }
+                MainWindow mainwindow = new MainWindow();
+                mainwindow.Show();
+                this.Close();
             }
-            catch(Exception)
+            else
             {
-
-            }
-            finally
-            {
-
+                MessageBox.Show("Gebruikersnaam of wachtwoord is incorrect");
             }
         }
     }

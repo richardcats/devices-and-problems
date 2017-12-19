@@ -11,9 +11,9 @@ namespace DevicesEnStoringen
     class DatabaseConnectie
     {
         private SQLiteConnection conn;
-        private string connString = ConfigurationManager.ConnectionStrings["DevicesEnStoringen"].ToString();
-
-        public void OpenConection()
+        private readonly string connString = ConfigurationManager.ConnectionStrings["DevicesEnStoringen"].ToString();
+  
+        public void OpenConnection()
         {
             conn = new SQLiteConnection(connString);
             conn.Open();
@@ -42,6 +42,12 @@ namespace DevicesEnStoringen
             dr.Fill(ds);
             object dataum = ds.Tables[0];
             return dataum;
+        }
+
+        public SQLiteCommand ReturnSQLiteCommand(string Query_)
+        {
+            SQLiteCommand sqlCmd = new SQLiteCommand(Query_, conn);
+            return sqlCmd;
         }
     }
 }
