@@ -100,7 +100,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataAccess\DataCommander.cs" />
     <Compile Include="DatabaseConnectie.cs" />
     <Compile Include="Inloggen.xaml.cs">
       <DependentUpon>Inloggen.xaml</DependentUpon>
