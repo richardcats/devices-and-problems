@@ -53,14 +53,17 @@ namespace DevicesEnStoringen
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)grdStoringen.SelectedItems[0];
-            MessageBox.Show(row["ID"].ToString());
-
             Button button = (Button)sender;
-            MessageBox.Show(button.Name);
 
-            Storing storing = new Storing(true);
-            storing.Show();
-            Close();
+            if (button.Name == "btnBeheer")
+            {
+                Storing storing = new Storing(Convert.ToInt32(row["ID"]));
+                storing.Show();
+            }
+            else if (button.Name == "btnVerwijder")
+            {
+                MessageBox.Show(button.Name);
+            }
         }
 
         private void FilterDatagrid(object sender, EventArgs e)
@@ -73,9 +76,8 @@ namespace DevicesEnStoringen
 
         private void btnRegistreerStoring_Click(object sender, RoutedEventArgs e)
         {
-            Storing storing = new Storing(false);
+            Storing storing = new Storing();
             storing.Show();
-            Close();
         }
     }
 }
