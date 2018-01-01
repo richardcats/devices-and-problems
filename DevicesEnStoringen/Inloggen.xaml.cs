@@ -32,8 +32,8 @@ namespace DevicesEnStoringen
 
             if (inloggegevensCorrect)
             {
-                MainWindow mainwindow = new MainWindow();
-                mainwindow.Show();
+                AlleStoringen alleStoringen = new AlleStoringen();
+                alleStoringen.Show();
                 this.Close();
             }
             else

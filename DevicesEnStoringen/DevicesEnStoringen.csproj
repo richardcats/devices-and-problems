@@ -88,16 +88,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AlleDevices.xaml.cs">
+      <DependentUpon>AlleDevices.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AlleStoringen.xaml.cs">
+      <DependentUpon>AlleStoringen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Storing.xaml.cs">
       <DependentUpon>Storing.xaml</DependentUpon>
     </Compile>
-    <Page Include="Inloggen.xaml">
+    <Page Include="AlleDevices.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="AlleStoringen.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Inloggen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -106,10 +116,6 @@
     <Compile Include="DatabaseConnectie.cs" />
     <Compile Include="Inloggen.xaml.cs">
       <DependentUpon>Inloggen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
     </Compile>
     <Page Include="Storing.xaml">
       <SubType>Designer</SubType>

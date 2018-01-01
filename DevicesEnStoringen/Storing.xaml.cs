@@ -33,6 +33,10 @@ namespace DevicesEnStoringen
 
             FillTextBoxes(id);
             FillCombobox();
+            FillDataGrid();
+
+            cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
+            cvsBewerkKnoppen.Visibility = Visibility.Visible;
         }
 
         public Storing()
@@ -40,6 +44,10 @@ namespace DevicesEnStoringen
             InitializeComponent();
             Title = "Storing registreren";
             FillCombobox();
+            FillDataGrid();
+
+            cvsRegistreerKnoppen.Visibility = Visibility.Visible;
+            cvsBewerkKnoppen.Visibility = Visibility.Hidden;
         }
 
         private void FillTextBoxes(int id)
@@ -65,6 +73,11 @@ namespace DevicesEnStoringen
             lstStatus.ItemsSource = list;
         }
 
+        private void FillDataGrid()
+        {
+            grdDevicesToevoegen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceID AS ID, Naam, Serienummer FROM Device") });
+        }
+
         private void AddStoring(object sender, RoutedEventArgs e)
         {
 
@@ -73,6 +86,31 @@ namespace DevicesEnStoringen
         private void Cancel(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void AddDevice(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RemoveDevice(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ChangeGridButtonPositionToEnd(object sender, EventArgs e)
+        {
+            var dgrd = sender as DataGrid;
+            {
+                var c = dgrd.Columns[0];
+                dgrd.Columns.RemoveAt(0);
+                dgrd.Columns.Add(c);
+            }
+        }
+
+        private void ChangeGridButtonPositionToEnd(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+
         }
     }
 }
