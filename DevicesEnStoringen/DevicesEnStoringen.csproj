@@ -91,17 +91,25 @@
     <Compile Include="AlleDevices.xaml.cs">
       <DependentUpon>AlleDevices.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AlleStoringen.xaml.cs">
-      <DependentUpon>AlleStoringen.xaml</DependentUpon>
+    <Compile Include="Overzicht.xaml.cs">
+      <DependentUpon>Overzicht.xaml</DependentUpon>
     </Compile>
     <Compile Include="Storing.xaml.cs">
       <DependentUpon>Storing.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UCAlleDevices.xaml.cs">
+      <DependentUpon>UCAlleDevices.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UCAlleDeviceTypes.xaml.cs">
+      <DependentUpon>UCAlleDeviceTypes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UCAlleStoringen.xaml.cs">
+      <DependentUpon>UCAlleStoringen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UCRapportages.xaml.cs">
+      <DependentUpon>UCRapportages.xaml</DependentUpon>
+    </Compile>
     <Page Include="AlleDevices.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="AlleStoringen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -117,7 +125,27 @@
     <Compile Include="Inloggen.xaml.cs">
       <DependentUpon>Inloggen.xaml</DependentUpon>
     </Compile>
+    <Page Include="Overzicht.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Storing.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UCAlleDevices.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UCAlleDeviceTypes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UCAlleStoringen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UCRapportages.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

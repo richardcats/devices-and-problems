@@ -32,8 +32,8 @@ namespace DevicesEnStoringen
 
             if (inloggegevensCorrect)
             {
-                AlleStoringen alleStoringen = new AlleStoringen();
-                alleStoringen.Show();
+                Overzicht overzicht = new Overzicht();
+                overzicht.Show();
                 this.Close();
             }
             else

@@ -22,11 +22,11 @@ namespace DevicesEnStoringen
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class AlleStoringen : Window
+    public partial class UCAlleDeviceTypes : UserControl
     {
         DatabaseConnectie conn = new DatabaseConnectie();
         public ObservableCollection<string> list = new ObservableCollection<string>();
-        public AlleStoringen()
+        public UCAlleDeviceTypes()
         {
             InitializeComponent();
             grdStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing") });
@@ -78,13 +78,6 @@ namespace DevicesEnStoringen
         {
             Storing storing = new Storing();
             storing.Show();
-        }
-
-        private void DevicesClick(object sender, RoutedEventArgs e)
-        {
-            AlleDevices alleDevices = new AlleDevices();
-            alleDevices.Show();
-            Close();
         }
     }
 }
