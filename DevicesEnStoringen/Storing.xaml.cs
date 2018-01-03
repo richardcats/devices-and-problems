@@ -22,7 +22,7 @@ namespace DevicesEnStoringen
     public partial class Storing : Window
     {
         DatabaseConnectie conn = new DatabaseConnectie();
-        public ObservableCollection<string> list = new ObservableCollection<string>();
+        public static ObservableCollection<string> list;
 
 
         public Storing(int id)
@@ -32,7 +32,7 @@ namespace DevicesEnStoringen
             Title = "Storing bewerken";
 
             FillTextBoxes(id);
-            FillCombobox();
+            lstStatus.ItemsSource = FillCombobox();
             FillDataGrid();
 
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
@@ -43,7 +43,7 @@ namespace DevicesEnStoringen
         {
             InitializeComponent();
             Title = "Storing registreren";
-            FillCombobox();
+            lstStatus.ItemsSource = FillCombobox();
             FillDataGrid();
 
             cvsRegistreerKnoppen.Visibility = Visibility.Visible;
@@ -64,13 +64,14 @@ namespace DevicesEnStoringen
             txtBehandeldDoor.Text = dr["MedewerkerBehandeld"].ToString();
         }
 
-        private void FillCombobox()
+        public static ObservableCollection<string> FillCombobox()
         {
-            list.Add("Alle storingen");
+            list = new ObservableCollection<string>();
             list.Add("Open");
             list.Add("In behandeling");
             list.Add("Afgehandeld");
-            lstStatus.ItemsSource = list;
+            
+            return list;
         }
 
         private void FillDataGrid()
