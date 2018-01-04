@@ -88,11 +88,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AlleDevices.xaml.cs">
-      <DependentUpon>AlleDevices.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Device.xaml.cs">
       <DependentUpon>Device.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DeviceType.xaml.cs">
+      <DependentUpon>DeviceType.xaml</DependentUpon>
     </Compile>
     <Compile Include="Overzicht.xaml.cs">
       <DependentUpon>Overzicht.xaml</DependentUpon>
@@ -112,11 +112,11 @@
     <Compile Include="UCRapportages.xaml.cs">
       <DependentUpon>UCRapportages.xaml</DependentUpon>
     </Compile>
-    <Page Include="AlleDevices.xaml">
+    <Page Include="Device.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Device.xaml">
+    <Page Include="DeviceType.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

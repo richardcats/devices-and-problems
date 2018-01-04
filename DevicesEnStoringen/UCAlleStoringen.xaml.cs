@@ -41,7 +41,7 @@ namespace DevicesEnStoringen
 
         private void FilterDatagrid(object sender, EventArgs e)
         {
-            if ((string)lstStatus.SelectedItem == "Alle storingen" || lstStatus.SelectedIndex == -1)
+            if (lstStatus.SelectedIndex == 0 || lstStatus.SelectedIndex == -1)
                 grdStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing WHERE Beschrijving LIKE '%" + txtZoek.Text + "%'") });
             else
                 grdStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing WHERE Beschrijving LIKE '%" + txtZoek.Text + "%' AND Status='" + lstStatus.SelectedItem + "'") });

@@ -20,82 +20,51 @@ namespace DevicesEnStoringen
     /// <summary>
     /// Interaction logic for Storing.xaml
     /// </summary>
-    public partial class Device : Window
+    public partial class DeviceType : Window
     {
         DatabaseConnectie conn = new DatabaseConnectie();
         public static ObservableCollection<string> listDeviceTypes;
 
 
-        public Device(int id)
+        public DeviceType(int id)
         {
             InitializeComponent();
 
-            Title = "Device bewerken";
+            Title = "Device-type bewerken";
 
             FillTextBoxes(id);
-            lstDeviceType.ItemsSource = FillComboboxDeviceType();
-            lstAfdeling.ItemsSource = FillComboboxAfdeling();
-            grdOpenstaandeStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum FROM Storing WHERE DeviceID = '" + id + "' AND Status = 'Open'") });
+            grdDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceID AS ID, Naam, Afdeling, Date(DatumToegevoegd) AS Datum FROM Device WHERE DeviceTypeID = '" + id + "'") });
 
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
         }
 
-        public Device()
+        public DeviceType()
         {
             InitializeComponent();
-            Title = "Device registreren";
-            lstDeviceType.ItemsSource = FillComboboxDeviceType();
-            lstAfdeling.ItemsSource = FillComboboxAfdeling();
+            Title = "Device-type registreren";
 
             cvsRegistreerKnoppen.Visibility = Visibility.Visible;
             cvsBewerkKnoppen.Visibility = Visibility.Hidden;
             cvsOpenstaandeStoringen.Visibility = Visibility.Hidden;
-            Height = 270;
+            Height = 180;
         }
 
         private void FillTextBoxes(int id)
         {
             conn.OpenConnection();
-            SQLiteDataReader dr = conn.DataReader("SELECT DeviceType.Naam AS DeviceTypeNaam, Device.* FROM Device INNER JOIN DeviceType ON DeviceType.DeviceTypeID = Device.DeviceTypeID WHERE DeviceID='" + id + "'");
+            SQLiteDataReader dr = conn.DataReader("SELECT * FROM DeviceType WHERE DeviceTypeID='" + id + "'");
             dr.Read();
 
             txtNaam.Text = dr["Naam"].ToString();
-            lstDeviceType.SelectedValue = dr["DeviceTypeNaam"].ToString();
-            lstAfdeling.SelectedValue = dr["Afdeling"].ToString();
-            txtSerienummer.Text = dr["Serienummer"].ToString();
             txtOpmerkingen.Text = dr["Opmerkingen"].ToString();
         }
 
-        public static ObservableCollection<string> FillComboboxDeviceType()
-        {
-            listDeviceTypes = new ObservableCollection<string>();
-            DatabaseConnectie conn = new DatabaseConnectie();
-            conn.OpenConnection();
-            SQLiteDataReader dr = conn.DataReader("SELECT Naam FROM DeviceType");
-
-            while (dr.Read())
-                listDeviceTypes.Add(dr["Naam"].ToString());
-
-            return listDeviceTypes;
-        }
-
-        public static ObservableCollection<string> FillComboboxAfdeling()
-        {
-            ObservableCollection<string> listAfdelingen = new ObservableCollection<string>();
-            DatabaseConnectie conn = new DatabaseConnectie();
-            conn.OpenConnection();
-            SQLiteDataReader dr = conn.DataReader("SELECT Afdeling FROM Device GROUP BY Afdeling");
-
-            while (dr.Read())
-                listAfdelingen.Add(dr["Afdeling"].ToString());
-
-            return listAfdelingen;
-        }
+    
 
         private void FillDataGrid()
         {
-            
+
         }
 
         private void AddStoring(object sender, RoutedEventArgs e)
@@ -135,9 +104,9 @@ namespace DevicesEnStoringen
 
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
-            DataRowView row = (DataRowView)grdOpenstaandeStoringen.SelectedItems[0];
-            Storing storing = new Storing(Convert.ToInt32(row["ID"]));
-            storing.Show();
+            DataRowView row = (DataRowView)grdDevices.SelectedItems[0];
+            Device device = new Device(Convert.ToInt32(row["ID"]));
+            device.Show();
         }
     }
 }

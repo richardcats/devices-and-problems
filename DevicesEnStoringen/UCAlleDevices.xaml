@@ -11,7 +11,7 @@
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Zoek device:" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
             <TextBox x:Name="txtZoek" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" TextChanged="FilterDatagrid" Canvas.Left="84" Canvas.Top="10"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Device-type:" VerticalAlignment="Top" Canvas.Left="230" Canvas.Top="10"/>
-            <ComboBox x:Name="lstType" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120"  SelectionChanged="FilterDatagrid" Canvas.Left="312" Canvas.Top="9" Text="Alle storingen" IsReadOnly="True" IsEditable="True">
+            <ComboBox x:Name="lstType" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120"  SelectionChanged="FilterDatagrid" Canvas.Left="312" Canvas.Top="9" Text="Alle device-types" IsReadOnly="True" IsEditable="True">
 
             </ComboBox>
             <Button Content="Registreer device" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.541,3.635" Width="120" Click="RegistreerDeviceClick" Canvas.Left="464" Canvas.Top="10" />

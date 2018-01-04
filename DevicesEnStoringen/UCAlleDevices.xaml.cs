@@ -15,10 +15,10 @@ namespace DevicesEnStoringen
         public UCAlleDevices()
         {
             InitializeComponent();
-            grdDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Device.DeviceID AS ID, Device.Naam, DeviceType.Naam AS Type, Serienummer, Date(Device.DatumToegevoegd) AS Toegevoegd, COUNT(Storing.DeviceID) AS Storingen FROM Device LEFT JOIN Storing on Device.DeviceID = Storing.DeviceID LEFT JOIN DeviceType ON DeviceType.DeviceTypeID = Device.DeviceTypeID GROUP BY Device.DeviceID") });
+            grdDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Device.DeviceID AS ID, Device.Naam, DeviceType.Naam AS Type, Serienummer, Date(Device.DatumToegevoegd) AS Toegevoegd, COUNT(Storing.DeviceID) AS Storingen FROM Device LEFT JOIN Storing ON Device.DeviceID = Storing.DeviceID AND Status='Open' LEFT JOIN DeviceType ON DeviceType.DeviceTypeID = Device.DeviceTypeID GROUP BY Device.DeviceID") });
 
-            lstType.ItemsSource = Storing.FillCombobox();
-            Storing.list.Insert(0, "Alle storingen");
+            lstType.ItemsSource = Device.FillComboboxDeviceType();
+            Device.listDeviceTypes.Insert(0, "Alle device-types");
 
         }
 
@@ -35,22 +35,22 @@ namespace DevicesEnStoringen
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)grdDevices.SelectedItems[0];
-            Storing storing = new Storing(Convert.ToInt32(row["ID"]));
-            storing.Show();
+            Device device = new Device(Convert.ToInt32(row["ID"]));
+            device.Show();
         }
 
         private void FilterDatagrid(object sender, EventArgs e)
         {
-            if ((string)lstType.SelectedItem == "Alle storingen" || lstType.SelectedIndex == -1)
-                grdDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceID AS ID, Device.Naam, DeviceType.Naam AS Type, Serienummer, Date(DatumToegevoegd) AS Toegevoegd FROM Device INNER JOIN DeviceType ON DeviceType.DeviceTypeID = Device.DeviceTypeID WHERE Device.Naam LIKE '%" + txtZoek.Text + "%'") });
+            if (lstType.SelectedIndex == 0 || lstType.SelectedIndex == -1)
+                grdDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Device.DeviceID AS ID, Device.Naam, DeviceType.Naam AS Type, Serienummer, Date(Device.DatumToegevoegd) AS Toegevoegd, COUNT(Storing.DeviceID) AS Storingen FROM Device LEFT JOIN Storing on Device.DeviceID = Storing.DeviceID AND Status='Open' LEFT JOIN DeviceType ON DeviceType.DeviceTypeID = Device.DeviceTypeID WHERE Device.Naam LIKE '%" + txtZoek.Text + "%' GROUP BY Device.DeviceID") });
             else
-                grdDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceID AS ID, Device.Naam, DeviceType.Naam AS Type, Serienummer, Date(DatumToegevoegd) AS Toegevoegd FROM Device INNER JOIN DeviceType ON DeviceType.DeviceTypeID = Device.DeviceTypeID WHERE Device.Naam LIKE '%" + txtZoek.Text + "%' AND DeviceType.Naam='" + lstType.SelectedItem + "'") });
+                grdDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Device.DeviceID AS ID, Device.Naam, DeviceType.Naam AS Type, Serienummer, Date(Device.DatumToegevoegd) AS Toegevoegd, COUNT(Storing.DeviceID) AS Storingen FROM Device LEFT JOIN Storing on Device.DeviceID = Storing.DeviceID AND Status='Open' LEFT JOIN DeviceType ON DeviceType.DeviceTypeID = Device.DeviceTypeID WHERE Device.Naam LIKE '%" + txtZoek.Text + "%' AND DeviceType.Naam='" + lstType.SelectedItem + "' GROUP BY Device.DeviceID") });
         }
 
         private void RegistreerDeviceClick(object sender, RoutedEventArgs e)
         {
-            Storing storing = new Storing();
-            storing.Show();
+            Device device = new Device();
+            device.Show();
         }
     }
 }
