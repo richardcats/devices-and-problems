@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace DevicesEnStoringen
     {
         DatabaseConnectie conn = new DatabaseConnectie();
         public static ObservableCollection<string> list;
-
+        List<object> destList = new List<object>();
 
         public Storing(int id)
         {
@@ -34,9 +35,18 @@ namespace DevicesEnStoringen
             FillTextBoxes(id);
             lstStatus.ItemsSource = FillCombobox();
             FillDataGrid();
-
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
+
+            grdBetrokkenDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Device.DeviceID AS ID, Naam, Serienummer FROM Device INNER JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID WHERE DeviceStoring.StoringID ='" + id + "'") });
+
+            foreach (DataRowView row in grdBetrokkenDevices.Items)
+            {
+                destList.Add(row);
+            }
+
+            grdBetrokkenDevices.ItemsSource = null;
+            grdBetrokkenDevices.ItemsSource = destList;
         }
 
         public Storing()
@@ -91,12 +101,31 @@ namespace DevicesEnStoringen
 
         private void AddDevice(object sender, RoutedEventArgs e)
         {
+            /*foreach (DataRowView row in grdDevicesToevoegen.SelectedItems)
+            {
+                if (!destList.Contains(row["ID"]))
+                    destList.Add(row);
+            }*/
 
+            DataRowView row = (DataRowView)grdDevicesToevoegen.SelectedItems[0];
+            MessageBox.Show(row["ID"].ToString());
+            if (!destList.Contains(row["ID"]))
+                destList.Add(row);
+
+
+            grdBetrokkenDevices.ItemsSource = null;
+            grdBetrokkenDevices.ItemsSource = destList;
         }
 
         private void RemoveDevice(object sender, RoutedEventArgs e)
         {
+            foreach (DataRowView row in grdBetrokkenDevices.SelectedItems)
+            {
+                destList.Remove(row);
+            }
 
+            grdBetrokkenDevices.ItemsSource = null;
+            grdBetrokkenDevices.ItemsSource = destList;
         }
 
         private void ChangeGridButtonPositionToEnd(object sender, EventArgs e)
@@ -112,6 +141,11 @@ namespace DevicesEnStoringen
         private void ChangeGridButtonPositionToEnd(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
 
+        }
+
+        private void FilterDatagrid(object sender, TextChangedEventArgs e)
+        {
+            grdDevicesToevoegen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceID AS ID, Naam, Serienummer FROM Device WHERE Naam LIKE '%" + txtZoek.Text + "%'") });
         }
     }
 }
