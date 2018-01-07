@@ -33,7 +33,7 @@
             </DataGrid>
         </Canvas>
         <Canvas x:Name="cvsRegistreerKnoppen" Margin="0,80,0,0" >
-            <Button x:Name="btnToevoegen" Content="Toevoegen" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="AddStoring" Canvas.Left="219" Canvas.Top="36"/>
+            <Button x:Name="btnToevoegen" Content="Toevoegen" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="AddDeviceType" Canvas.Left="219" Canvas.Top="36"/>
             <Button x:Name="btnAnnuleren" Content="Annuleren" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Cancel" Canvas.Left="309" Canvas.Top="36" RenderTransformOrigin="1.205,0.552"/>
         </Canvas>
 

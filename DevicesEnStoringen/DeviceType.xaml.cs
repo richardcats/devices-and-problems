@@ -25,7 +25,6 @@ namespace DevicesEnStoringen
         DatabaseConnectie conn = new DatabaseConnectie();
         public static ObservableCollection<string> listDeviceTypes;
 
-
         public DeviceType(int id)
         {
             InitializeComponent();
@@ -60,32 +59,12 @@ namespace DevicesEnStoringen
             txtOpmerkingen.Text = dr["Opmerkingen"].ToString();
         }
 
-    
-
-        private void FillDataGrid()
-        {
-
-        }
-
-        private void AddStoring(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void Cancel(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private void AddDevice(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void RemoveDevice(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void ChangeGridButtonPositionToEnd(object sender, EventArgs e)
         {
@@ -97,16 +76,22 @@ namespace DevicesEnStoringen
             }
         }
 
-        private void ChangeGridButtonPositionToEnd(object sender, DataGridAutoGeneratingColumnEventArgs e)
-        {
-
-        }
-
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)grdDevices.SelectedItems[0];
             Device device = new Device(Convert.ToInt32(row["ID"]));
             device.Show();
+        }
+
+        private void AddDeviceType(object sender, RoutedEventArgs e)
+        {
+            conn.OpenConnection();
+            conn.ExecuteQueries("INSERT INTO DeviceType (Naam, Opmerkingen) VALUES ( '" + txtNaam.Text + "','" + txtOpmerkingen.Text +"')");
+            //devicesGrid.Items.Refresh();
+            //alleDeviceTypes.grdDevices.ItemsSource = null;
+           
+            ((Overzicht)Owner).l
+            Close();
         }
     }
 }

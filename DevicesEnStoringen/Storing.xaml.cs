@@ -24,7 +24,7 @@ namespace DevicesEnStoringen
     {
         DatabaseConnectie conn = new DatabaseConnectie();
         public static ObservableCollection<string> list;
-        List<object> destList = new List<object>();
+        Dictionary<object, object> storingList = new Dictionary<object, object>();
 
         public Storing(int id)
         {
@@ -42,11 +42,12 @@ namespace DevicesEnStoringen
 
             foreach (DataRowView row in grdBetrokkenDevices.Items)
             {
-                destList.Add(row);
+                storingList.Add(row["ID"], row);
             }
 
             grdBetrokkenDevices.ItemsSource = null;
-            grdBetrokkenDevices.ItemsSource = destList;
+            grdBetrokkenDevices.ItemsSource = storingList.Values;
+
         }
 
         public Storing()
@@ -96,36 +97,35 @@ namespace DevicesEnStoringen
 
         private void Cancel(object sender, RoutedEventArgs e)
         {
-            Close();
+            foreach (object row in storingList.Keys)
+            {
+                MessageBox.Show(row.ToString());
+            }
         }
 
         private void AddDevice(object sender, RoutedEventArgs e)
         {
-            /*foreach (DataRowView row in grdDevicesToevoegen.SelectedItems)
+            foreach (DataRowView row in grdDevicesToevoegen.SelectedItems)
             {
-                if (!destList.Contains(row["ID"]))
-                    destList.Add(row);
-            }*/
+                if(!storingList.ContainsKey(row["ID"]))  //(!destList.Any((prod => prod.GetHashCode() == row.GetHashCode())))
+                    storingList.Add(row["ID"],row);
+            }
 
-            DataRowView row = (DataRowView)grdDevicesToevoegen.SelectedItems[0];
-            MessageBox.Show(row["ID"].ToString());
-            if (!destList.Contains(row["ID"]))
-                destList.Add(row);
-
+            //DataRowView row = (DataRowView)grdDevicesToevoegen.SelectedItems[0];
+            //MessageBox.Show(row["ID"].ToString());
 
             grdBetrokkenDevices.ItemsSource = null;
-            grdBetrokkenDevices.ItemsSource = destList;
+            grdBetrokkenDevices.ItemsSource = storingList.Values;
         }
 
         private void RemoveDevice(object sender, RoutedEventArgs e)
         {
             foreach (DataRowView row in grdBetrokkenDevices.SelectedItems)
-            {
-                destList.Remove(row);
-            }
+                storingList.Remove(row["ID"]); 
+
 
             grdBetrokkenDevices.ItemsSource = null;
-            grdBetrokkenDevices.ItemsSource = destList;
+            grdBetrokkenDevices.ItemsSource = storingList.Values;
         }
 
         private void ChangeGridButtonPositionToEnd(object sender, EventArgs e)
@@ -136,11 +136,6 @@ namespace DevicesEnStoringen
                 dgrd.Columns.RemoveAt(0);
                 dgrd.Columns.Add(c);
             }
-        }
-
-        private void ChangeGridButtonPositionToEnd(object sender, DataGridAutoGeneratingColumnEventArgs e)
-        {
-
         }
 
         private void FilterDatagrid(object sender, TextChangedEventArgs e)
