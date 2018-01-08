@@ -33,7 +33,6 @@ namespace DevicesEnStoringen
             DataRowView row = (DataRowView)grdDevices.SelectedItems[0];
             DeviceType deviceType = new DeviceType(Convert.ToInt32(row["ID"]));
             deviceType.Show();
-            deviceType.Owner = Window.GetWindow(this);
         }
 
         private void FilterDatagrid(object sender, EventArgs e)

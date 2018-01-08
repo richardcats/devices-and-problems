@@ -8,12 +8,12 @@
         Title="DeviceType" Height="310" Width="400">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="9,20,0,0" TextWrapping="Wrap" Text="Naam:" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtNaam" HorizontalAlignment="Left"  Margin="118,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150"/>
+        <TextBox x:Name="txtNaam" HorizontalAlignment="Left"  Margin="118,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen"/>
 
         
 
         <TextBlock HorizontalAlignment="Left" Margin="9,50,0,0" TextWrapping="Wrap" Text="Opmerkingen:" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtOpmerkingen" HorizontalAlignment="Left"  Margin="118,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="266" Height="37"/>
+        <TextBox x:Name="txtOpmerkingen" HorizontalAlignment="Left"  Margin="118,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="266" Height="37" TextChanged="EnableToepassen"/>
 
         <Canvas x:Name="cvsOpenstaandeStoringen" Margin="9,101,0,0" >
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Alle devices van dit type:" VerticalAlignment="Top"/>
@@ -38,10 +38,10 @@
         </Canvas>
 
         <Canvas x:Name="cvsBewerkKnoppen" Margin="0,210,0,0"  >
-            <Button x:Name="btnVerwijder" Content="Verwijder" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Cancel" Canvas.Left="15" Canvas.Top="36"/>
-            <Button x:Name="btnOK" Content="OK" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Cancel" Canvas.Left="129" Canvas.Top="36"/>
+            <Button x:Name="btnVerwijder" Content="Verwijder" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="RemoveDeviceType" Canvas.Left="15" Canvas.Top="36"/>
+            <Button x:Name="btnOK" Content="OK" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="UpdateDeviceType" Canvas.Left="129" Canvas.Top="36"/>
             <Button x:Name="btnAnnuleren2" Content="Annuleren" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Cancel"  Canvas.Left="219" Canvas.Top="36"/>
-            <Button x:Name="btnToepassen" Content="Toepassen" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Cancel" Canvas.Left="309" Canvas.Top="36"/>
+            <Button x:Name="btnToepassen" Content="Toepassen" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="UpdateDeviceType" Canvas.Left="309" Canvas.Top="36"/>
         </Canvas>
     </Grid>
 </Window>

@@ -24,7 +24,7 @@ namespace DevicesEnStoringen
     {
         DatabaseConnectie conn = new DatabaseConnectie();
         public static ObservableCollection<string> listDeviceTypes;
-
+        int id;
 
         public Device(int id)
         {
@@ -39,6 +39,8 @@ namespace DevicesEnStoringen
 
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
+
+            this.id = id;
         }
 
         public Device()
@@ -98,25 +100,6 @@ namespace DevicesEnStoringen
             
         }
 
-        private void AddStoring(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Cancel(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void AddDevice(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void RemoveDevice(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void ChangeGridButtonPositionToEnd(object sender, EventArgs e)
         {
@@ -138,6 +121,69 @@ namespace DevicesEnStoringen
             DataRowView row = (DataRowView)grdOpenstaandeStoringen.SelectedItems[0];
             Storing storing = new Storing(Convert.ToInt32(row["ID"]));
             storing.Show();
+        }
+
+        private void Cancel(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+
+        private void AddDevice(object sender, RoutedEventArgs e)
+        {
+            conn.OpenConnection();
+            lstDeviceType.SelectedIndex++;
+            conn.ExecuteQueries("INSERT INTO Device (DeviceTypeID, Naam, Serienummer, Afdeling, Opmerkingen, DatumToegevoegd) VALUES ( '" + lstDeviceType.SelectedIndex + "','" + txtNaam.Text + "','" + txtSerienummer.Text + "','" + lstAfdeling.SelectedValue + "','" + txtOpmerkingen.Text + "', date('now'))");
+            Close();
+        }
+
+        private void UpdateDevice(object sender, RoutedEventArgs e)
+        {
+            if (grdOpenstaandeStoringen.Items.Count == 0)
+            {
+                conn.OpenConnection();
+                lstDeviceType.SelectedIndex++;
+                conn.ExecuteQueries("UPDATE Device SET DeviceTypeID = '" + lstDeviceType.SelectedIndex + "', Naam = '" + txtNaam.Text + "', Serienummer = '" + txtSerienummer.Text + "', Afdeling = '" + lstAfdeling.SelectedValue + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceID = '" + id + "'");
+                btnToepassen.IsEnabled = false;
+
+                Button button = (Button)sender;
+
+                if (button.Name == "btnOK")
+                    Close();
+            }
+            else
+            {
+                MessageBox.Show("Het is niet mogelijk om dit device aan te passen. Zorg dat er geen storingen gekoppeld zijn aan dit device.", "Device-type", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void EnableToepassen(object sender, TextChangedEventArgs e)
+        {
+            if (btnToepassen.IsEnabled == false)
+                btnToepassen.IsEnabled = true;
+        }
+
+        private void EnableToepassen(object sender, SelectionChangedEventArgs e)
+        {
+            if (btnToepassen.IsEnabled == false)
+                btnToepassen.IsEnabled = true;
+        }
+
+        private void RemoveDevice(object sender, RoutedEventArgs e)
+        {
+            if (grdOpenstaandeStoringen.Items.Count == 0)
+            {
+                if (MessageBox.Show("Device " + id + " wordt permanent verwijderd", "Device", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    conn.OpenConnection();
+                    conn.ExecuteQueries("DELETE FROM Device WHERE DeviceID = '" + id + "'");
+                    Close();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Het is niet mogelijk om dit device te verwijderen. Zorg dat er geen storingen gekoppeld zijn aan dit device.", "Device-type", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

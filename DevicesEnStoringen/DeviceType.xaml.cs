@@ -24,6 +24,7 @@ namespace DevicesEnStoringen
     {
         DatabaseConnectie conn = new DatabaseConnectie();
         public static ObservableCollection<string> listDeviceTypes;
+        int id;
 
         public DeviceType(int id)
         {
@@ -36,6 +37,8 @@ namespace DevicesEnStoringen
 
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
+
+            this.id = id;
         }
 
         public DeviceType()
@@ -87,11 +90,49 @@ namespace DevicesEnStoringen
         {
             conn.OpenConnection();
             conn.ExecuteQueries("INSERT INTO DeviceType (Naam, Opmerkingen) VALUES ( '" + txtNaam.Text + "','" + txtOpmerkingen.Text +"')");
-            //devicesGrid.Items.Refresh();
-            //alleDeviceTypes.grdDevices.ItemsSource = null;
-           
-            ((Overzicht)Owner).l
             Close();
+        }
+
+        private void UpdateDeviceType(object sender, RoutedEventArgs e)
+        {
+            if (grdDevices.Items.Count == 0)
+            {
+                conn.OpenConnection();
+                conn.ExecuteQueries("UPDATE DeviceType SET Naam = '" + txtNaam.Text + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceTypeID = '" + id + "'");
+                btnToepassen.IsEnabled = false;
+
+                Button button = (Button)sender;
+
+                if (button.Name == "btnOK")
+                    Close();
+            }
+            else
+            {
+                MessageBox.Show("Het is niet mogelijk om dit device-type aan te passen. Zorg dat er geen devices gekoppeld zijn aan dit device-type.", "Device-type", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void EnableToepassen(object sender, TextChangedEventArgs e)
+        {
+            if (btnToepassen.IsEnabled == false)
+                btnToepassen.IsEnabled = true;
+        }
+
+        private void RemoveDeviceType(object sender, RoutedEventArgs e)
+        {
+            if (grdDevices.Items.Count == 0)
+            {
+                if (MessageBox.Show("Device-type " + id + " wordt permanent verwijderd", "Device-type", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    conn.OpenConnection();
+                    conn.ExecuteQueries("DELETE FROM DeviceType WHERE DeviceTypeID = '" + id + "'");
+                    Close();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Het is niet mogelijk om dit device-type te verwijderen. Zorg dat er geen devices gekoppeld zijn aan dit device-type.", "Device-type", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
