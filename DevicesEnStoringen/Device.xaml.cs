@@ -35,7 +35,7 @@ namespace DevicesEnStoringen
             FillTextBoxes(id);
             lstDeviceType.ItemsSource = FillComboboxDeviceType();
             lstAfdeling.ItemsSource = FillComboboxAfdeling();
-            grdOpenstaandeStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum FROM Storing WHERE DeviceID = '" + id + "' AND Status = 'Open'") });
+            grdOpenstaandeStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Storing.StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum FROM DeviceStoring LEFT JOIN Storing ON Storing.StoringID = DeviceStoring.StoringID WHERE DeviceID = '" + id + "' AND Status = 'Open'") });
 
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
@@ -132,8 +132,7 @@ namespace DevicesEnStoringen
         private void AddDevice(object sender, RoutedEventArgs e)
         {
             conn.OpenConnection();
-            lstDeviceType.SelectedIndex++;
-            conn.ExecuteQueries("INSERT INTO Device (DeviceTypeID, Naam, Serienummer, Afdeling, Opmerkingen, DatumToegevoegd) VALUES ( '" + lstDeviceType.SelectedIndex + "','" + txtNaam.Text + "','" + txtSerienummer.Text + "','" + lstAfdeling.SelectedValue + "','" + txtOpmerkingen.Text + "', date('now'))");
+            conn.ExecuteQueries("INSERT INTO Device (DeviceTypeID, Naam, Serienummer, Afdeling, Opmerkingen, DatumToegevoegd) VALUES ( '" + Convert.ToInt32(lstDeviceType.SelectedIndex + 1) + "','" + txtNaam.Text + "','" + txtSerienummer.Text + "','" + lstAfdeling.SelectedValue + "','" + txtOpmerkingen.Text + "', date('now'))");
             Close();
         }
 
@@ -142,8 +141,7 @@ namespace DevicesEnStoringen
             if (grdOpenstaandeStoringen.Items.Count == 0)
             {
                 conn.OpenConnection();
-                lstDeviceType.SelectedIndex++;
-                conn.ExecuteQueries("UPDATE Device SET DeviceTypeID = '" + lstDeviceType.SelectedIndex + "', Naam = '" + txtNaam.Text + "', Serienummer = '" + txtSerienummer.Text + "', Afdeling = '" + lstAfdeling.SelectedValue + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceID = '" + id + "'");
+                conn.ExecuteQueries("UPDATE Device SET DeviceTypeID = '" + Convert.ToInt32(lstDeviceType.SelectedIndex + 1) + "', Naam = '" + txtNaam.Text + "', Serienummer = '" + txtSerienummer.Text + "', Afdeling = '" + lstAfdeling.SelectedValue + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceID = '" + id + "'");
                 btnToepassen.IsEnabled = false;
 
                 Button button = (Button)sender;
