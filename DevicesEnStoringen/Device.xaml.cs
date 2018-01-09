@@ -138,21 +138,14 @@ namespace DevicesEnStoringen
 
         private void UpdateDevice(object sender, RoutedEventArgs e)
         {
-            if (grdOpenstaandeStoringen.Items.Count == 0)
-            {
-                conn.OpenConnection();
-                conn.ExecuteQueries("UPDATE Device SET DeviceTypeID = '" + Convert.ToInt32(lstDeviceType.SelectedIndex + 1) + "', Naam = '" + txtNaam.Text + "', Serienummer = '" + txtSerienummer.Text + "', Afdeling = '" + lstAfdeling.SelectedValue + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceID = '" + id + "'");
-                btnToepassen.IsEnabled = false;
+            conn.OpenConnection();
+            conn.ExecuteQueries("UPDATE Device SET DeviceTypeID = '" + Convert.ToInt32(lstDeviceType.SelectedIndex + 1) + "', Naam = '" + txtNaam.Text + "', Serienummer = '" + txtSerienummer.Text + "', Afdeling = '" + lstAfdeling.SelectedValue + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceID = '" + id + "'");
+            btnToepassen.IsEnabled = false;
 
-                Button button = (Button)sender;
+            Button button = (Button)sender;
 
-                if (button.Name == "btnOK")
-                    Close();
-            }
-            else
-            {
-                MessageBox.Show("Het is niet mogelijk om dit device aan te passen. Zorg dat er geen storingen gekoppeld zijn aan dit device.", "Device-type", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            if (button.Name == "btnOK")
+                Close();
         }
 
         private void EnableToepassen(object sender, TextChangedEventArgs e)
@@ -169,19 +162,13 @@ namespace DevicesEnStoringen
 
         private void RemoveDevice(object sender, RoutedEventArgs e)
         {
-            if (grdOpenstaandeStoringen.Items.Count == 0)
+            if (MessageBox.Show("Device " + id + " wordt permanent verwijderd", "Device", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                if (MessageBox.Show("Device " + id + " wordt permanent verwijderd", "Device", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                {
-                    conn.OpenConnection();
-                    conn.ExecuteQueries("DELETE FROM Device WHERE DeviceID = '" + id + "'");
-                    Close();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Het is niet mogelijk om dit device te verwijderen. Zorg dat er geen storingen gekoppeld zijn aan dit device.", "Device-type", MessageBoxButton.OK, MessageBoxImage.Error);
+                conn.OpenConnection();
+                conn.ExecuteQueries("DELETE FROM Device WHERE DeviceID = '" + id + "'");
+                Close();
             }
         }
     }
 }
+

@@ -90,27 +90,22 @@ namespace DevicesEnStoringen
         {
             conn.OpenConnection();
             conn.ExecuteQueries("INSERT INTO DeviceType (Naam, Opmerkingen) VALUES ( '" + txtNaam.Text + "','" + txtOpmerkingen.Text +"')");
+            conn.CloseConnection();
             Close();
         }
 
         private void UpdateDeviceType(object sender, RoutedEventArgs e)
         {
-            if (grdDevices.Items.Count == 0)
-            {
-                conn.OpenConnection();
-                conn.ExecuteQueries("UPDATE DeviceType SET Naam = '" + txtNaam.Text + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceTypeID = '" + id + "'");
-                btnToepassen.IsEnabled = false;
+            conn.OpenConnection();
+            conn.ExecuteQueries("UPDATE DeviceType SET Naam = '" + txtNaam.Text + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceTypeID = '" + id + "'");
+            btnToepassen.IsEnabled = false;
 
-                Button button = (Button)sender;
+            Button button = (Button)sender;
 
-                if (button.Name == "btnOK")
-                    Close();
-            }
-            else
-            {
-                MessageBox.Show("Het is niet mogelijk om dit device-type aan te passen. Zorg dat er geen devices gekoppeld zijn aan dit device-type.", "Device-type", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            if (button.Name == "btnOK")
+                Close();
         }
+        
 
         private void EnableToepassen(object sender, TextChangedEventArgs e)
         {
