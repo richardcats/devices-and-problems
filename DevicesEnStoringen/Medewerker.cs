@@ -10,6 +10,12 @@ namespace DevicesEnStoringen
     class Medewerker
     {
         DatabaseConnectie conn = new DatabaseConnectie();
+        string emailadres;
+
+        public Medewerker(string emailadres)
+        {
+            this.emailadres = emailadres;
+        }
 
         public bool ControleerInlogGegevens(string emailadres, string wachtwoord)
         {
@@ -21,6 +27,15 @@ namespace DevicesEnStoringen
             bool inloggegevensCorrect = Convert.ToBoolean(sqlCmd.ExecuteScalar());
 
             return inloggegevensCorrect;
+        }
+
+        public string huidigeMedewerkerIngelogd()
+        {
+            conn.OpenConnection();
+            SQLiteDataReader dr = conn.DataReader("SELECT * FROM Medewerker WHERE Emailadres='" + emailadres + "'");
+            dr.Read();
+
+            return dr["Voornaam"].ToString();
         }
     }
 }

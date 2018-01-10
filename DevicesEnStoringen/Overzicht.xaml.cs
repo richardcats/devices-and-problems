@@ -19,12 +19,13 @@ namespace DevicesEnStoringen
     /// </summary>
     public partial class Overzicht : Window
     {
-        public Overzicht()
+        public Overzicht(string medewerkerIngelogd)
         {
             InitializeComponent();
 
             UCAlleStoringen alleStoringen = new UCAlleStoringen();
             stkOverzicht.Children.Add(alleStoringen);
+            txtIngelogdAls.Text = medewerkerIngelogd;
         }
 
         private void StoringenClick(object sender, RoutedEventArgs e)

@@ -27,12 +27,12 @@ namespace DevicesEnStoringen
 
         private void btnInloggen_Click(object sender, RoutedEventArgs e)
         {
-            Medewerker medewerker = new Medewerker();
+            Medewerker medewerker = new Medewerker(txtGebruikersnaam.Text);
             bool inloggegevensCorrect = medewerker.ControleerInlogGegevens(txtGebruikersnaam.Text, txtWachtwoord.Password);
 
             if (inloggegevensCorrect)
             {
-                Overzicht overzicht = new Overzicht();
+                Overzicht overzicht = new Overzicht(medewerker.huidigeMedewerkerIngelogd());
                 overzicht.Show();
                 this.Close();
             }

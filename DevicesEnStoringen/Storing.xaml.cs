@@ -24,6 +24,7 @@ namespace DevicesEnStoringen
     {
         DatabaseConnectie conn = new DatabaseConnectie();
         public static ObservableCollection<string> list;
+        static ObservableCollection<string> listMedewerkers;
         Dictionary<object, object> storingList = new Dictionary<object, object>();
 
         public Storing(int id)
@@ -34,6 +35,7 @@ namespace DevicesEnStoringen
 
             FillTextBoxes(id);
             lstStatus.ItemsSource = FillCombobox();
+            lstBehandeldDoor.ItemsSource = FillComboboxMedewerker();
             FillDataGrid();
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
@@ -55,6 +57,7 @@ namespace DevicesEnStoringen
             InitializeComponent();
             Title = "Storing registreren";
             lstStatus.ItemsSource = FillCombobox();
+            lstBehandeldDoor.ItemsSource = FillComboboxMedewerker();
             FillDataGrid();
 
             cvsRegistreerKnoppen.Visibility = Visibility.Visible;
@@ -72,7 +75,7 @@ namespace DevicesEnStoringen
             txtErnst.Text = dr["Ernst"].ToString();
             lstStatus.SelectedValue = dr["Status"].ToString();
             txtDatumAfhandeling.Text = dr["DatumAfhandeling"].ToString();
-            txtBehandeldDoor.Text = dr["MedewerkerBehandeld"].ToString();
+            lstBehandeldDoor.SelectedValue = dr["MedewerkerBehandeld"].ToString();
         }
 
         public static ObservableCollection<string> FillCombobox()
@@ -85,22 +88,27 @@ namespace DevicesEnStoringen
             return list;
         }
 
+        public static ObservableCollection<string> FillComboboxMedewerker()
+        {
+            listMedewerkers = new ObservableCollection<string>();
+            DatabaseConnectie conn = new DatabaseConnectie();
+            conn.OpenConnection();
+            SQLiteDataReader dr = conn.DataReader("SELECT Voornaam FROM Medewerker");
+
+            while (dr.Read())
+                listMedewerkers.Add(dr["Voornaam"].ToString());
+
+            return listMedewerkers;
+        }
+
         private void FillDataGrid()
         {
             grdDevicesToevoegen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceID AS ID, Naam, Serienummer FROM Device") });
         }
 
-        private void AddStoring(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void Cancel(object sender, RoutedEventArgs e)
         {
-            foreach (object row in storingList.Keys)
-            {
-                MessageBox.Show(row.ToString());
-            }
+            Close();
         }
 
         private void AddDevice(object sender, RoutedEventArgs e)
@@ -141,6 +149,35 @@ namespace DevicesEnStoringen
         private void FilterDatagrid(object sender, TextChangedEventArgs e)
         {
             grdDevicesToevoegen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceID AS ID, Naam, Serienummer FROM Device WHERE Naam LIKE '%" + txtZoek.Text + "%'") });
+        }
+
+        private void AddStoring(object sender, RoutedEventArgs e)
+        {
+            conn.OpenConnection();
+            conn.ExecuteQueries("INSERT INTO Storing (MedewerkerGeregistreerd, MedewerkerBehandeld, Beschrijving, Prioriteit, Ernst, Status, DatumToegevoegd, DatumAfhandeling) VALUES ( '" + txtErnst.Text + "','" + Convert.ToInt32(lstBehandeldDoor.SelectedIndex + 1) + "','" + txtBeschrijving.Text + "','" + txtPrioriteit.Text + "','" + txtErnst.Text + "','" + lstStatus.SelectedValue + "', date('now'))");
+            Close();
+        }
+
+        private void UpdateStoring(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void EnableToepassen(object sender, TextChangedEventArgs e)
+        {
+            if (btnToepassen.IsEnabled == false)
+                btnToepassen.IsEnabled = true;
+        }
+
+        private void EnableToepassen(object sender, SelectionChangedEventArgs e)
+        {
+            if (btnToepassen.IsEnabled == false)
+                btnToepassen.IsEnabled = true;
+        }
+
+        private void RemoveStoring(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

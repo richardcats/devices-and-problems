@@ -12,7 +12,10 @@
             <Button Content="Devices" Width="75" Canvas.Left="100" Click="DevicesClick"/>
             <Button Content="Device-types" Width="75" Canvas.Left="200" Click="DeviceTypesClick"/>
             <Button Content="Rapportages" Width="75" Canvas.Left="300" Click="RapportagesClick" />
+            <TextBlock TextWrapping="Wrap" Text="Ingelogd als:" Canvas.Left="450"/>
+            <TextBlock x:Name="txtIngelogdAls" TextWrapping="Wrap" Text="" Canvas.Left="520"/>
             <Separator  Height="54"  Width="574"/>
+
         </Canvas>
         <StackPanel Name="stkOverzicht"/>
     </Grid>
