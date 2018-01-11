@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DevicesEnStoringen
 {
-    class Medewerker
+    public class Medewerker
     {
         DatabaseConnectie conn = new DatabaseConnectie();
         string emailadres;
@@ -25,17 +25,28 @@ namespace DevicesEnStoringen
             sqlCmd.Parameters.AddWithValue("@Emailadres", emailadres);
             sqlCmd.Parameters.AddWithValue("@Wachtwoord", wachtwoord);
             bool inloggegevensCorrect = Convert.ToBoolean(sqlCmd.ExecuteScalar());
-
+            conn.CloseConnection();
             return inloggegevensCorrect;
         }
 
-        public string huidigeMedewerkerIngelogd()
+        public string naamHuidigeMedewerkerIngelogd()
         {
             conn.OpenConnection();
             SQLiteDataReader dr = conn.DataReader("SELECT * FROM Medewerker WHERE Emailadres='" + emailadres + "'");
             dr.Read();
+            string voornaam = dr["Voornaam"].ToString();
+            conn.CloseConnection();
+            return voornaam;
+        }
 
-            return dr["Voornaam"].ToString();
+        public int idHuidigeMedewerkerIngelogd()
+        {
+            conn.OpenConnection();
+            SQLiteDataReader dr = conn.DataReader("SELECT * FROM Medewerker WHERE Emailadres='" + emailadres + "'");
+            dr.Read();
+            string id = dr["MedewerkerID"].ToString();
+            conn.CloseConnection();
+            return Convert.ToInt32(id);
         }
     }
 }

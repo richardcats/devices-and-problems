@@ -9,24 +9,27 @@
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="9,20,0,0" TextWrapping="Wrap" Text="Beschrijving:" VerticalAlignment="Top"/>
         <TextBox x:Name="txtBeschrijving" HorizontalAlignment="Left"  Margin="118,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen"/>
+        
+        <TextBlock HorizontalAlignment="Left" Margin="9,50,0,0" TextWrapping="Wrap" Text="Toegevoegd door:" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtToegevoegdDoor" HorizontalAlignment="Left"  Margin="118,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen" IsEnabled="False" Background="LightGray"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="9,50,0,0" TextWrapping="Wrap" Text="Prioriteit:" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtPrioriteit" HorizontalAlignment="Left"  Margin="118,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen"/>
+        <TextBlock HorizontalAlignment="Left" Margin="9,80,0,0" TextWrapping="Wrap" Text="Prioriteit:" VerticalAlignment="Top"/>
+        <ComboBox x:Name="lstPrioriteit" HorizontalAlignment="Left"  Margin="118,80,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="EnableToepassen" SelectedIndex="0"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="9,80,0,0" TextWrapping="Wrap" Text="Ernst:" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtErnst" HorizontalAlignment="Left"  Margin="118,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen"/>
+        <TextBlock HorizontalAlignment="Left" Margin="9,110,0,0" TextWrapping="Wrap" Text="Ernst:" VerticalAlignment="Top"/>
+        <ComboBox x:Name="lstErnst" HorizontalAlignment="Left"  Margin="118,110,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="EnableToepassen" SelectedIndex="0"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="9,110,0,0" TextWrapping="Wrap" Text="Status:" VerticalAlignment="Top"/>
-        <ComboBox x:Name="lstStatus" HorizontalAlignment="Left"  Margin="118,110,0,0" VerticalAlignment="Top" Width="150" Height="20" SelectionChanged="EnableToepassen"/>
+        <TextBlock HorizontalAlignment="Left" Margin="9,140,0,0" TextWrapping="Wrap" Text="Status:" VerticalAlignment="Top"/>
+        <ComboBox x:Name="lstStatus" HorizontalAlignment="Left"  Margin="118,140,0,0" VerticalAlignment="Top" Width="150" Height="20" SelectionChanged="EnableToepassen" SelectedIndex="0"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="9,140,0,0" TextWrapping="Wrap" Text="Datum afhandeling:" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtDatumAfhandeling" HorizontalAlignment="Left"  Margin="118,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen"/>
+        <TextBlock HorizontalAlignment="Left" Margin="9,170,0,0" TextWrapping="Wrap" Text="Datum afhandeling:" VerticalAlignment="Top"/>
+        <DatePicker x:Name="txtDatumAfhandeling" HorizontalAlignment="Left"  Margin="118,170,0,0" VerticalAlignment="Top" Width="150" SelectedDateChanged="EnableToepassen" IsEnabled="False"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="9,170,0,0" TextWrapping="Wrap" Text="Behandeld door:" VerticalAlignment="Top"/>
-        <ComboBox x:Name="lstBehandeldDoor" HorizontalAlignment="Left"  Margin="118,170,0,0"  VerticalAlignment="Top" Width="150" SelectionChanged="EnableToepassen"/>
+        <TextBlock HorizontalAlignment="Left" Margin="9,200,0,0" TextWrapping="Wrap" Text="Behandeld door:" VerticalAlignment="Top"/>
+        <ComboBox x:Name="lstBehandeldDoor" HorizontalAlignment="Left"  Margin="118,200,0,0"  VerticalAlignment="Top" Width="150" SelectionChanged="EnableToepassen"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="9,200,0,0" TextWrapping="Wrap" Text="Opmerkingen" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left"  Margin="118,200,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen"/>
+        <TextBlock HorizontalAlignment="Left" Margin="9,230,0,0" TextWrapping="Wrap" Text="Opmerkingen" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left"  Margin="118,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="340,20,0,0" TextWrapping="Wrap" Text="Voeg betrokken device(s) toe" VerticalAlignment="Top"/>
 
@@ -61,7 +64,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <Canvas x:Name="cvsRegistreerKnoppen" Margin="0,288,0,0" >
-            <Button x:Name="btnToevoegen" Content="Toevoegen" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="AddDevice" Canvas.Left="401" Canvas.Top="36"/>
+            <Button x:Name="btnToevoegen" Content="Toevoegen" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="AddStoring" Canvas.Left="401" Canvas.Top="36"/>
             <Button x:Name="btnAnnuleren" Content="Annuleren" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Cancel" Canvas.Left="491" Canvas.Top="36"/>
         </Canvas>
         <Canvas x:Name="cvsBewerkKnoppen" Margin="0,288,0,0" >

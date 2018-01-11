@@ -32,7 +32,7 @@ namespace DevicesEnStoringen
 
             if (inloggegevensCorrect)
             {
-                Overzicht overzicht = new Overzicht(medewerker.huidigeMedewerkerIngelogd());
+                Overzicht overzicht = new Overzicht(medewerker);
                 overzicht.Show();
                 this.Close();
             }

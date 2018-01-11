@@ -19,20 +19,22 @@ namespace DevicesEnStoringen
     /// </summary>
     public partial class Overzicht : Window
     {
-        public Overzicht(string medewerkerIngelogd)
+        Medewerker medewerker;
+        public Overzicht(Medewerker medewerker)
         {
             InitializeComponent();
 
-            UCAlleStoringen alleStoringen = new UCAlleStoringen();
+            UCAlleStoringen alleStoringen = new UCAlleStoringen(medewerker);
             stkOverzicht.Children.Add(alleStoringen);
-            txtIngelogdAls.Text = medewerkerIngelogd;
+            txtIngelogdAls.Text = medewerker.naamHuidigeMedewerkerIngelogd();
+            this.medewerker = medewerker;
         }
 
         private void StoringenClick(object sender, RoutedEventArgs e)
         {
             Title = "Alle storingen";
             stkOverzicht.Children.Clear();
-            UCAlleStoringen alleStoringen = new UCAlleStoringen();
+            UCAlleStoringen alleStoringen = new UCAlleStoringen(medewerker);
             stkOverzicht.Children.Add(alleStoringen);
         }
 

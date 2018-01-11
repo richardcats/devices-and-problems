@@ -11,8 +11,9 @@ namespace DevicesEnStoringen
     public partial class UCAlleStoringen : UserControl
     {
         DatabaseConnectie conn = new DatabaseConnectie();
+        Medewerker medewerker;
 
-        public UCAlleStoringen()
+        public UCAlleStoringen(Medewerker medewerker)
         {
             InitializeComponent();
             grdStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing") });
@@ -20,6 +21,7 @@ namespace DevicesEnStoringen
             lstStatus.ItemsSource = Storing.FillCombobox();
             Storing.list.Insert(0, "Alle storingen");
 
+            this.medewerker = medewerker;
         }
 
         private void ChangeGridButtonPositionToEnd(object sender, EventArgs e)
@@ -49,7 +51,7 @@ namespace DevicesEnStoringen
 
         private void RegistreerStoringClick(object sender, RoutedEventArgs e)
         {
-            Storing storing = new Storing();
+            Storing storing = new Storing(medewerker);
             storing.Show();
         }
     }

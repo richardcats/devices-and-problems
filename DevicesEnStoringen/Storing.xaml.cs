@@ -25,7 +25,9 @@ namespace DevicesEnStoringen
         DatabaseConnectie conn = new DatabaseConnectie();
         public static ObservableCollection<string> list;
         static ObservableCollection<string> listMedewerkers;
+        static ObservableCollection<string> listPrioriteitErnst;
         Dictionary<object, object> storingList = new Dictionary<object, object>();
+        int medewerkerID;
 
         public Storing(int id)
         {
@@ -36,9 +38,13 @@ namespace DevicesEnStoringen
             FillTextBoxes(id);
             lstStatus.ItemsSource = FillCombobox();
             lstBehandeldDoor.ItemsSource = FillComboboxMedewerker();
+            lstErnst.ItemsSource = FillComboboxPrioriteitErnst();
+            lstPrioriteit.ItemsSource = FillComboboxPrioriteitErnst();
+            
             FillDataGrid();
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
+            txtDatumAfhandeling.IsEnabled = true;
 
             grdBetrokkenDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Device.DeviceID AS ID, Naam, Serienummer FROM Device INNER JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID WHERE DeviceStoring.StoringID ='" + id + "'") });
 
@@ -49,33 +55,42 @@ namespace DevicesEnStoringen
 
             grdBetrokkenDevices.ItemsSource = null;
             grdBetrokkenDevices.ItemsSource = storingList.Values;
-
         }
 
-        public Storing()
+        public Storing(Medewerker medewerker)
         {
             InitializeComponent();
             Title = "Storing registreren";
+            txtToegevoegdDoor.Text = medewerker.naamHuidigeMedewerkerIngelogd();
+
             lstStatus.ItemsSource = FillCombobox();
             lstBehandeldDoor.ItemsSource = FillComboboxMedewerker();
+            lstErnst.ItemsSource = FillComboboxPrioriteitErnst();
+            lstPrioriteit.ItemsSource = FillComboboxPrioriteitErnst();
+
             FillDataGrid();
 
             cvsRegistreerKnoppen.Visibility = Visibility.Visible;
             cvsBewerkKnoppen.Visibility = Visibility.Hidden;
+
+            medewerkerID = medewerker.idHuidigeMedewerkerIngelogd();
         }
 
         private void FillTextBoxes(int id)
         {
             conn.OpenConnection();
-            SQLiteDataReader dr = conn.DataReader("SELECT * FROM Storing WHERE StoringID='" + id + "'");
+            SQLiteDataReader dr = conn.DataReader("SELECT Storing.StoringID, Storing.*, Medewerker.* FROM Storing LEFT JOIN Medewerker ON Storing.MedewerkerGeregistreerd = Medewerker.MedewerkerID WHERE StoringID='" + id + "'");
             dr.Read();
 
             txtBeschrijving.Text = dr["Beschrijving"].ToString();
-            txtPrioriteit.Text = dr["Prioriteit"].ToString();
-            txtErnst.Text = dr["Ernst"].ToString();
+            txtToegevoegdDoor.Text = dr["Voornaam"].ToString();
+            lstPrioriteit.SelectedValue = dr["Prioriteit"].ToString();
+            lstErnst.SelectedValue = dr["Ernst"].ToString();
             lstStatus.SelectedValue = dr["Status"].ToString();
             txtDatumAfhandeling.Text = dr["DatumAfhandeling"].ToString();
             lstBehandeldDoor.SelectedValue = dr["MedewerkerBehandeld"].ToString();
+
+            conn.CloseConnection();
         }
 
         public static ObservableCollection<string> FillCombobox()
@@ -98,7 +113,19 @@ namespace DevicesEnStoringen
             while (dr.Read())
                 listMedewerkers.Add(dr["Voornaam"].ToString());
 
+            conn.CloseConnection();
             return listMedewerkers;
+        }
+
+        public static ObservableCollection<string> FillComboboxPrioriteitErnst()
+        {
+            listPrioriteitErnst = new ObservableCollection<string>();
+            listPrioriteitErnst.Add("0");
+            listPrioriteitErnst.Add("1");
+            listPrioriteitErnst.Add("2");
+            listPrioriteitErnst.Add("3");
+
+            return listPrioriteitErnst;
         }
 
         private void FillDataGrid()
@@ -154,7 +181,8 @@ namespace DevicesEnStoringen
         private void AddStoring(object sender, RoutedEventArgs e)
         {
             conn.OpenConnection();
-            conn.ExecuteQueries("INSERT INTO Storing (MedewerkerGeregistreerd, MedewerkerBehandeld, Beschrijving, Prioriteit, Ernst, Status, DatumToegevoegd, DatumAfhandeling) VALUES ( '" + txtErnst.Text + "','" + Convert.ToInt32(lstBehandeldDoor.SelectedIndex + 1) + "','" + txtBeschrijving.Text + "','" + txtPrioriteit.Text + "','" + txtErnst.Text + "','" + lstStatus.SelectedValue + "', date('now'))");
+            conn.ExecuteQueries("INSERT INTO Storing (Beschrijving, MedewerkerGeregistreerd, Prioriteit, Ernst, Status, DatumToegevoegd) VALUES ('" + txtBeschrijving.Text + "','" + medewerkerID +  "','" + lstPrioriteit.SelectedValue + "','" + lstErnst.SelectedValue + "','" + lstStatus.SelectedValue + "', date('now'))");
+            conn.CloseConnection();
             Close();
         }
 
