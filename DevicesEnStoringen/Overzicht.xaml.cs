@@ -61,5 +61,12 @@ namespace DevicesEnStoringen
             UCRapportages rapportages = new UCRapportages();
             stkOverzicht.Children.Add(rapportages);
         }
+
+        private void Logout(object sender, RoutedEventArgs e)
+        {
+            Inloggen inloggen = new Inloggen();
+            inloggen.Show();
+            Close();
+        }
     }
 }

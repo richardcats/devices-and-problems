@@ -5,16 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DevicesEnStoringen"
         mc:Ignorable="d"
-        Title="Alle storingen" Height="350" Width="600">
+        Title="Alle storingen" Height="360" Width="610" ResizeMode="NoResize">
     <Grid>
         <Canvas x:Name="cvsNavigatie" Margin="10,10,0,0">
             <Button Content="Storingen" Width="75" Click="StoringenClick" />
-            <Button Content="Devices" Width="75" Canvas.Left="100" Click="DevicesClick"/>
-            <Button Content="Device-types" Width="75" Canvas.Left="200" Click="DeviceTypesClick"/>
-            <Button Content="Rapportages" Width="75" Canvas.Left="300" Click="RapportagesClick" />
-            <TextBlock TextWrapping="Wrap" Text="Ingelogd als:" Canvas.Left="450"/>
-            <TextBlock x:Name="txtIngelogdAls" TextWrapping="Wrap" Text="" Canvas.Left="520"/>
-            <Separator  Height="54"  Width="574"/>
+            <Button Content="Devices" Width="75" Canvas.Left="90" Click="DevicesClick"/>
+            <Button Content="Device-types" Width="75" Canvas.Left="180" Click="DeviceTypesClick"/>
+            <Button Content="Rapportages" Width="75" Canvas.Left="270" Click="RapportagesClick" />
+            <TextBlock TextWrapping="Wrap" Text="Ingelogd als:" Canvas.Left="370"/>
+            <TextBlock x:Name="txtIngelogdAls" TextWrapping="Wrap" Text="" Canvas.Left="440"/>
+            <TextBlock x:Name="txtUitloggen" TextWrapping="Wrap" Canvas.Left="520"><Hyperlink Click="Logout">Uitloggen</Hyperlink></TextBlock>
+            <Separator  Height="57"  Width="574"/>
 
         </Canvas>
         <StackPanel Name="stkOverzicht"/>
