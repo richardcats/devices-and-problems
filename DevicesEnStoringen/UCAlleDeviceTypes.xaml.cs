@@ -12,10 +12,12 @@ namespace DevicesEnStoringen
     {
         DatabaseConnectie conn = new DatabaseConnectie();
 
-        public UCAlleDeviceTypes()
+        Medewerker medewerker;
+        public UCAlleDeviceTypes(Medewerker medewerker)
         {
             InitializeComponent();
             grdDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceType.DeviceTypeID AS ID, DeviceType.Naam, COUNT(Device.DeviceTypeID) AS 'Aantal devices', DeviceType.Opmerkingen FROM DeviceType LEFT JOIN Device ON Device.DeviceTypeID = DeviceType.DeviceTypeID GROUP BY DeviceType.DeviceTypeID ORDER BY ID") });
+            this.medewerker = medewerker;
         }
 
         private void ChangeGridButtonPositionToEnd(object sender, EventArgs e)
@@ -31,7 +33,7 @@ namespace DevicesEnStoringen
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)grdDevices.SelectedItems[0];
-            DeviceType deviceType = new DeviceType(Convert.ToInt32(row["ID"]));
+            DeviceType deviceType = new DeviceType(Convert.ToInt32(row["ID"]), medewerker);
             deviceType.Show();
         }
 

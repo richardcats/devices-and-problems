@@ -25,8 +25,9 @@ namespace DevicesEnStoringen
         DatabaseConnectie conn = new DatabaseConnectie();
         public static ObservableCollection<string> listDeviceTypes;
         int id;
+        Medewerker medewerker;
 
-        public DeviceType(int id)
+        public DeviceType(int id, Medewerker medewerker)
         {
             InitializeComponent();
 
@@ -39,6 +40,7 @@ namespace DevicesEnStoringen
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
 
             this.id = id;
+            this.medewerker = medewerker;
         }
 
         public DeviceType()
@@ -75,7 +77,9 @@ namespace DevicesEnStoringen
             {
                 var c = dgrd.Columns[0];
                 dgrd.Columns.RemoveAt(0);
-                dgrd.Columns.Add(c);
+
+                if (medewerker.accountTypeHuidigeMedewerkerIngelogd() == "IT-beheerder")
+                    dgrd.Columns.Add(c);
             }
         }
 

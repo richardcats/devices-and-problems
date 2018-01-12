@@ -90,7 +90,7 @@ namespace DevicesEnStoringen
             lstErnst.SelectedValue = dr["Ernst"].ToString();
             lstStatus.SelectedValue = dr["Status"].ToString();
             txtDatumAfhandeling.Text = dr["DatumAfhandeling"].ToString();
-            lstBehandeldDoor.SelectedIndex = Convert.ToInt32(dr["MedewerkerBehandeld"]) - 1;
+            if (!DBNull.Value.Equals(dr["MedewerkerBehandeld"])) lstBehandeldDoor.SelectedIndex = Convert.ToInt32(dr["MedewerkerBehandeld"]) - 1;
 
             conn.CloseConnection();
         }

@@ -22,6 +22,9 @@ namespace DevicesEnStoringen
             Storing.list.Insert(0, "Alle storingen");
 
             this.medewerker = medewerker;
+
+            if (medewerker.accountTypeHuidigeMedewerkerIngelogd() == "IT-manager")
+                btnRegistreerStoring.IsEnabled = false;                
         }
 
         private void ChangeGridButtonPositionToEnd(object sender, EventArgs e)
@@ -30,7 +33,9 @@ namespace DevicesEnStoringen
             {
                 var c = dgrd.Columns[0];
                 dgrd.Columns.RemoveAt(0);
-                dgrd.Columns.Add(c);
+
+                if (medewerker.accountTypeHuidigeMedewerkerIngelogd() == "IT-beheerder")
+                    dgrd.Columns.Add(c);
             }
         }
 

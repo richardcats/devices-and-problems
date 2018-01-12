@@ -48,5 +48,15 @@ namespace DevicesEnStoringen
             conn.CloseConnection();
             return Convert.ToInt32(id);
         }
+
+        public string accountTypeHuidigeMedewerkerIngelogd()
+        {
+            conn.OpenConnection();
+            SQLiteDataReader dr = conn.DataReader("SELECT Naam FROM Medewerker INNER JOIN AccountType ON Medewerker.AccountTypeID = AccountType.AccountTypeID WHERE Emailadres='" + emailadres + "'");
+            dr.Read();
+            string naam = dr["Naam"].ToString();
+            conn.CloseConnection();
+            return naam;
+        }
     }
 }

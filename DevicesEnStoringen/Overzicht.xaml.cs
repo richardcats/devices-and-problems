@@ -42,7 +42,7 @@ namespace DevicesEnStoringen
         {
             Title = "Alle devices";
             stkOverzicht.Children.Clear();
-            UCAlleDevices alleDevices = new UCAlleDevices();
+            UCAlleDevices alleDevices = new UCAlleDevices(medewerker);
             stkOverzicht.Children.Add(alleDevices);
         }
 
@@ -50,7 +50,7 @@ namespace DevicesEnStoringen
         {
             Title = "Alle device-types";
             stkOverzicht.Children.Clear();
-            UCAlleDeviceTypes alleDeviceTypes = new UCAlleDeviceTypes();
+            UCAlleDeviceTypes alleDeviceTypes = new UCAlleDeviceTypes(medewerker);
             stkOverzicht.Children.Add(alleDeviceTypes);
         }
 
