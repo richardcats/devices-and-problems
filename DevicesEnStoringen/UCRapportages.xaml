@@ -7,7 +7,24 @@
              mc:Ignorable="d" 
              d:DesignHeight="350" d:DesignWidth="600">
     <Grid>
-        <Button Content="Toon rapportage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="96" Margin="46,102,0,0"/>
+        <Canvas x:Name="cvsInhoud" Margin="10,50,0,0">
+            <TextBlock TextWrapping="Wrap" Text="Storingen"/>
+            <TextBlock TextWrapping="Wrap" Text="Jaar" Canvas.Top="30"/>
+            <ComboBox x:Name="cboStoringJaar" Width="120" Canvas.Top="30" Canvas.Left="60" SelectionChanged="cboStoringJaar_SelectionChanged"/>
+            <TextBlock TextWrapping="Wrap" Text="Maand" Canvas.Top="70"/>
+            <ComboBox x:Name="cboStoringMaand" Width="120" Canvas.Top="70" Canvas.Left="60" IsEnabled="False"/>
+            <TextBlock TextWrapping="Wrap" Text="Status" Canvas.Top="110"/>
+            <ComboBox x:Name="cboStoringStatus" Width="120" Canvas.Top="110" Canvas.Left="60"/>
+            <Button Content="Toon rapportage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Canvas.Left="60" Canvas.Top="150"/>
 
+            <TextBlock TextWrapping="Wrap" Text="Devices" Canvas.Left="300"/>
+            <TextBlock TextWrapping="Wrap" Text="Jaar" Canvas.Top="30" Canvas.Left="300"/>
+            <ComboBox Width="120" Canvas.Top="30" Canvas.Left="360"/>
+            <TextBlock TextWrapping="Wrap" Text="Maand" Canvas.Top="70"  Canvas.Left="300"/>
+            <ComboBox Width="120" Canvas.Top="70" Canvas.Left="360"/>
+            <TextBlock TextWrapping="Wrap" Text="Type" Canvas.Top="110"  Canvas.Left="300"/>
+            <ComboBox Width="120" Canvas.Top="110" Canvas.Left="360"/>
+            <Button Content="Toon rapportage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Canvas.Left="360" Canvas.Top="150"/>
+        </Canvas>
     </Grid>
 </UserControl>
