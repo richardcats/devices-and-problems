@@ -11,7 +11,7 @@
             <Button Content="Storingen" Width="75" Click="StoringenClick" />
             <Button Content="Devices" Width="75" Canvas.Left="90" Click="DevicesClick"/>
             <Button Content="Device-types" Width="75" Canvas.Left="180" Click="DeviceTypesClick"/>
-            <Button Content="Rapportages" Width="75" Canvas.Left="270" Click="RapportagesClick" />
+            <Button x:Name="btnRapportages" Content="Rapportages" Width="75" Canvas.Left="270" Click="RapportagesClick" Visibility="Hidden" />
             <TextBlock TextWrapping="Wrap" Text="Ingelogd als:" Canvas.Left="370"/>
             <TextBlock x:Name="txtIngelogdAls" TextWrapping="Wrap" Text="" Canvas.Left="440"/>
             <TextBlock x:Name="txtUitloggen" TextWrapping="Wrap" Canvas.Left="520"><Hyperlink Click="Logout">Uitloggen</Hyperlink></TextBlock>

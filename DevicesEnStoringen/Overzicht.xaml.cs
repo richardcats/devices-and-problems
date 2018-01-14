@@ -28,6 +28,9 @@ namespace DevicesEnStoringen
             stkOverzicht.Children.Add(alleStoringen);
             txtIngelogdAls.Text = medewerker.naamHuidigeMedewerkerIngelogd();
             this.medewerker = medewerker;
+
+            if (medewerker.accountTypeHuidigeMedewerkerIngelogd() == "IT-manager")
+                btnRapportages.Visibility = Visibility.Visible;
         }
 
         private void StoringenClick(object sender, RoutedEventArgs e)
@@ -56,7 +59,7 @@ namespace DevicesEnStoringen
 
         private void RapportagesClick(object sender, RoutedEventArgs e)
         {
-            Title = "Rapportages";
+            Title = "Rapportage storingen";
             stkOverzicht.Children.Clear();
             UCRapportages rapportages = new UCRapportages();
             stkOverzicht.Children.Add(rapportages);
