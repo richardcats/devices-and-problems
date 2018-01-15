@@ -10,11 +10,11 @@ namespace DevicesEnStoringen
     public class Medewerker
     {
         DatabaseConnectie conn = new DatabaseConnectie();
-        string emailadres;
+        public string Emailadres { get; }
 
         public Medewerker(string emailadres)
         {
-            this.emailadres = emailadres;
+            Emailadres = emailadres;
         }
 
         public bool ControleerInlogGegevens(string emailadres, string wachtwoord)
@@ -32,7 +32,7 @@ namespace DevicesEnStoringen
         public string naamHuidigeMedewerkerIngelogd()
         {
             conn.OpenConnection();
-            SQLiteDataReader dr = conn.DataReader("SELECT * FROM Medewerker WHERE Emailadres='" + emailadres + "'");
+            SQLiteDataReader dr = conn.DataReader("SELECT * FROM Medewerker WHERE Emailadres='" + Emailadres + "'");
             dr.Read();
             string voornaam = dr["Voornaam"].ToString();
             conn.CloseConnection();
@@ -42,7 +42,7 @@ namespace DevicesEnStoringen
         public int idHuidigeMedewerkerIngelogd()
         {
             conn.OpenConnection();
-            SQLiteDataReader dr = conn.DataReader("SELECT * FROM Medewerker WHERE Emailadres='" + emailadres + "'");
+            SQLiteDataReader dr = conn.DataReader("SELECT * FROM Medewerker WHERE Emailadres='" + Emailadres + "'");
             dr.Read();
             string id = dr["MedewerkerID"].ToString();
             conn.CloseConnection();
@@ -52,7 +52,7 @@ namespace DevicesEnStoringen
         public string accountTypeHuidigeMedewerkerIngelogd()
         {
             conn.OpenConnection();
-            SQLiteDataReader dr = conn.DataReader("SELECT Naam FROM Medewerker INNER JOIN AccountType ON Medewerker.AccountTypeID = AccountType.AccountTypeID WHERE Emailadres='" + emailadres + "'");
+            SQLiteDataReader dr = conn.DataReader("SELECT Naam FROM Medewerker INNER JOIN AccountType ON Medewerker.AccountTypeID = AccountType.AccountTypeID WHERE Emailadres='" + Emailadres + "'");
             dr.Read();
             string naam = dr["Naam"].ToString();
             conn.CloseConnection();

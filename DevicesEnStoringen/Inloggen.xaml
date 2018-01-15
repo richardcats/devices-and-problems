@@ -11,7 +11,7 @@
             <Label Content="Login" FontSize="25" HorizontalAlignment="Center"/>
             <Separator></Separator>
             <Label Content="Gebruikersnaam:"/>
-            <TextBox Name="txtGebruikersnaam" FontSize="18" Text="michelle@bedrijf.nl"/>
+            <TextBox Name="txtGebruikersnaam" FontSize="18" Text="jan@bedrijf.nl"/>
             <Label Content="Wachtwoord:"/>
             <PasswordBox Name="txtWachtwoord" FontSize="18" Password="123"/>
             <Button Name="btnInloggen" Content="Inloggen" Margin="60 10" FontSize="18" Click="btnInloggen_Click"/>

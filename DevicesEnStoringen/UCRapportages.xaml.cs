@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Net;
+using System.Net.Mail;
 
 namespace DevicesEnStoringen
 {
@@ -26,12 +29,15 @@ namespace DevicesEnStoringen
         public static ObservableCollection<string> listStoringYear;
         public static ObservableCollection<string> listStoringMonth;
         DatabaseConnectie conn = new DatabaseConnectie();
+        Medewerker medewerker;
 
-        public UCRapportages()
+        public UCRapportages(Medewerker medewerker)
         {
             InitializeComponent();
 
             cboStoringJaar.ItemsSource = FillComboboxStoringYear();
+
+            this.medewerker = medewerker;
         }
 
         public ObservableCollection<string> FillComboboxStoringYear()
@@ -68,7 +74,7 @@ namespace DevicesEnStoringen
 
         private void ShowStoringRapportage(object sender, RoutedEventArgs e)
         {
-            dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing WHERE strftime('%Y', DatumToegevoegd) = '" + cboStoringJaar.SelectedValue + "' AND strftime('%m', DatumToegevoegd) = '" + cboStoringMaand.SelectedValue + "'") });
+            dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Beschrijving, Status FROM Storing WHERE strftime('%Y', DatumToegevoegd) = '" + cboStoringJaar.SelectedValue + "' AND strftime('%m', DatumToegevoegd) = '" + cboStoringMaand.SelectedValue + "'") });
 
             tbGeregistreerdeStoringen.Text = dgStoringen.Items.Count.ToString();
 
@@ -79,13 +85,78 @@ namespace DevicesEnStoringen
                     amountSolvedMalfunctions++;
             }
 
-            tbWeergaveToelichting2.Text = amountSolvedMalfunctions.ToString();
-            tbWeergaveToelichting3.Text = Math.Round(amountSolvedMalfunctions * 100.0 / dgStoringen.Items.Count, MidpointRounding.AwayFromZero).ToString();
+            tbAantalOpgelost.Text = amountSolvedMalfunctions.ToString();
+            tbPercentageAantalOpgelost.Text = Math.Round(amountSolvedMalfunctions * 100.0 / dgStoringen.Items.Count, MidpointRounding.AwayFromZero).ToString();
+
+            btnExportToTxt.IsEnabled = true;
         }
 
         private void cboStoringMaand_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             btnToonRapportage.IsEnabled = true;
+        }
+
+        private void btnExportToTxt_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog dlgSave = new Microsoft.Win32.SaveFileDialog();
+            dlgSave.Filter = "Text files (*.txt)|*.txt";
+            bool? result = dlgSave.ShowDialog();
+
+            if (result == true)
+            {
+                TextWriter writer = new StreamWriter(dlgSave.FileName);
+                writer.WriteLine("Rapportage " + cboStoringMaand.SelectedValue + " - " + cboStoringJaar.SelectedValue + Environment.NewLine);
+
+                writer.WriteLine("Totaal aantal geregistreerde storingen: " + tbGeregistreerdeStoringen.Text);
+                writer.WriteLine("Totaal aantal opgeloste storingen: " + tbAantalOpgelost.Text);
+                writer.WriteLine("Percentage opgeloste storingen: " + tbPercentageAantalOpgelost.Text + "%" + Environment.NewLine);
+
+                writer.WriteLine("----------------------------------------------------------------------------" + Environment.NewLine);
+
+                foreach (DataRowView row in dgStoringen.Items)
+                {
+                    for (int i = 0; i < dgStoringen.Columns.Count; i++)
+                    {
+                        writer.Write(row[i] + " | ");
+                    }
+                    writer.WriteLine("");
+                }
+
+                writer.Close();
+                MessageBox.Show("De gegevens zijn geëxporteerd");
+            }
+
+            
+        }
+
+        private void SendMail(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlgOpen = new Microsoft.Win32.OpenFileDialog();
+            dlgOpen.Filter = "Text files (*.txt)|*.txt";
+            bool? result = dlgOpen.ShowDialog();
+
+            if (result == true)
+            {
+                /*string emailadress = medewerker.Emailadres;
+                MailMessage mail = new MailMessage();
+                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                mail.From = new MailAddress(emailadress);
+                mail.To.Add(emailadress);
+                mail.Subject = "Rapportage storingen";
+                mail.Body = "Verzonden vanuit de applicatie: devices en storingen";
+
+                Attachment attachment;
+                attachment = new Attachment(dlgOpen.FileName);
+                mail.Attachments.Add(attachment);
+
+                SmtpServer.Port = 587;
+                SmtpServer.Credentials = new NetworkCredential(emailadress, "password");
+                SmtpServer.EnableSsl = true;
+
+                SmtpServer.Send(mail);
+                */
+                MessageBox.Show("De bijlage is verstuurd naar " + medewerker.Emailadres);
+            }
         }
     }
 }

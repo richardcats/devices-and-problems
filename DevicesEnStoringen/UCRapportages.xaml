@@ -10,18 +10,19 @@
         <Canvas x:Name="cvsInhoud" Margin="10,50,0,0">
             <TextBlock TextWrapping="Wrap" Text="Jaar"/>
             <ComboBox x:Name="cboStoringJaar" Width="80" Canvas.Left="35" SelectionChanged="cboStoringJaar_SelectionChanged"/>
-            <TextBlock TextWrapping="Wrap" Text="Maand" Canvas.Left="150"/>
-            <ComboBox x:Name="cboStoringMaand" Width="50" Canvas.Left="200" IsEnabled="False" SelectionChanged="cboStoringMaand_SelectionChanged"/>
-            <Button x:Name="btnToonRapportage" Content="Toon rapportage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Canvas.Left="300" Click="ShowStoringRapportage" IsEnabled="False" Height="22"/>
-            <Button x:Name="btnPrintRapportage" Content="Print rapportage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Canvas.Left="460"  Height="22"/>
+            <TextBlock TextWrapping="Wrap" Text="Maand" Canvas.Left="140"/>
+            <ComboBox x:Name="cboStoringMaand" Width="50" Canvas.Left="190" IsEnabled="False" SelectionChanged="cboStoringMaand_SelectionChanged"/>
+            <Button x:Name="btnToonRapportage" Content="Toon rapportage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Canvas.Left="270" Click="ShowStoringRapportage" IsEnabled="False" Height="22"/>
+            <Button x:Name="btnExportToTxt" Content="Exporteer" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Canvas.Left="420"  Height="22" Click="btnExportToTxt_Click" IsEnabled="False"/>
+            <Button x:Name="btnSendMail" Content="Verstuur" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Canvas.Left="510"  Height="22" Click="SendMail"/>
             
             <DataGrid x:Name="dgStoringen" HorizontalAlignment="Left" Height="163" VerticalAlignment="Top" CanUserAddRows="false" IsReadOnly="True" Width="580" Canvas.Top="32"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Totaal aantal geregistreerde storingen:" VerticalAlignment="Top" Canvas.Top="200"/>
             <TextBlock x:Name="tbGeregistreerdeStoringen" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Canvas.Top="200" Canvas.Left="220"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Totaal aantal opgeloste storingen:" VerticalAlignment="Top" Canvas.Top="220"/>
-            <TextBlock x:Name="tbWeergaveToelichting2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Canvas.Top="220" Canvas.Left="220"/>
+            <TextBlock x:Name="tbAantalOpgelost" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Canvas.Top="220" Canvas.Left="220"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Percentage opgeloste storingen:" VerticalAlignment="Top" Canvas.Top="240"/>
-            <TextBlock x:Name="tbWeergaveToelichting3" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Canvas.Top="240" Canvas.Left="220"/>
+            <TextBlock x:Name="tbPercentageAantalOpgelost" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Canvas.Top="240" Canvas.Left="220"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Canvas.Top="240" Canvas.Left="240"/>
         </Canvas>
     </Grid>
