@@ -58,6 +58,7 @@ namespace DevicesEnStoringen
             lstAfdeling.SelectedValue = dr["Afdeling"].ToString();
             txtSerienummer.Text = dr["Serienummer"].ToString();
             txtOpmerkingen.Text = dr["Opmerkingen"].ToString();
+            conn.CloseConnection();
         }
 
 
@@ -88,7 +89,7 @@ namespace DevicesEnStoringen
                 while (dr.Read())
                     list.Add(dr["Naam"].ToString());
             }
-
+            conn.CloseConnection();
             return list;
         }
 
@@ -130,6 +131,7 @@ namespace DevicesEnStoringen
         {
             conn.OpenConnection();
             conn.ExecuteQueries("INSERT INTO Device (DeviceTypeID, Naam, Serienummer, Afdeling, Opmerkingen, DatumToegevoegd) VALUES ( '" + Convert.ToInt32(lstDeviceType.SelectedIndex + 1) + "','" + txtNaam.Text + "','" + txtSerienummer.Text + "','" + lstAfdeling.SelectedValue + "','" + txtOpmerkingen.Text + "', date('now'))");
+            conn.CloseConnection();
             Close();
         }
 
@@ -137,6 +139,7 @@ namespace DevicesEnStoringen
         {
             conn.OpenConnection();
             conn.ExecuteQueries("UPDATE Device SET DeviceTypeID = '" + Convert.ToInt32(lstDeviceType.SelectedIndex + 1) + "', Naam = '" + txtNaam.Text + "', Serienummer = '" + txtSerienummer.Text + "', Afdeling = '" + lstAfdeling.SelectedValue + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceID = '" + id + "'");
+            conn.CloseConnection();
             btnToepassen.IsEnabled = false;
 
             Button button = (Button)sender;
@@ -163,6 +166,7 @@ namespace DevicesEnStoringen
             {
                 conn.OpenConnection();
                 conn.ExecuteQueries("DELETE FROM Device WHERE DeviceID = '" + id + "'");
+                conn.CloseConnection();
                 Close();
             }
         }
@@ -172,4 +176,3 @@ namespace DevicesEnStoringen
         Afdeling, DeviceType, DeviceTypeAll, Status, StatusAll, Medewerker, PrioriteitErnst, Month, Year
     };
 }
-

@@ -61,6 +61,7 @@ namespace DevicesEnStoringen
 
             txtNaam.Text = dr["Naam"].ToString();
             txtOpmerkingen.Text = dr["Opmerkingen"].ToString();
+            conn.CloseConnection();
         }
 
 
@@ -101,6 +102,7 @@ namespace DevicesEnStoringen
         {
             conn.OpenConnection();
             conn.ExecuteQueries("UPDATE DeviceType SET Naam = '" + txtNaam.Text + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceTypeID = '" + id + "'");
+            conn.CloseConnection();
             btnToepassen.IsEnabled = false;
 
             Button button = (Button)sender;
@@ -124,6 +126,7 @@ namespace DevicesEnStoringen
                 {
                     conn.OpenConnection();
                     conn.ExecuteQueries("DELETE FROM DeviceType WHERE DeviceTypeID = '" + id + "'");
+                    conn.CloseConnection();
                     Close();
                 }
             }

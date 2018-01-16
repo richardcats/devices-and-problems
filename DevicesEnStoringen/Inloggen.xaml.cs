@@ -34,7 +34,7 @@ namespace DevicesEnStoringen
             {
                 Overzicht overzicht = new Overzicht(medewerker);
                 overzicht.Show();
-                this.Close();
+                Close();
             }
             else
             {

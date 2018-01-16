@@ -58,6 +58,7 @@ namespace DevicesEnStoringen
                 while (dr.Read())
                     list.Add(dr["Month"].ToString());
             }
+            conn.CloseConnection();
             return list;
         }
 

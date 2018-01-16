@@ -131,6 +131,7 @@ namespace DevicesEnStoringen
                 list.Add("2");
                 list.Add("3");
             }
+            conn.CloseConnection();
             return list;
         }
 
@@ -163,7 +164,6 @@ namespace DevicesEnStoringen
         {
             foreach (DataRowView row in grdBetrokkenDevices.SelectedItems)
                 deviceList.Remove(row["ID"]); 
-
 
             grdBetrokkenDevices.ItemsSource = null;
             grdBetrokkenDevices.ItemsSource = deviceList.Values;
@@ -213,6 +213,7 @@ namespace DevicesEnStoringen
             foreach (object deviceID in deviceList.Keys)
                 conn.ExecuteQueries("INSERT INTO DeviceStoring (StoringID, DeviceID) VALUES ('" + id + "','" + Convert.ToInt32(deviceID) + "')");
 
+            conn.CloseConnection();
             btnToepassen.IsEnabled = false;
 
             Button button = (Button)sender;
@@ -240,6 +241,7 @@ namespace DevicesEnStoringen
                 conn.OpenConnection();
                 conn.ExecuteQueries("DELETE FROM DeviceStoring WHERE StoringID = '" + id + "'");
                 conn.ExecuteQueries("DELETE FROM Storing WHERE StoringID = '" + id + "'");
+                conn.CloseConnection();
 
                 Close();
             }
