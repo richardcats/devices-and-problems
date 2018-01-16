@@ -6,15 +6,18 @@
         xmlns:local="clr-namespace:DevicesEnStoringen"
         mc:Ignorable="d"
         Title="Inloggen" Height="310" Width="300" FontSize="14" ResizeMode="NoResize">
-    <Border Background="Aqua" CornerRadius="20" Margin="20">
+    <Window.Background>
+        <ImageBrush ImageSource="Images\background2.jpg"></ImageBrush>
+    </Window.Background>
+
         <StackPanel Margin="20">
             <Label Content="Login" FontSize="25" HorizontalAlignment="Center"/>
             <Separator></Separator>
             <Label Content="Gebruikersnaam:"/>
-            <TextBox Name="txtGebruikersnaam" FontSize="18" Text="jan@bedrijf.nl"/>
+            <TextBox Name="txtGebruikersnaam" FontSize="18" Text="richard@bedrijf.nl"/>
             <Label Content="Wachtwoord:"/>
             <PasswordBox Name="txtWachtwoord" FontSize="18" Password="123"/>
             <Button Name="btnInloggen" Content="Inloggen" Margin="60 10" FontSize="18" Click="btnInloggen_Click"/>
         </StackPanel>
-    </Border>
+ 
 </Window>

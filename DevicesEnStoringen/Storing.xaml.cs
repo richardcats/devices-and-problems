@@ -34,26 +34,26 @@ namespace DevicesEnStoringen
 
             Title = "Storing bewerken";
 
-            lstStatus.ItemsSource = FillCombobox(ComboboxType.Status);
-            lstBehandeldDoor.ItemsSource = FillCombobox(ComboboxType.Medewerker);
-            lstErnst.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
-            lstPrioriteit.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
+            cboStatus.ItemsSource = FillCombobox(ComboboxType.Status);
+            cboBehandeldDoor.ItemsSource = FillCombobox(ComboboxType.Medewerker);
+            cboErnst.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
+            cboPrioriteit.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
 
             FillTextBoxes(id);
             FillDataGrid();
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
-            txtDatumAfhandeling.IsEnabled = true;
+            datDatumAfhandeling.IsEnabled = true;
 
-            grdBetrokkenDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Device.DeviceID AS ID, Naam, Serienummer FROM Device INNER JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID WHERE DeviceStoring.StoringID ='" + id + "'") });
+            dgBetrokkenDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Device.DeviceID AS ID, Naam, Serienummer FROM Device INNER JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID WHERE DeviceStoring.StoringID ='" + id + "'") });
 
-            foreach (DataRowView row in grdBetrokkenDevices.Items)
+            foreach (DataRowView row in dgBetrokkenDevices.Items)
             {
                 deviceList.Add(row["ID"], row);
             }
 
-            grdBetrokkenDevices.ItemsSource = null;
-            grdBetrokkenDevices.ItemsSource = deviceList.Values;
+            dgBetrokkenDevices.ItemsSource = null;
+            dgBetrokkenDevices.ItemsSource = deviceList.Values;
             this.id = id;
         }
 
@@ -63,10 +63,10 @@ namespace DevicesEnStoringen
             Title = "Storing registreren";
             txtToegevoegdDoor.Text = medewerker.naamHuidigeMedewerkerIngelogd();
 
-            lstStatus.ItemsSource = FillCombobox(ComboboxType.Status);
-            lstBehandeldDoor.ItemsSource = FillCombobox(ComboboxType.Medewerker);
-            lstErnst.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
-            lstPrioriteit.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
+            cboStatus.ItemsSource = FillCombobox(ComboboxType.Status);
+            cboBehandeldDoor.ItemsSource = FillCombobox(ComboboxType.Medewerker);
+            cboErnst.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
+            cboPrioriteit.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
 
             FillDataGrid();
 
@@ -84,11 +84,11 @@ namespace DevicesEnStoringen
 
             txtBeschrijving.Text = dr["Beschrijving"].ToString();
             txtToegevoegdDoor.Text = dr["Voornaam"].ToString();
-            lstPrioriteit.SelectedValue = dr["Prioriteit"].ToString();
-            lstErnst.SelectedValue = dr["Ernst"].ToString();
-            lstStatus.SelectedValue = dr["Status"].ToString();
-            txtDatumAfhandeling.Text = dr["DatumAfhandeling"].ToString();
-            if (!DBNull.Value.Equals(dr["MedewerkerBehandeld"])) lstBehandeldDoor.SelectedIndex = Convert.ToInt32(dr["MedewerkerBehandeld"]) - 1;
+            cboPrioriteit.SelectedValue = dr["Prioriteit"].ToString();
+            cboErnst.SelectedValue = dr["Ernst"].ToString();
+            cboStatus.SelectedValue = dr["Status"].ToString();
+            datDatumAfhandeling.Text = dr["DatumAfhandeling"].ToString();
+            if (!DBNull.Value.Equals(dr["MedewerkerBehandeld"])) cboBehandeldDoor.SelectedIndex = Convert.ToInt32(dr["MedewerkerBehandeld"]) - 1;
 
             conn.CloseConnection();
         }
@@ -137,7 +137,7 @@ namespace DevicesEnStoringen
 
         private void FillDataGrid()
         {
-            grdDevicesToevoegen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceID AS ID, Naam, Serienummer FROM Device") });
+            dgDevicesToevoegen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceID AS ID, Naam, Serienummer FROM Device") });
         }
 
         private void Cancel(object sender, RoutedEventArgs e)
@@ -147,7 +147,7 @@ namespace DevicesEnStoringen
 
         private void AddDevice(object sender, RoutedEventArgs e)
         {
-            foreach (DataRowView row in grdDevicesToevoegen.SelectedItems)
+            foreach (DataRowView row in dgDevicesToevoegen.SelectedItems)
             {
                 if(!deviceList.ContainsKey(row["ID"]))  //(!destList.Any((prod => prod.GetHashCode() == row.GetHashCode())))
                     deviceList.Add(row["ID"],row);
@@ -156,17 +156,17 @@ namespace DevicesEnStoringen
             //DataRowView row = (DataRowView)grdDevicesToevoegen.SelectedItems[0];
             //MessageBox.Show(row["ID"].ToString());
 
-            grdBetrokkenDevices.ItemsSource = null;
-            grdBetrokkenDevices.ItemsSource = deviceList.Values;
+            dgBetrokkenDevices.ItemsSource = null;
+            dgBetrokkenDevices.ItemsSource = deviceList.Values;
         }
 
         private void RemoveDevice(object sender, RoutedEventArgs e)
         {
-            foreach (DataRowView row in grdBetrokkenDevices.SelectedItems)
+            foreach (DataRowView row in dgBetrokkenDevices.SelectedItems)
                 deviceList.Remove(row["ID"]); 
 
-            grdBetrokkenDevices.ItemsSource = null;
-            grdBetrokkenDevices.ItemsSource = deviceList.Values;
+            dgBetrokkenDevices.ItemsSource = null;
+            dgBetrokkenDevices.ItemsSource = deviceList.Values;
         }
 
         private void ChangeGridButtonPositionToEnd(object sender, EventArgs e)
@@ -181,13 +181,13 @@ namespace DevicesEnStoringen
 
         private void FilterDatagrid(object sender, TextChangedEventArgs e)
         {
-            grdDevicesToevoegen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceID AS ID, Naam, Serienummer FROM Device WHERE Naam LIKE '%" + txtZoek.Text + "%'") });
+            dgDevicesToevoegen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceID AS ID, Naam, Serienummer FROM Device WHERE Naam LIKE '%" + txtZoek.Text + "%'") });
         }
 
         private void AddStoring(object sender, RoutedEventArgs e)
         {
             conn.OpenConnection();
-            conn.ExecuteQueries("INSERT INTO Storing (Beschrijving, MedewerkerGeregistreerd, Prioriteit, Ernst, Status, DatumToegevoegd) VALUES ('" + txtBeschrijving.Text + "','" + medewerkerID +  "','" + lstPrioriteit.SelectedValue + "','" + lstErnst.SelectedValue + "','" + lstStatus.SelectedValue + "', date('now'))");
+            conn.ExecuteQueries("INSERT INTO Storing (Beschrijving, MedewerkerGeregistreerd, Prioriteit, Ernst, Status, DatumToegevoegd) VALUES ('" + txtBeschrijving.Text + "','" + medewerkerID +  "','" + cboPrioriteit.SelectedValue + "','" + cboErnst.SelectedValue + "','" + cboStatus.SelectedValue + "', date('now'))");
 
             SQLiteDataReader dr = conn.DataReader("SELECT last_insert_rowid() AS LastID;");
             dr.Read();
@@ -203,10 +203,10 @@ namespace DevicesEnStoringen
         {
             conn.OpenConnection();
 
-            if (txtDatumAfhandeling.SelectedDate == null)
-                conn.ExecuteQueries("UPDATE Storing SET Beschrijving = '" + txtBeschrijving.Text + "', Prioriteit = '" + lstPrioriteit.SelectedValue + "', Ernst = '" + lstErnst.SelectedValue + "', Status = '" + lstStatus.SelectedValue + "', DatumAfhandeling = NULL, MedewerkerBehandeld = '" + Convert.ToInt32(lstBehandeldDoor.SelectedIndex + 1) + "' WHERE StoringID = '" + id + "'");
+            if (datDatumAfhandeling.SelectedDate == null)
+                conn.ExecuteQueries("UPDATE Storing SET Beschrijving = '" + txtBeschrijving.Text + "', Prioriteit = '" + cboPrioriteit.SelectedValue + "', Ernst = '" + cboErnst.SelectedValue + "', Status = '" + cboStatus.SelectedValue + "', DatumAfhandeling = NULL, MedewerkerBehandeld = '" + Convert.ToInt32(cboBehandeldDoor.SelectedIndex + 1) + "' WHERE StoringID = '" + id + "'");
             else
-                conn.ExecuteQueries("UPDATE Storing SET Beschrijving = '" + txtBeschrijving.Text + "', Prioriteit = '" + lstPrioriteit.SelectedValue + "', Ernst = '" + lstErnst.SelectedValue + "', Status = '" + lstStatus.SelectedValue + "', DatumAfhandeling = '" + txtDatumAfhandeling.SelectedDate.Value.ToString("yyyy-MM-dd") + "', MedewerkerBehandeld = '" + Convert.ToInt32(lstBehandeldDoor.SelectedIndex + 1) + "' WHERE StoringID = '" + id + "'");
+                conn.ExecuteQueries("UPDATE Storing SET Beschrijving = '" + txtBeschrijving.Text + "', Prioriteit = '" + cboPrioriteit.SelectedValue + "', Ernst = '" + cboErnst.SelectedValue + "', Status = '" + cboStatus.SelectedValue + "', DatumAfhandeling = '" + datDatumAfhandeling.SelectedDate.Value.ToString("yyyy-MM-dd") + "', MedewerkerBehandeld = '" + Convert.ToInt32(cboBehandeldDoor.SelectedIndex + 1) + "' WHERE StoringID = '" + id + "'");
 
             conn.ExecuteQueries("DELETE FROM DeviceStoring WHERE StoringID = '" + id + "'");
 
