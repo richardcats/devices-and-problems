@@ -23,7 +23,6 @@ namespace DevicesEnStoringen
     public partial class DeviceType : Window
     {
         DatabaseConnectie conn = new DatabaseConnectie();
-        public static ObservableCollection<string> listDeviceTypes;
         int id;
         Medewerker medewerker;
 

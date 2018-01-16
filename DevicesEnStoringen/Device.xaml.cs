@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace DevicesEnStoringen
 {
@@ -23,7 +14,7 @@ namespace DevicesEnStoringen
     public partial class Device : Window
     {
         DatabaseConnectie conn = new DatabaseConnectie();
-        public static ObservableCollection<string> listDeviceTypes;
+        public static ObservableCollection<string> listDeviceTypes = FillCombobox(ComboboxType.DeviceType);
         int id;
 
         public Device(int id)
@@ -33,8 +24,8 @@ namespace DevicesEnStoringen
             Title = "Device bewerken";
 
             FillTextBoxes(id);
-            lstDeviceType.ItemsSource = FillComboboxDeviceType();
-            lstAfdeling.ItemsSource = FillComboboxAfdeling();
+            lstDeviceType.ItemsSource = FillCombobox(ComboboxType.DeviceType);
+            lstAfdeling.ItemsSource = FillCombobox(ComboboxType.Afdeling);
             grdOpenstaandeStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Storing.StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum FROM DeviceStoring LEFT JOIN Storing ON Storing.StoringID = DeviceStoring.StoringID WHERE DeviceID = '" + id + "' AND Status = 'Open'") });
 
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
@@ -47,8 +38,8 @@ namespace DevicesEnStoringen
         {
             InitializeComponent();
             Title = "Device registreren";
-            lstDeviceType.ItemsSource = FillComboboxDeviceType();
-            lstAfdeling.ItemsSource = FillComboboxAfdeling();
+            lstDeviceType.ItemsSource = FillCombobox(ComboboxType.DeviceType);
+            lstAfdeling.ItemsSource = FillCombobox(ComboboxType.Afdeling);
 
             cvsRegistreerKnoppen.Visibility = Visibility.Visible;
             cvsBewerkKnoppen.Visibility = Visibility.Hidden;
@@ -69,30 +60,36 @@ namespace DevicesEnStoringen
             txtOpmerkingen.Text = dr["Opmerkingen"].ToString();
         }
 
-        public static ObservableCollection<string> FillComboboxDeviceType()
+
+        public static ObservableCollection<string> FillCombobox(ComboboxType type)
         {
-            listDeviceTypes = new ObservableCollection<string>();
+            ObservableCollection<string> list = new ObservableCollection<string>();
             DatabaseConnectie conn = new DatabaseConnectie();
             conn.OpenConnection();
-            SQLiteDataReader dr = conn.DataReader("SELECT Naam FROM DeviceType");
 
-            while (dr.Read())
-                listDeviceTypes.Add(dr["Naam"].ToString());
+            if (type == ComboboxType.Afdeling)
+            {
+                SQLiteDataReader dr = conn.DataReader("SELECT Afdeling FROM Device GROUP BY Afdeling");
 
-            return listDeviceTypes;
-        }
+                while (dr.Read())
+                    list.Add(dr["Afdeling"].ToString());
+            }
+            else if (type == ComboboxType.DeviceType)
+            {
+                SQLiteDataReader dr = conn.DataReader("SELECT Naam FROM DeviceType");
 
-        public static ObservableCollection<string> FillComboboxAfdeling()
-        {
-            ObservableCollection<string> listAfdelingen = new ObservableCollection<string>();
-            DatabaseConnectie conn = new DatabaseConnectie();
-            conn.OpenConnection();
-            SQLiteDataReader dr = conn.DataReader("SELECT Afdeling FROM Device GROUP BY Afdeling");
+                while (dr.Read())
+                    list.Add(dr["Naam"].ToString());
+            }
+            else if (type == ComboboxType.DeviceTypeAll)
+            {
+                SQLiteDataReader dr = conn.DataReader("SELECT Naam FROM DeviceType");
+                list.Add("Alle device-types");
+                while (dr.Read())
+                    list.Add(dr["Naam"].ToString());
+            }
 
-            while (dr.Read())
-                listAfdelingen.Add(dr["Afdeling"].ToString());
-
-            return listAfdelingen;
+            return list;
         }
 
         private void FillDataGrid()
@@ -170,5 +167,9 @@ namespace DevicesEnStoringen
             }
         }
     }
+    public enum ComboboxType
+    {
+        Afdeling, DeviceType, DeviceTypeAll, Status, StatusAll, Medewerker, PrioriteitErnst, Month, Year
+    };
 }
 

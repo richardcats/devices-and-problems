@@ -26,8 +26,6 @@ namespace DevicesEnStoringen
     /// </summary>
     public partial class UCRapportages : UserControl
     {
-        public static ObservableCollection<string> listStoringYear;
-        public static ObservableCollection<string> listStoringMonth;
         DatabaseConnectie conn = new DatabaseConnectie();
         Medewerker medewerker;
 
@@ -35,41 +33,39 @@ namespace DevicesEnStoringen
         {
             InitializeComponent();
 
-            cboStoringJaar.ItemsSource = FillComboboxStoringYear();
+            cboStoringJaar.ItemsSource = FillCombobox(ComboboxType.Year);
 
             this.medewerker = medewerker;
         }
 
-        public ObservableCollection<string> FillComboboxStoringYear()
+        public ObservableCollection<string> FillCombobox(ComboboxType type)
         {
-            listStoringYear = new ObservableCollection<string>();
+            ObservableCollection<string> list = new ObservableCollection<string>();
             DatabaseConnectie conn = new DatabaseConnectie();
             conn.OpenConnection();
-            SQLiteDataReader dr = conn.DataReader("SELECT strftime('%Y', DatumToegevoegd) as Year FROM Storing GROUP BY Year");
 
-            while (dr.Read())
-                listStoringYear.Add(dr["Year"].ToString());
+            if (type == ComboboxType.Year)
+            {
+                SQLiteDataReader dr = conn.DataReader("SELECT strftime('%Y', DatumToegevoegd) as Year FROM Storing GROUP BY Year");
 
-            return listStoringYear;
-        }
+                while (dr.Read())
+                    list.Add(dr["Year"].ToString());
+            }
+            else if (type == ComboboxType.Month)
+            {
+                SQLiteDataReader dr = conn.DataReader("SELECT strftime('%m', DatumToegevoegd) as Month, strftime('%Y', DatumToegevoegd) AS Year FROM Storing WHERE Year = '" + cboStoringJaar.SelectedValue + "' GROUP BY Month");
 
-        public ObservableCollection<string> FillComboboxStoringMonth()
-        {
-            listStoringMonth = new ObservableCollection<string>();
-            DatabaseConnectie conn = new DatabaseConnectie();
-            conn.OpenConnection();
-            SQLiteDataReader dr = conn.DataReader("SELECT strftime('%m', DatumToegevoegd) as Month, strftime('%Y', DatumToegevoegd) AS Year FROM Storing WHERE Year = '" + cboStoringJaar.SelectedValue + "' GROUP BY Month");
+                while (dr.Read())
+                    list.Add(dr["Month"].ToString());
+            }
 
-            while (dr.Read())
-                listStoringMonth.Add(dr["Month"].ToString());
-
-            return listStoringMonth;
+            return list;
         }
 
         private void cboStoringJaar_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             cboStoringMaand.IsEnabled = true;
-            cboStoringMaand.ItemsSource = FillComboboxStoringMonth();
+            cboStoringMaand.ItemsSource = FillCombobox(ComboboxType.Month);
         }
 
         private void ShowStoringRapportage(object sender, RoutedEventArgs e)

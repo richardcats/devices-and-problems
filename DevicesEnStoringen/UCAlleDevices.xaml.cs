@@ -18,8 +18,7 @@ namespace DevicesEnStoringen
             InitializeComponent();
             grdDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Device.DeviceID AS ID, Device.Naam, DeviceType.Naam AS Type, Serienummer, Date(Device.DatumToegevoegd) AS Toegevoegd, COUNT(Storing.StoringID) AS Storingen FROM Device LEFT JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID LEFT JOIN Storing ON DeviceStoring.StoringID = Storing.StoringID AND Status='Open' LEFT JOIN DeviceType ON DeviceType.DeviceTypeID = Device.DeviceTypeID GROUP BY Device.DeviceID") });
 
-            lstType.ItemsSource = Device.FillComboboxDeviceType();
-            Device.listDeviceTypes.Insert(0, "Alle device-types");
+            lstType.ItemsSource = Device.FillCombobox(ComboboxType.DeviceTypeAll);
 
             this.medewerker = medewerker;
 

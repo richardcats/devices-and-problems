@@ -17,9 +17,8 @@ namespace DevicesEnStoringen
         {
             InitializeComponent();
             grdStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing") });
-  
-            lstStatus.ItemsSource = Storing.FillCombobox();
-            Storing.list.Insert(0, "Alle storingen");
+
+            lstStatus.ItemsSource = Storing.FillCombobox(ComboboxType.StatusAll);
 
             this.medewerker = medewerker;
 

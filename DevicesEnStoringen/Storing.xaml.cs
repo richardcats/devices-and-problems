@@ -23,9 +23,7 @@ namespace DevicesEnStoringen
     public partial class Storing : Window
     {
         DatabaseConnectie conn = new DatabaseConnectie();
-        public static ObservableCollection<string> list;
-        static ObservableCollection<string> listMedewerkers;
-        static ObservableCollection<string> listPrioriteitErnst;
+        public static ObservableCollection<string> listStatus = FillCombobox(ComboboxType.Status);
         Dictionary<object, object> deviceList = new Dictionary<object, object>();
         int medewerkerID;
         int id;
@@ -36,10 +34,10 @@ namespace DevicesEnStoringen
 
             Title = "Storing bewerken";
 
-            lstStatus.ItemsSource = FillCombobox();
-            lstBehandeldDoor.ItemsSource = FillComboboxMedewerker();
-            lstErnst.ItemsSource = FillComboboxPrioriteitErnst();
-            lstPrioriteit.ItemsSource = FillComboboxPrioriteitErnst();
+            lstStatus.ItemsSource = FillCombobox(ComboboxType.Status);
+            lstBehandeldDoor.ItemsSource = FillCombobox(ComboboxType.Medewerker);
+            lstErnst.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
+            lstPrioriteit.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
 
             FillTextBoxes(id);
             FillDataGrid();
@@ -65,10 +63,10 @@ namespace DevicesEnStoringen
             Title = "Storing registreren";
             txtToegevoegdDoor.Text = medewerker.naamHuidigeMedewerkerIngelogd();
 
-            lstStatus.ItemsSource = FillCombobox();
-            lstBehandeldDoor.ItemsSource = FillComboboxMedewerker();
-            lstErnst.ItemsSource = FillComboboxPrioriteitErnst();
-            lstPrioriteit.ItemsSource = FillComboboxPrioriteitErnst();
+            lstStatus.ItemsSource = FillCombobox(ComboboxType.Status);
+            lstBehandeldDoor.ItemsSource = FillCombobox(ComboboxType.Medewerker);
+            lstErnst.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
+            lstPrioriteit.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
 
             FillDataGrid();
 
@@ -95,39 +93,45 @@ namespace DevicesEnStoringen
             conn.CloseConnection();
         }
 
-        public static ObservableCollection<string> FillCombobox()
+        public static ObservableCollection<string> FillCombobox(ComboboxType type)
         {
-            list = new ObservableCollection<string>();
-            list.Add("Open");
-            list.Add("In behandeling");
-            list.Add("Afgehandeld");
-            
-            return list;
-        }
-
-        public static ObservableCollection<string> FillComboboxMedewerker()
-        {
-            listMedewerkers = new ObservableCollection<string>();
+            ObservableCollection<string> list = new ObservableCollection<string>();
             DatabaseConnectie conn = new DatabaseConnectie();
             conn.OpenConnection();
-            SQLiteDataReader dr = conn.DataReader("SELECT Voornaam FROM Medewerker");
 
-            while (dr.Read())
-                listMedewerkers.Add(dr["Voornaam"].ToString());
+            if (type == ComboboxType.Status)
+            {
+                list = new ObservableCollection<string>();
+                list.Add("Open");
+                list.Add("In behandeling");
+                list.Add("Afgehandeld");
+            }
+            else if (type == ComboboxType.StatusAll)
+            {
+                list = new ObservableCollection<string>();
+                list.Add("Alle storingen"); 
+                list.Add("Open");
+                list.Add("In behandeling");
+                list.Add("Afgehandeld");
+            }
 
-            conn.CloseConnection();
-            return listMedewerkers;
-        }
+            else if (type == ComboboxType.Medewerker)
+            {
+                SQLiteDataReader dr = conn.DataReader("SELECT Voornaam FROM Medewerker");
 
-        public static ObservableCollection<string> FillComboboxPrioriteitErnst()
-        {
-            listPrioriteitErnst = new ObservableCollection<string>();
-            listPrioriteitErnst.Add("0");
-            listPrioriteitErnst.Add("1");
-            listPrioriteitErnst.Add("2");
-            listPrioriteitErnst.Add("3");
+                while (dr.Read())
+                    list.Add(dr["Voornaam"].ToString());
+            }
 
-            return listPrioriteitErnst;
+            else if (type == ComboboxType.PrioriteitErnst)
+            {
+                list = new ObservableCollection<string>();
+                list.Add("0");
+                list.Add("1");
+                list.Add("2");
+                list.Add("3");
+            }
+            return list;
         }
 
         private void FillDataGrid()
@@ -236,9 +240,6 @@ namespace DevicesEnStoringen
                 conn.OpenConnection();
                 conn.ExecuteQueries("DELETE FROM DeviceStoring WHERE StoringID = '" + id + "'");
                 conn.ExecuteQueries("DELETE FROM Storing WHERE StoringID = '" + id + "'");
-
-                //if (grdBetrokkenDevices.Items.Count == 0)
-                //    MessageBox.Show("nu items jonge!");
 
                 Close();
             }
