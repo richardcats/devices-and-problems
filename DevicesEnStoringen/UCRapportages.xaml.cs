@@ -58,19 +58,18 @@ namespace DevicesEnStoringen
                 while (dr.Read())
                     list.Add(dr["Month"].ToString());
             }
-
             return list;
         }
 
-        private void cboStoringJaar_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ShowReport(object sender, RoutedEventArgs e)
         {
             cboStoringMaand.IsEnabled = true;
             cboStoringMaand.ItemsSource = FillCombobox(ComboboxType.Month);
-        }
 
-        private void ShowStoringRapportage(object sender, RoutedEventArgs e)
-        {
-            dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Beschrijving, Status FROM Storing WHERE strftime('%Y', DatumToegevoegd) = '" + cboStoringJaar.SelectedValue + "' AND strftime('%m', DatumToegevoegd) = '" + cboStoringMaand.SelectedValue + "'") });
+            if (cboStoringMaand.SelectedIndex == -1)
+                dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Beschrijving, Status FROM Storing WHERE strftime('%Y', DatumToegevoegd) = '" + cboStoringJaar.SelectedValue + "'") });
+            else
+                dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Beschrijving, Status FROM Storing WHERE strftime('%Y', DatumToegevoegd) = '" + cboStoringJaar.SelectedValue + "' AND strftime('%m', DatumToegevoegd) = '" + cboStoringMaand.SelectedValue + "'") });
 
             tbGeregistreerdeStoringen.Text = dgStoringen.Items.Count.ToString();
 
@@ -87,11 +86,6 @@ namespace DevicesEnStoringen
             btnExportToTxt.IsEnabled = true;
         }
 
-        private void cboStoringMaand_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            btnToonRapportage.IsEnabled = true;
-        }
-
         private void btnExportToTxt_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.SaveFileDialog dlgSave = new Microsoft.Win32.SaveFileDialog();
@@ -101,7 +95,11 @@ namespace DevicesEnStoringen
             if (result == true)
             {
                 TextWriter writer = new StreamWriter(dlgSave.FileName);
-                writer.WriteLine("Rapportage " + cboStoringMaand.SelectedValue + " - " + cboStoringJaar.SelectedValue + Environment.NewLine);
+                
+                writer.Write("Rapportage " + cboStoringJaar.SelectedValue); 
+                if (cboStoringMaand.SelectedIndex != -1) writer.Write(" - " + cboStoringMaand.SelectedValue);
+
+                writer.WriteLine(Environment.NewLine);
 
                 writer.WriteLine("Totaal aantal geregistreerde storingen: " + tbGeregistreerdeStoringen.Text);
                 writer.WriteLine("Totaal aantal opgeloste storingen: " + tbAantalOpgelost.Text);

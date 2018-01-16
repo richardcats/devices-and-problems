@@ -9,10 +9,9 @@
     <Grid>
         <Canvas x:Name="cvsInhoud" Margin="10,50,0,0">
             <TextBlock TextWrapping="Wrap" Text="Jaar"/>
-            <ComboBox x:Name="cboStoringJaar" Width="80" Canvas.Left="35" SelectionChanged="cboStoringJaar_SelectionChanged"/>
+            <ComboBox x:Name="cboStoringJaar" Width="80" Canvas.Left="35" SelectionChanged="ShowReport"/>
             <TextBlock TextWrapping="Wrap" Text="Maand" Canvas.Left="140"/>
-            <ComboBox x:Name="cboStoringMaand" Width="50" Canvas.Left="190" IsEnabled="False" SelectionChanged="cboStoringMaand_SelectionChanged"/>
-            <Button x:Name="btnToonRapportage" Content="Toon rapportage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Canvas.Left="270" Click="ShowStoringRapportage" IsEnabled="False" Height="22"/>
+            <ComboBox x:Name="cboStoringMaand" Width="50" Canvas.Left="190" IsEnabled="False" SelectionChanged="ShowReport"/>
             <Button x:Name="btnExportToTxt" Content="Exporteer" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Canvas.Left="420"  Height="22" Click="btnExportToTxt_Click" IsEnabled="False"/>
             <Button x:Name="btnSendMail" Content="Verstuur" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Canvas.Left="510"  Height="22" Click="SendMail"/>
             
