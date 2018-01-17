@@ -10,30 +10,30 @@
         <ImageBrush ImageSource="Images/background2.jpg"></ImageBrush>
     </Window.Background>
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="9,20,0,0" TextWrapping="Wrap" Text="Beschrijving:" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtBeschrijving" HorizontalAlignment="Left"  Margin="118,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen"/>
-        
-        <TextBlock HorizontalAlignment="Left" Margin="9,50,0,0" TextWrapping="Wrap" Text="Toegevoegd door:" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtToegevoegdDoor" HorizontalAlignment="Left"  Margin="118,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen" IsEnabled="False" Background="LightGray"/>
+        <TextBlock x:Name="tbBeschrijving" HorizontalAlignment="Left" Margin="9,20,0,0" TextWrapping="Wrap" Text="Beschrijving * " VerticalAlignment="Top"/>
+        <TextBox x:Name="txtBeschrijving" HorizontalAlignment="Left"  Margin="118,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="EnableToepassen" MaxLength="28"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="9,80,0,0" TextWrapping="Wrap" Text="Prioriteit:" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cboPrioriteit" HorizontalAlignment="Left"  Margin="118,80,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="EnableToepassen" SelectedIndex="0"/>
+        <TextBlock HorizontalAlignment="Left" Margin="9,50,0,0" TextWrapping="Wrap" Text="Toegevoegd door" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtToegevoegdDoor" HorizontalAlignment="Left"  Margin="118,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" TextChanged="EnableToepassen" IsEnabled="False" Background="LightGray"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="9,110,0,0" TextWrapping="Wrap" Text="Ernst:" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cboErnst" HorizontalAlignment="Left"  Margin="118,110,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="EnableToepassen" SelectedIndex="0"/>
+        <TextBlock HorizontalAlignment="Left" Margin="9,80,0,0" TextWrapping="Wrap" Text="Prioriteit" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cboPrioriteit" HorizontalAlignment="Left"  Margin="118,80,0,0" VerticalAlignment="Top" Width="180" SelectionChanged="EnableToepassen" SelectedIndex="0"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="9,140,0,0" TextWrapping="Wrap" Text="Status:" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cboStatus" HorizontalAlignment="Left"  Margin="118,140,0,0" VerticalAlignment="Top" Width="150" Height="20" SelectionChanged="EnableToepassen" SelectedIndex="0"/>
+        <TextBlock HorizontalAlignment="Left" Margin="9,110,0,0" TextWrapping="Wrap" Text="Ernst" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cboErnst" HorizontalAlignment="Left"  Margin="118,110,0,0" VerticalAlignment="Top" Width="180" SelectionChanged="EnableToepassen" SelectedIndex="0"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="9,170,0,0" TextWrapping="Wrap" Text="Datum afhandeling:" VerticalAlignment="Top"/>
-        <DatePicker x:Name="datDatumAfhandeling" HorizontalAlignment="Left"  Margin="118,170,0,0" VerticalAlignment="Top" Width="150" SelectedDateChanged="EnableToepassen" IsEnabled="False"/>
-        
+        <TextBlock HorizontalAlignment="Left" Margin="9,140,0,0" TextWrapping="Wrap" Text="Status" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cboStatus" HorizontalAlignment="Left"  Margin="118,140,0,0" VerticalAlignment="Top" Width="180" Height="20" SelectionChanged="EnableToepassen" SelectedIndex="0"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="9,200,0,0" TextWrapping="Wrap" Text="Behandeld door:" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cboBehandeldDoor" HorizontalAlignment="Left"  Margin="118,200,0,0"  VerticalAlignment="Top" Width="150" SelectionChanged="EnableToepassen"/>
+        <TextBlock HorizontalAlignment="Left" Margin="9,170,0,0" TextWrapping="Wrap" Text="Datum afhandeling" VerticalAlignment="Top"/>
+        <DatePicker x:Name="datDatumAfhandeling" HorizontalAlignment="Left"  Margin="118,170,0,0" VerticalAlignment="Top" Width="180" SelectedDateChanged="EnableToepassen" IsEnabled="False"/>
+
+
+        <TextBlock HorizontalAlignment="Left" Margin="9,200,0,0" TextWrapping="Wrap" Text="Behandeld door" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cboBehandeldDoor" HorizontalAlignment="Left"  Margin="118,200,0,0"  VerticalAlignment="Top" Width="180" SelectionChanged="EnableToepassen"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="9,230,0,0" TextWrapping="Wrap" Text="Opmerkingen" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left"  Margin="118,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen"/>
+        <TextBox x:Name="txtOpmerkingen" HorizontalAlignment="Left"  Margin="9,250,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="289" TextChanged="EnableToepassen" Height="45" AcceptsReturn="True"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="340,20,0,0" TextWrapping="Wrap" Text="Voeg betrokken device(s) toe" VerticalAlignment="Top"/>
 
@@ -53,7 +53,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="340,140,0,0" TextWrapping="Wrap" Text="Zoek device:" VerticalAlignment="Top"/>
         <TextBox x:Name="txtZoek" HorizontalAlignment="Left"  Margin="415,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="175" TextChanged="FilterDatagrid" />
 
-        <TextBlock HorizontalAlignment="Left" Margin="340,180,0,0" TextWrapping="Wrap" Text="Betrokken device(s)" VerticalAlignment="Top"/>
+        <TextBlock x:Name="tbBetrokkenDevices" HorizontalAlignment="Left" Margin="340,180,0,0" TextWrapping="Wrap" Text="Betrokken device(s) *" VerticalAlignment="Top"/>
         <DataGrid x:Name="dgBetrokkenDevices" HorizontalAlignment="Left"  Margin="340,200,0,0" Height="96" VerticalAlignment="Top" Width="250" CanUserAddRows="false" IsReadOnly="True" AutoGeneratedColumns="ChangeGridButtonPositionToEnd">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
@@ -72,7 +72,7 @@
             <Button x:Name="btnAnnuleren" Content="Annuleren" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Cancel" Canvas.Left="491" Canvas.Top="36"/>
         </Canvas>
         <Canvas x:Name="cvsBewerkKnoppen" Margin="0,288,0,0" >
-            <Button x:Name="btnVerwijder" Content="Verwijder" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="RemoveStoring" Canvas.Left="15" Canvas.Top="36"/>
+            <Button x:Name="btnVerwijder" Content="Verwijder" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="RemoveStoring" Canvas.Left="10" Canvas.Top="36"/>
             <Button x:Name="btnOK" Content="OK" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="UpdateStoring" Canvas.Left="311" Canvas.Top="36"/>
             <Button x:Name="btnAnnuleren2" Content="Annuleren" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Cancel"  Canvas.Left="401" Canvas.Top="36"/>
             <Button x:Name="btnToepassen" Content="Toepassen" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="UpdateStoring" Canvas.Left="491" Canvas.Top="36"/>

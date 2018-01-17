@@ -33,6 +33,7 @@ namespace DevicesEnStoringen
             Title = "Device-type bewerken";
 
             FillTextBoxes(id);
+
             grdDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceID AS ID, Naam, Afdeling, Date(DatumToegevoegd) AS Datum FROM Device WHERE DeviceTypeID = '" + id + "'") });
 
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
@@ -92,24 +93,41 @@ namespace DevicesEnStoringen
 
         private void AddDeviceType(object sender, RoutedEventArgs e)
         {
-            conn.OpenConnection();
-            conn.ExecuteQueries("INSERT INTO DeviceType (Naam, Opmerkingen) VALUES ( '" + txtNaam.Text + "','" + txtOpmerkingen.Text +"')");
-            conn.CloseConnection();
-            Close();
+            if (txtNaam.Text != "")
+            {
+                conn.OpenConnection();
+                conn.ExecuteQueries("INSERT INTO DeviceType (Naam, Opmerkingen) VALUES ( '" + txtNaam.Text + "','" + txtOpmerkingen.Text + "')");
+                conn.CloseConnection();
+                Close();
+            }
+            else
+            {
+                MarkEmptyFieldsRed();
+                MessageBox.Show("Niet alle verplichte velden zijn ingevuld", Title, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void UpdateDeviceType(object sender, RoutedEventArgs e)
         {
-            conn.OpenConnection();
-            conn.ExecuteQueries("UPDATE DeviceType SET Naam = '" + txtNaam.Text + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceTypeID = '" + id + "'");
-            conn.CloseConnection();
-            btnToepassen.IsEnabled = false;
+            if (txtNaam.Text != "")
+            {
+                conn.OpenConnection();
+                conn.ExecuteQueries("UPDATE DeviceType SET Naam = '" + txtNaam.Text + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceTypeID = '" + id + "'");
+                conn.CloseConnection();
+                btnToepassen.IsEnabled = false;
 
-            Button button = (Button)sender;
+                Button button = (Button)sender;
 
-            if (button.Name == "btnOK")
-                Close();
+                if (button.Name == "btnOK")
+                    Close();
+            }
+            else
+            {
+                MarkEmptyFieldsRed();
+                MessageBox.Show("Niet alle verplichte velden zijn ingevuld", Title, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
+
         
 
         private void EnableToepassen(object sender, TextChangedEventArgs e)
@@ -134,6 +152,13 @@ namespace DevicesEnStoringen
             {
                 MessageBox.Show("Het is niet mogelijk om dit device-type te verwijderen. Zorg dat er geen devices gekoppeld zijn aan dit device-type.", "Device-type", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+        private void MarkEmptyFieldsRed()
+        {
+            tbNaam.Foreground = Brushes.Black;
+
+            if (txtNaam.Text == "")
+                tbNaam.Foreground = Brushes.Red;
         }
     }
 }

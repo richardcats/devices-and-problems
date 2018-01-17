@@ -186,27 +186,37 @@ namespace DevicesEnStoringen
 
         private void AddStoring(object sender, RoutedEventArgs e)
         {
-            conn.OpenConnection();
-            conn.ExecuteQueries("INSERT INTO Storing (Beschrijving, MedewerkerGeregistreerd, Prioriteit, Ernst, Status, DatumToegevoegd) VALUES ('" + txtBeschrijving.Text + "','" + medewerkerID +  "','" + cboPrioriteit.SelectedValue + "','" + cboErnst.SelectedValue + "','" + cboStatus.SelectedValue + "', date('now'))");
+            if (txtBeschrijving.Text != "" && dgBetrokkenDevices.Items.Count > 0)
+            {
+                conn.OpenConnection();
+                conn.ExecuteQueries("INSERT INTO Storing (Beschrijving, MedewerkerGeregistreerd, Prioriteit, Ernst, Status, DatumToegevoegd) VALUES ('" + txtBeschrijving.Text + "','" + medewerkerID + "','" + cboPrioriteit.SelectedValue + "','" + cboErnst.SelectedValue + "','" + cboStatus.SelectedValue + "', date('now'))");
 
-            SQLiteDataReader dr = conn.DataReader("SELECT last_insert_rowid() AS LastID;");
-            dr.Read();
+                SQLiteDataReader dr = conn.DataReader("SELECT last_insert_rowid() AS LastID;");
+                dr.Read();
 
-            foreach (object deviceID in deviceList.Keys)
-               conn.ExecuteQueries("INSERT INTO DeviceStoring (StoringID, DeviceID) VALUES ('" + Convert.ToInt32(dr["LastID"]) + "','" + Convert.ToInt32(deviceID) + "')");
+                foreach (object deviceID in deviceList.Keys)
+                    conn.ExecuteQueries("INSERT INTO DeviceStoring (StoringID, DeviceID) VALUES ('" + Convert.ToInt32(dr["LastID"]) + "','" + Convert.ToInt32(deviceID) + "')");
 
-            conn.CloseConnection();
-            Close();
+                conn.CloseConnection();
+                Close();
+            }
+            else
+            {
+                MarkEmptyFieldsRed();
+                MessageBox.Show("Niet alle verplichte velden zijn ingevuld", Title, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void UpdateStoring(object sender, RoutedEventArgs e)
         {
-            conn.OpenConnection();
+            if (txtBeschrijving.Text != "" && dgBetrokkenDevices.Items.Count > 0)
+            {
+                conn.OpenConnection();
 
             if (datDatumAfhandeling.SelectedDate == null)
                 conn.ExecuteQueries("UPDATE Storing SET Beschrijving = '" + txtBeschrijving.Text + "', Prioriteit = '" + cboPrioriteit.SelectedValue + "', Ernst = '" + cboErnst.SelectedValue + "', Status = '" + cboStatus.SelectedValue + "', DatumAfhandeling = NULL, MedewerkerBehandeld = '" + Convert.ToInt32(cboBehandeldDoor.SelectedIndex + 1) + "' WHERE StoringID = '" + id + "'");
             else
-                conn.ExecuteQueries("UPDATE Storing SET Beschrijving = '" + txtBeschrijving.Text + "', Prioriteit = '" + cboPrioriteit.SelectedValue + "', Ernst = '" + cboErnst.SelectedValue + "', Status = '" + cboStatus.SelectedValue + "', DatumAfhandeling = '" + datDatumAfhandeling.SelectedDate.Value.ToString("yyyy-MM-dd") + "', MedewerkerBehandeld = '" + Convert.ToInt32(cboBehandeldDoor.SelectedIndex + 1) + "' WHERE StoringID = '" + id + "'");
+                conn.ExecuteQueries("UPDATE Storing SET Beschrijving = '" + txtBeschrijving.Text + "', Prioriteit = '" + cboPrioriteit.SelectedValue + "', Ernst = '" + cboErnst.SelectedValue + "', Status = '" + cboStatus.SelectedValue + "', DatumAfhandeling = '" + datDatumAfhandeling.SelectedDate.Value.ToString("yyyy-MM-dd") + "', MedewerkerBehandeld = '" + Convert.ToInt32(cboBehandeldDoor.SelectedIndex + 1) + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE StoringID = '" + id + "'");
 
             conn.ExecuteQueries("DELETE FROM DeviceStoring WHERE StoringID = '" + id + "'");
 
@@ -220,6 +230,12 @@ namespace DevicesEnStoringen
 
             if (button.Name == "btnOK")
                 Close();
+            }
+            else
+            {
+                MarkEmptyFieldsRed();
+                MessageBox.Show("Niet alle verplichte velden zijn ingevuld", Title, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void EnableToepassen(object sender, TextChangedEventArgs e)
@@ -245,6 +261,18 @@ namespace DevicesEnStoringen
 
                 Close();
             }
+        }
+
+        private void MarkEmptyFieldsRed()
+        {
+            tbBeschrijving.Foreground = Brushes.Black;
+            tbBetrokkenDevices.Foreground = Brushes.Black;
+
+            if (txtBeschrijving.Text == "")
+                tbBeschrijving.Foreground = Brushes.Red;
+
+            if (dgBetrokkenDevices.Items.Count == 0)
+                tbBetrokkenDevices.Foreground = Brushes.Red;
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Data.SQLite;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace DevicesEnStoringen
 {
@@ -24,9 +25,9 @@ namespace DevicesEnStoringen
             Title = "Device bewerken";
 
             FillTextBoxes(id);
-            lstDeviceType.ItemsSource = FillCombobox(ComboboxType.DeviceType);
-            lstAfdeling.ItemsSource = FillCombobox(ComboboxType.Afdeling);
-            grdOpenstaandeStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Storing.StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum FROM DeviceStoring LEFT JOIN Storing ON Storing.StoringID = DeviceStoring.StoringID WHERE DeviceID = '" + id + "' AND Status = 'Open'") });
+            cboDeviceType.ItemsSource = FillCombobox(ComboboxType.DeviceType);
+            cboAfdeling.ItemsSource = FillCombobox(ComboboxType.Afdeling);
+            dgOpenstaandeStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Storing.StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum FROM DeviceStoring LEFT JOIN Storing ON Storing.StoringID = DeviceStoring.StoringID WHERE DeviceID = '" + id + "' AND Status = 'Open'") });
 
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
@@ -38,8 +39,8 @@ namespace DevicesEnStoringen
         {
             InitializeComponent();
             Title = "Device registreren";
-            lstDeviceType.ItemsSource = FillCombobox(ComboboxType.DeviceType);
-            lstAfdeling.ItemsSource = FillCombobox(ComboboxType.Afdeling);
+            cboDeviceType.ItemsSource = FillCombobox(ComboboxType.DeviceType);
+            cboAfdeling.ItemsSource = FillCombobox(ComboboxType.Afdeling);
 
             cvsRegistreerKnoppen.Visibility = Visibility.Visible;
             cvsBewerkKnoppen.Visibility = Visibility.Hidden;
@@ -54,8 +55,8 @@ namespace DevicesEnStoringen
             dr.Read();
 
             txtNaam.Text = dr["Naam"].ToString();
-            lstDeviceType.SelectedValue = dr["DeviceTypeNaam"].ToString();
-            lstAfdeling.SelectedValue = dr["Afdeling"].ToString();
+            cboDeviceType.SelectedValue = dr["DeviceTypeNaam"].ToString();
+            cboAfdeling.SelectedValue = dr["Afdeling"].ToString();
             txtSerienummer.Text = dr["Serienummer"].ToString();
             txtOpmerkingen.Text = dr["Opmerkingen"].ToString();
             conn.CloseConnection();
@@ -116,7 +117,7 @@ namespace DevicesEnStoringen
 
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
-            DataRowView row = (DataRowView)grdOpenstaandeStoringen.SelectedItems[0];
+            DataRowView row = (DataRowView)dgOpenstaandeStoringen.SelectedItems[0];
             Storing storing = new Storing(Convert.ToInt32(row["ID"]));
             storing.Show();
         }
@@ -129,23 +130,39 @@ namespace DevicesEnStoringen
 
         private void AddDevice(object sender, RoutedEventArgs e)
         {
-            conn.OpenConnection();
-            conn.ExecuteQueries("INSERT INTO Device (DeviceTypeID, Naam, Serienummer, Afdeling, Opmerkingen, DatumToegevoegd) VALUES ( '" + Convert.ToInt32(lstDeviceType.SelectedIndex + 1) + "','" + txtNaam.Text + "','" + txtSerienummer.Text + "','" + lstAfdeling.SelectedValue + "','" + txtOpmerkingen.Text + "', date('now'))");
-            conn.CloseConnection();
-            Close();
+            if (txtNaam.Text != "" && cboDeviceType.SelectedIndex != -1 && cboAfdeling.SelectedIndex != -1)
+            {
+                conn.OpenConnection();
+                conn.ExecuteQueries("INSERT INTO Device (DeviceTypeID, Naam, Serienummer, Afdeling, Opmerkingen, DatumToegevoegd) VALUES ( '" + Convert.ToInt32(cboDeviceType.SelectedIndex + 1) + "','" + txtNaam.Text + "','" + txtSerienummer.Text + "','" + cboAfdeling.SelectedValue + "','" + txtOpmerkingen.Text + "', date('now'))");
+                conn.CloseConnection();
+                Close();
+            }
+            else
+            {
+                MarkEmptyFieldsRed();
+                MessageBox.Show("Niet alle verplichte velden zijn ingevuld", Title, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void UpdateDevice(object sender, RoutedEventArgs e)
         {
-            conn.OpenConnection();
-            conn.ExecuteQueries("UPDATE Device SET DeviceTypeID = '" + Convert.ToInt32(lstDeviceType.SelectedIndex + 1) + "', Naam = '" + txtNaam.Text + "', Serienummer = '" + txtSerienummer.Text + "', Afdeling = '" + lstAfdeling.SelectedValue + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceID = '" + id + "'");
-            conn.CloseConnection();
-            btnToepassen.IsEnabled = false;
+            if (txtNaam.Text != "" && cboDeviceType.SelectedIndex != -1 && cboAfdeling.SelectedIndex != -1)
+            {
+                conn.OpenConnection();
+                conn.ExecuteQueries("UPDATE Device SET DeviceTypeID = '" + Convert.ToInt32(cboDeviceType.SelectedIndex + 1) + "', Naam = '" + txtNaam.Text + "', Serienummer = '" + txtSerienummer.Text + "', Afdeling = '" + cboAfdeling.SelectedValue + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceID = '" + id + "'");
+                conn.CloseConnection();
+                btnToepassen.IsEnabled = false;
 
-            Button button = (Button)sender;
+                Button button = (Button)sender;
 
-            if (button.Name == "btnOK")
-                Close();
+                if (button.Name == "btnOK")
+                    Close();
+            }
+            else
+            {
+                MarkEmptyFieldsRed();
+                MessageBox.Show("Niet alle verplichte velden zijn ingevuld", Title, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void EnableToepassen(object sender, TextChangedEventArgs e)
@@ -170,7 +187,24 @@ namespace DevicesEnStoringen
                 Close();
             }
         }
+
+        private void MarkEmptyFieldsRed()
+        {
+            tbNaam.Foreground = Brushes.Black;
+            tbDeviceType.Foreground = Brushes.Black;
+            tbAfdeling.Foreground = Brushes.Black;
+
+            if (txtNaam.Text == "")
+                tbNaam.Foreground = Brushes.Red;
+
+            if (cboDeviceType.SelectedIndex == -1)
+                tbDeviceType.Foreground = Brushes.Red;
+
+            if (cboAfdeling.SelectedIndex == -1)
+                tbAfdeling.Foreground = Brushes.Red;
+        }
     }
+
     public enum ComboboxType
     {
         Afdeling, DeviceType, DeviceTypeAll, Status, StatusAll, Medewerker, PrioriteitErnst, Month, Year

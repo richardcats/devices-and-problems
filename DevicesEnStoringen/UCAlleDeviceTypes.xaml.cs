@@ -16,6 +16,7 @@ namespace DevicesEnStoringen
         public UCAlleDeviceTypes(Medewerker medewerker)
         {
             InitializeComponent();
+
             grdDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceType.DeviceTypeID AS ID, DeviceType.Naam, COUNT(Device.DeviceTypeID) AS 'Aantal devices', DeviceType.Opmerkingen FROM DeviceType LEFT JOIN Device ON Device.DeviceTypeID = DeviceType.DeviceTypeID GROUP BY DeviceType.DeviceTypeID ORDER BY ID") });
             this.medewerker = medewerker;
         }

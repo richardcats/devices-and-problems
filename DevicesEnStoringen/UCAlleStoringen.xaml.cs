@@ -16,6 +16,7 @@ namespace DevicesEnStoringen
         public UCAlleStoringen(Medewerker medewerker)
         {
             InitializeComponent();
+            
             dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing") });
 
             cboStatus.ItemsSource = Storing.FillCombobox(ComboboxType.StatusAll);
