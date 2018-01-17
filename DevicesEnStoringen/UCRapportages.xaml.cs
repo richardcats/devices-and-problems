@@ -1,29 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Net;
-using System.Net.Mail;
 
 namespace DevicesEnStoringen
 {
-    /// <summary>
-    /// Interaction logic for UCRapportages.xaml
-    /// </summary>
     public partial class UCRapportages : UserControl
     {
         DatabaseConnectie conn = new DatabaseConnectie();
@@ -38,6 +23,7 @@ namespace DevicesEnStoringen
             this.medewerker = medewerker;
         }
 
+        // Fill the combobox based on the combobox type
         public ObservableCollection<string> FillCombobox(ComboboxType type)
         {
             ObservableCollection<string> list = new ObservableCollection<string>();
@@ -62,6 +48,7 @@ namespace DevicesEnStoringen
             return list;
         }
 
+        // Shows the report for either the whole year or a specific month within a year
         private void ShowReport(object sender, RoutedEventArgs e)
         {
             cboStoringMaand.IsEnabled = true;
@@ -120,8 +107,6 @@ namespace DevicesEnStoringen
                 writer.Close();
                 MessageBox.Show("De gegevens zijn geëxporteerd");
             }
-
-            
         }
 
         private void SendMail(object sender, RoutedEventArgs e)

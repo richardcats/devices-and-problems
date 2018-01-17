@@ -1,23 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace DevicesEnStoringen
 {
-    /// <summary>
-    /// Interaction logic for Inloggen.xaml
-    /// </summary>
     public partial class Inloggen : Window
     {
         public Inloggen()
@@ -27,8 +11,8 @@ namespace DevicesEnStoringen
 
         private void btnInloggen_Click(object sender, RoutedEventArgs e)
         {
-            Medewerker medewerker = new Medewerker(txtGebruikersnaam.Text);
-            bool inloggegevensCorrect = medewerker.ControleerInlogGegevens(txtGebruikersnaam.Text, txtWachtwoord.Password);
+            Medewerker medewerker = new Medewerker(txtGebruikersnaam.Text); // The username of the employee will be saved throughout the application
+            bool inloggegevensCorrect = medewerker.ControleerInlogGegevens(txtGebruikersnaam.Text, txtWachtwoord.Password); // checks whether the login details are correct
 
             if (inloggegevensCorrect)
             {

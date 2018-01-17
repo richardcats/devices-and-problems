@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace DevicesEnStoringen
 {
@@ -26,10 +14,10 @@ namespace DevicesEnStoringen
 
             UCAlleStoringen alleStoringen = new UCAlleStoringen(medewerker);
             stkOverzicht.Children.Add(alleStoringen);
-            txtIngelogdAls.Text = medewerker.naamHuidigeMedewerkerIngelogd();
+            txtIngelogdAls.Text = medewerker.NaamHuidigeMedewerkerIngelogd();
             this.medewerker = medewerker;
 
-            if (medewerker.accountTypeHuidigeMedewerkerIngelogd() == "IT-manager")
+            if (medewerker.AccountTypeHuidigeMedewerkerIngelogd() == "IT-manager")
                 btnRapportages.Visibility = Visibility.Visible;
         }
 

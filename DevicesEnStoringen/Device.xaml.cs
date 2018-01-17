@@ -9,15 +9,13 @@ using System.Windows.Media;
 
 namespace DevicesEnStoringen
 {
-    /// <summary>
-    /// Interaction logic for Storing.xaml
-    /// </summary>
     public partial class Device : Window
     {
         DatabaseConnectie conn = new DatabaseConnectie();
         public static ObservableCollection<string> listDeviceTypes = FillCombobox(ComboboxType.DeviceType);
         int id;
 
+        // When an existing device is clicked
         public Device(int id)
         {
             InitializeComponent();
@@ -35,6 +33,7 @@ namespace DevicesEnStoringen
             this.id = id;
         }
 
+        // When a new device is registered
         public Device()
         {
             InitializeComponent();
@@ -62,7 +61,7 @@ namespace DevicesEnStoringen
             conn.CloseConnection();
         }
 
-
+        // Fill the combobox based on the combobox type 
         public static ObservableCollection<string> FillCombobox(ComboboxType type)
         {
             ObservableCollection<string> list = new ObservableCollection<string>();
@@ -94,12 +93,7 @@ namespace DevicesEnStoringen
             return list;
         }
 
-        private void FillDataGrid()
-        {
-            
-        }
-
-
+        // Ensures that the manage device button is placed at the end of the datagrid
         private void ChangeGridButtonPositionToEnd(object sender, EventArgs e)
         {
             var dgrd = sender as DataGrid;
@@ -110,11 +104,7 @@ namespace DevicesEnStoringen
             }
         }
 
-        private void ChangeGridButtonPositionToEnd(object sender, DataGridAutoGeneratingColumnEventArgs e)
-        {
-
-        }
-
+        // When the IT administrator clicks on a malfunction, it will pass the ID to a new window
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)dgOpenstaandeStoringen.SelectedItems[0];
@@ -127,7 +117,7 @@ namespace DevicesEnStoringen
             Close();
         }
 
-
+        // Ensures that all required fields are filled in before inserting the device into the database
         private void AddDevice(object sender, RoutedEventArgs e)
         {
             if (txtNaam.Text != "" && cboDeviceType.SelectedIndex != -1 && cboAfdeling.SelectedIndex != -1)
@@ -144,6 +134,7 @@ namespace DevicesEnStoringen
             }
         }
 
+        // Ensures that all required fields are filled in before updating the device in the database
         private void UpdateDevice(object sender, RoutedEventArgs e)
         {
             if (txtNaam.Text != "" && cboDeviceType.SelectedIndex != -1 && cboAfdeling.SelectedIndex != -1)
@@ -165,6 +156,7 @@ namespace DevicesEnStoringen
             }
         }
 
+        // As soon as a change has occurred in one of the fields, the "submit" button will be enabled again
         private void EnableToepassen(object sender, TextChangedEventArgs e)
         {
             if (btnToepassen.IsEnabled == false)
@@ -177,6 +169,7 @@ namespace DevicesEnStoringen
                 btnToepassen.IsEnabled = true;
         }
 
+        // The user first receives a message before the device is permanently removed from the database
         private void RemoveDevice(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Show("Device " + id + " wordt permanent verwijderd", "Device", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
@@ -188,6 +181,7 @@ namespace DevicesEnStoringen
             }
         }
 
+        // Allows the user to see which required fields must be filled
         private void MarkEmptyFieldsRed()
         {
             tbNaam.Foreground = Brushes.Black;
@@ -205,6 +199,7 @@ namespace DevicesEnStoringen
         }
     }
 
+    // Registers all types of comboboxes that are used throughout the application
     public enum ComboboxType
     {
         Afdeling, DeviceType, DeviceTypeAll, Status, StatusAll, Medewerker, PrioriteitErnst, Month, Year

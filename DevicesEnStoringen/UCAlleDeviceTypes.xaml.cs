@@ -5,9 +5,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 namespace DevicesEnStoringen
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class UCAlleDeviceTypes : UserControl
     {
         DatabaseConnectie conn = new DatabaseConnectie();
@@ -21,6 +18,7 @@ namespace DevicesEnStoringen
             this.medewerker = medewerker;
         }
 
+        // Ensures that the manage device button is placed at the end of the datagrid
         private void ChangeGridButtonPositionToEnd(object sender, EventArgs e)
         {
             var dgrd = sender as DataGrid;
@@ -31,6 +29,7 @@ namespace DevicesEnStoringen
             }
         }
 
+        // When the user clicks on a device-type, it will pass the ID to a new window
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)grdDevices.SelectedItems[0];
@@ -47,12 +46,6 @@ namespace DevicesEnStoringen
         {
             DeviceType deviceType = new DeviceType();
             deviceType.Show();
-        }
-
-        public void RefreshDatagrid()
-        {
-            grdDevices.ItemsSource = null;
-            grdDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceType.DeviceTypeID AS ID, DeviceType.Naam, COUNT(Device.DeviceTypeID) AS 'Aantal devices', DeviceType.Opmerkingen FROM DeviceType LEFT JOIN Device ON Device.DeviceTypeID = DeviceType.DeviceTypeID GROUP BY DeviceType.DeviceTypeID ORDER BY ID") });
         }
     }
 }

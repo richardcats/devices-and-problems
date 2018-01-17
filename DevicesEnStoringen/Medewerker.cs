@@ -29,7 +29,7 @@ namespace DevicesEnStoringen
             return inloggegevensCorrect;
         }
 
-        public string naamHuidigeMedewerkerIngelogd()
+        public string NaamHuidigeMedewerkerIngelogd()
         {
             conn.OpenConnection();
             SQLiteDataReader dr = conn.DataReader("SELECT * FROM Medewerker WHERE Emailadres='" + Emailadres + "'");
@@ -39,7 +39,7 @@ namespace DevicesEnStoringen
             return voornaam;
         }
 
-        public int idHuidigeMedewerkerIngelogd()
+        public int IDHuidigeMedewerkerIngelogd()
         {
             conn.OpenConnection();
             SQLiteDataReader dr = conn.DataReader("SELECT * FROM Medewerker WHERE Emailadres='" + Emailadres + "'");
@@ -49,7 +49,7 @@ namespace DevicesEnStoringen
             return Convert.ToInt32(id);
         }
 
-        public string accountTypeHuidigeMedewerkerIngelogd()
+        public string AccountTypeHuidigeMedewerkerIngelogd()
         {
             conn.OpenConnection();
             SQLiteDataReader dr = conn.DataReader("SELECT Naam FROM Medewerker INNER JOIN AccountType ON Medewerker.AccountTypeID = AccountType.AccountTypeID WHERE Emailadres='" + Emailadres + "'");

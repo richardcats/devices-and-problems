@@ -1,31 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace DevicesEnStoringen
 {
-    /// <summary>
-    /// Interaction logic for Storing.xaml
-    /// </summary>
     public partial class DeviceType : Window
     {
         DatabaseConnectie conn = new DatabaseConnectie();
         int id;
         Medewerker medewerker;
 
+        // When an existing device-type is clicked
         public DeviceType(int id, Medewerker medewerker)
         {
             InitializeComponent();
@@ -43,6 +32,7 @@ namespace DevicesEnStoringen
             this.medewerker = medewerker;
         }
 
+        // When a new device-type is registered
         public DeviceType()
         {
             InitializeComponent();
@@ -71,7 +61,7 @@ namespace DevicesEnStoringen
             Close();
         }
 
-
+        // Ensures that the manage device button is placed at the end of the datagrid. Only the IT Administrator will see this.
         private void ChangeGridButtonPositionToEnd(object sender, EventArgs e)
         {
             var dgrd = sender as DataGrid;
@@ -84,6 +74,7 @@ namespace DevicesEnStoringen
             }
         }
 
+        // When the IT administrator clicks on a device, it will pass the ID to a new window
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)grdDevices.SelectedItems[0];
@@ -91,6 +82,7 @@ namespace DevicesEnStoringen
             device.Show();
         }
 
+        // Ensures that all required fields are filled in before inserting the device-type into the database
         private void AddDeviceType(object sender, RoutedEventArgs e)
         {
             if (txtNaam.Text != "")
@@ -107,6 +99,7 @@ namespace DevicesEnStoringen
             }
         }
 
+        // Ensures that all required fields are filled in before updating the device-type in the database
         private void UpdateDeviceType(object sender, RoutedEventArgs e)
         {
             if (txtNaam.Text != "")
@@ -128,14 +121,14 @@ namespace DevicesEnStoringen
             }
         }
 
-        
-
+        // As soon as a change has occurred in one of the fields, the "submit" button will be enabled again
         private void EnableToepassen(object sender, TextChangedEventArgs e)
         {
             if (btnToepassen.IsEnabled == false)
                 btnToepassen.IsEnabled = true;
         }
 
+        // The user first receives a message before the device-type is permanently removed from the database
         private void RemoveDeviceType(object sender, RoutedEventArgs e)
         {
             if (grdDevices.Items.Count == 0)
@@ -153,6 +146,8 @@ namespace DevicesEnStoringen
                 MessageBox.Show("Het is niet mogelijk om dit device-type te verwijderen. Zorg dat er geen devices gekoppeld zijn aan dit device-type.", "Device-type", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        // Allows the user to see which required fields must be filled
         private void MarkEmptyFieldsRed()
         {
             tbNaam.Foreground = Brushes.Black;

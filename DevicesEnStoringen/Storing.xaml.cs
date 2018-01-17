@@ -3,23 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace DevicesEnStoringen
 {
-    /// <summary>
-    /// Interaction logic for Storing.xaml
-    /// </summary>
     public partial class Storing : Window
     {
         DatabaseConnectie conn = new DatabaseConnectie();
@@ -28,6 +18,7 @@ namespace DevicesEnStoringen
         int medewerkerID;
         int id;
 
+        // When an existing malfunction is clicked
         public Storing(int id)
         {
             InitializeComponent();
@@ -57,11 +48,12 @@ namespace DevicesEnStoringen
             this.id = id;
         }
 
+        // When a new malfunction is registered. It also passes an object of the employee, so this name will be displayed in the database
         public Storing(Medewerker medewerker)
         {
             InitializeComponent();
             Title = "Storing registreren";
-            txtToegevoegdDoor.Text = medewerker.naamHuidigeMedewerkerIngelogd();
+            txtToegevoegdDoor.Text = medewerker.NaamHuidigeMedewerkerIngelogd();
 
             cboStatus.ItemsSource = FillCombobox(ComboboxType.Status);
             cboBehandeldDoor.ItemsSource = FillCombobox(ComboboxType.Medewerker);
@@ -73,7 +65,7 @@ namespace DevicesEnStoringen
             cvsRegistreerKnoppen.Visibility = Visibility.Visible;
             cvsBewerkKnoppen.Visibility = Visibility.Hidden;
 
-            medewerkerID = medewerker.idHuidigeMedewerkerIngelogd();
+            medewerkerID = medewerker.IDHuidigeMedewerkerIngelogd();
         }
 
         private void FillTextBoxes(int id)
@@ -93,6 +85,7 @@ namespace DevicesEnStoringen
             conn.CloseConnection();
         }
 
+        // Fill the combobox based on the combobox type 
         public static ObservableCollection<string> FillCombobox(ComboboxType type)
         {
             ObservableCollection<string> list = new ObservableCollection<string>();
@@ -145,21 +138,20 @@ namespace DevicesEnStoringen
             Close();
         }
 
+        // Adds a device to a specific malfunction
         private void AddDevice(object sender, RoutedEventArgs e)
         {
             foreach (DataRowView row in dgDevicesToevoegen.SelectedItems)
             {
-                if(!deviceList.ContainsKey(row["ID"]))  //(!destList.Any((prod => prod.GetHashCode() == row.GetHashCode())))
+                if(!deviceList.ContainsKey(row["ID"])) // don't allow duplicate devices 
                     deviceList.Add(row["ID"],row);
             }
-
-            //DataRowView row = (DataRowView)grdDevicesToevoegen.SelectedItems[0];
-            //MessageBox.Show(row["ID"].ToString());
 
             dgBetrokkenDevices.ItemsSource = null;
             dgBetrokkenDevices.ItemsSource = deviceList.Values;
         }
 
+        // Removes the device from the malfunction
         private void RemoveDevice(object sender, RoutedEventArgs e)
         {
             foreach (DataRowView row in dgBetrokkenDevices.SelectedItems)
@@ -169,6 +161,8 @@ namespace DevicesEnStoringen
             dgBetrokkenDevices.ItemsSource = deviceList.Values;
         }
 
+
+        // Ensures that the manage device button is placed at the end of the datagrid
         private void ChangeGridButtonPositionToEnd(object sender, EventArgs e)
         {
             var dgrd = sender as DataGrid;
@@ -184,6 +178,7 @@ namespace DevicesEnStoringen
             dgDevicesToevoegen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceID AS ID, Naam, Serienummer FROM Device WHERE Naam LIKE '%" + txtZoek.Text + "%'") });
         }
 
+        // Ensures that all required fields are filled in before inserting the malfunction into the database
         private void AddStoring(object sender, RoutedEventArgs e)
         {
             if (txtBeschrijving.Text != "" && dgBetrokkenDevices.Items.Count > 0)
@@ -207,6 +202,7 @@ namespace DevicesEnStoringen
             }
         }
 
+        // Ensures that all required fields are filled in before updating the malfunction in the database
         private void UpdateStoring(object sender, RoutedEventArgs e)
         {
             if (txtBeschrijving.Text != "" && dgBetrokkenDevices.Items.Count > 0)
@@ -238,6 +234,7 @@ namespace DevicesEnStoringen
             }
         }
 
+        // As soon as a change has occurred in one of the fields, the "submit" button will be enabled again
         private void EnableToepassen(object sender, TextChangedEventArgs e)
         {
             if (btnToepassen.IsEnabled == false)
@@ -250,6 +247,7 @@ namespace DevicesEnStoringen
                 btnToepassen.IsEnabled = true;
         }
 
+        // The user first receives a message before the malfunction is permanently removed from the database
         private void RemoveStoring(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Show("Storing " + id + " wordt permanent verwijderd", "Storing", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
@@ -263,6 +261,7 @@ namespace DevicesEnStoringen
             }
         }
 
+        // Allows the user to see which required fields must be filled
         private void MarkEmptyFieldsRed()
         {
             tbBeschrijving.Foreground = Brushes.Black;

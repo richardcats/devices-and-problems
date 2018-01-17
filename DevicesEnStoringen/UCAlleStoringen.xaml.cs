@@ -5,9 +5,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 namespace DevicesEnStoringen
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class UCAlleStoringen : UserControl
     {
         DatabaseConnectie conn = new DatabaseConnectie();
@@ -23,10 +20,11 @@ namespace DevicesEnStoringen
 
             this.medewerker = medewerker;
 
-            if (medewerker.accountTypeHuidigeMedewerkerIngelogd() == "IT-manager")
+            if (medewerker.AccountTypeHuidigeMedewerkerIngelogd() == "IT-manager")
                 btnRegistreerStoring.Visibility = Visibility.Hidden;              
         }
 
+        // Ensures that the manage device button is placed at the end of the datagrid
         private void ChangeGridButtonPositionToEnd(object sender, EventArgs e)
         {
             var dgrd = sender as DataGrid;
@@ -34,11 +32,12 @@ namespace DevicesEnStoringen
                 var c = dgrd.Columns[0];
                 dgrd.Columns.RemoveAt(0);
 
-                if (medewerker.accountTypeHuidigeMedewerkerIngelogd() == "IT-beheerder")
+                if (medewerker.AccountTypeHuidigeMedewerkerIngelogd() == "IT-beheerder")
                     dgrd.Columns.Add(c);
             }
         }
 
+        // When the IT administrator clicks on a malfunction, it will pass the ID to a new window
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)dgStoringen.SelectedItems[0];
@@ -46,6 +45,7 @@ namespace DevicesEnStoringen
             storing.Show();
         }
 
+        // Filters the datagrid based on a textbox and a combobox
         private void FilterDatagrid(object sender, EventArgs e)
         {
             if (cboStatus.SelectedIndex == 0 || cboStatus.SelectedIndex == -1)
