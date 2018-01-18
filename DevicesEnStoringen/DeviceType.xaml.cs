@@ -69,7 +69,7 @@ namespace DevicesEnStoringen
                 var c = dgrd.Columns[0];
                 dgrd.Columns.RemoveAt(0);
 
-                if (medewerker.accountTypeHuidigeMedewerkerIngelogd() == "IT-beheerder")
+                if (medewerker.AccountTypeHuidigeMedewerkerIngelogd() == "IT-beheerder")
                     dgrd.Columns.Add(c);
             }
         }
@@ -104,15 +104,25 @@ namespace DevicesEnStoringen
         {
             if (txtNaam.Text != "")
             {
-                conn.OpenConnection();
-                conn.ExecuteQueries("UPDATE DeviceType SET Naam = '" + txtNaam.Text + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceTypeID = '" + id + "'");
-                conn.CloseConnection();
-                btnToepassen.IsEnabled = false;
+                try
+                {
+                    conn.OpenConnection();
+                    conn.ExecuteQueries("UPDATE DeviceType SET Naam = '" + txtNaam.Text + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceTypeID = '" + id + "'");
+                    btnToepassen.IsEnabled = false;
 
-                Button button = (Button)sender;
+                    Button button = (Button)sender;
 
-                if (button.Name == "btnOK")
-                    Close();
+                    if (button.Name == "btnOK")
+                        Close();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Er is iets misgegaan bij het updaten van de database. Excuses voor het ongemak.");
+                }
+                finally
+                {
+                    conn.CloseConnection();
+                }
             }
             else
             {
@@ -133,14 +143,26 @@ namespace DevicesEnStoringen
         {
             if (grdDevices.Items.Count == 0)
             {
+
                 if (MessageBox.Show("Device-type " + id + " wordt permanent verwijderd", "Device-type", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    conn.OpenConnection();
-                    conn.ExecuteQueries("DELETE FROM DeviceType WHERE DeviceTypeID = '" + id + "'");
-                    conn.CloseConnection();
-                    Close();
+                    try
+                    {
+                        conn.OpenConnection();
+                        conn.ExecuteQueries("DELETE FROM DeviceType WHERE DeviceTypeID = '" + id + "'");
+                        Close();
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Er is iets misgegaan bij het updaten van de database. Excuses voor het ongemak.");
+                    }
+                    finally
+                    {
+                        conn.CloseConnection();
+                    }
                 }
             }
+                
             else
             {
                 MessageBox.Show("Het is niet mogelijk om dit device-type te verwijderen. Zorg dat er geen devices gekoppeld zijn aan dit device-type.", "Device-type", MessageBoxButton.OK, MessageBoxImage.Error);

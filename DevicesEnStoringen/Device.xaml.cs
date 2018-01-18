@@ -139,21 +139,33 @@ namespace DevicesEnStoringen
         {
             if (txtNaam.Text != "" && cboDeviceType.SelectedIndex != -1 && cboAfdeling.SelectedIndex != -1)
             {
-                conn.OpenConnection();
-                conn.ExecuteQueries("UPDATE Device SET DeviceTypeID = '" + Convert.ToInt32(cboDeviceType.SelectedIndex + 1) + "', Naam = '" + txtNaam.Text + "', Serienummer = '" + txtSerienummer.Text + "', Afdeling = '" + cboAfdeling.SelectedValue + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceID = '" + id + "'");
-                conn.CloseConnection();
-                btnToepassen.IsEnabled = false;
+                try
+                {
+                    conn.OpenConnection();
+                    conn.ExecuteQueries("UPDATE Device SET DeviceTypeID = '" + Convert.ToInt32(cboDeviceType.SelectedIndex + 1) + "', Naam = '" + txtNaam.Text + "', Serienummer = '" + txtSerienummer.Text + "', Afdeling = '" + cboAfdeling.SelectedValue + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceID = '" + id + "'");
+                    btnToepassen.IsEnabled = false;
 
-                Button button = (Button)sender;
+                    Button button = (Button)sender;
 
-                if (button.Name == "btnOK")
-                    Close();
+                    if (button.Name == "btnOK")
+                        Close();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Er is iets misgegaan bij het updaten van de database. Excuses voor het ongemak.");
+                }
+                finally
+                {
+                    conn.CloseConnection();
+                }
             }
             else
             {
                 MarkEmptyFieldsRed();
                 MessageBox.Show("Niet alle verplichte velden zijn ingevuld", Title, MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+            
+           
         }
 
         // As soon as a change has occurred in one of the fields, the "submit" button will be enabled again
@@ -174,10 +186,20 @@ namespace DevicesEnStoringen
         {
             if (MessageBox.Show("Device " + id + " wordt permanent verwijderd", "Device", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                conn.OpenConnection();
-                conn.ExecuteQueries("DELETE FROM Device WHERE DeviceID = '" + id + "'");
-                conn.CloseConnection();
-                Close();
+                try
+                {
+                    conn.OpenConnection();
+                    conn.ExecuteQueries("DELETE FROM Device WHERE DeviceID = '" + id + "'");
+                    Close();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Er is iets misgegaan bij het updaten van de database. Excuses voor het ongemak.");
+                }
+                finally
+                {
+                    conn.CloseConnection();
+                }
             }
         }
 
