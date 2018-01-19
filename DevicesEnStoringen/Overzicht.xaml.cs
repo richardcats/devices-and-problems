@@ -2,22 +2,19 @@
 
 namespace DevicesEnStoringen
 {
-    /// <summary>
-    /// Interaction logic for Overzicht.xaml
-    /// </summary>
     public partial class Overzicht : Window
     {
-        Medewerker medewerker;
-        public Overzicht(Medewerker medewerker)
+        Employee employee;
+        public Overzicht(Employee employee)
         {
             InitializeComponent();
 
-            UCAlleStoringen alleStoringen = new UCAlleStoringen(medewerker);
+            UCAlleStoringen alleStoringen = new UCAlleStoringen(employee);
             stkOverzicht.Children.Add(alleStoringen);
-            txtIngelogdAls.Text = medewerker.NaamHuidigeMedewerkerIngelogd();
-            this.medewerker = medewerker;
+            txtIngelogdAls.Text = employee.FirstNameOfCurrentEmployee();
+            this.employee = employee;
 
-            if (medewerker.AccountTypeHuidigeMedewerkerIngelogd() == "IT-manager")
+            if (employee.AccountTypeOfCurrentEmployee() == "IT-manager")
                 btnRapportages.Visibility = Visibility.Visible;
         }
 
@@ -25,7 +22,7 @@ namespace DevicesEnStoringen
         {
             Title = "Alle storingen";
             stkOverzicht.Children.Clear();
-            UCAlleStoringen alleStoringen = new UCAlleStoringen(medewerker);
+            UCAlleStoringen alleStoringen = new UCAlleStoringen(employee);
             stkOverzicht.Children.Add(alleStoringen);
         }
 
@@ -33,7 +30,7 @@ namespace DevicesEnStoringen
         {
             Title = "Alle devices";
             stkOverzicht.Children.Clear();
-            UCAlleDevices alleDevices = new UCAlleDevices(medewerker);
+            UCAlleDevices alleDevices = new UCAlleDevices(employee);
             stkOverzicht.Children.Add(alleDevices);
         }
 
@@ -41,7 +38,7 @@ namespace DevicesEnStoringen
         {
             Title = "Alle device-types";
             stkOverzicht.Children.Clear();
-            UCAlleDeviceTypes alleDeviceTypes = new UCAlleDeviceTypes(medewerker);
+            UCAlleDeviceTypes alleDeviceTypes = new UCAlleDeviceTypes(employee);
             stkOverzicht.Children.Add(alleDeviceTypes);
         }
 
@@ -49,7 +46,7 @@ namespace DevicesEnStoringen
         {
             Title = "Rapportage storingen";
             stkOverzicht.Children.Clear();
-            UCRapportages rapportages = new UCRapportages(medewerker);
+            UCRapportages rapportages = new UCRapportages(employee);
             stkOverzicht.Children.Add(rapportages);
         }
 

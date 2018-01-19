@@ -7,10 +7,10 @@ namespace DevicesEnStoringen
 {
     public partial class UCAlleStoringen : UserControl
     {
-        DatabaseConnectie conn = new DatabaseConnectie();
-        Medewerker medewerker;
+        DatabaseConnection conn = new DatabaseConnection();
+        Employee employee;
 
-        public UCAlleStoringen(Medewerker medewerker)
+        public UCAlleStoringen(Employee employee)
         {
             InitializeComponent();
             
@@ -18,9 +18,9 @@ namespace DevicesEnStoringen
 
             cboStatus.ItemsSource = Storing.FillCombobox(ComboboxType.StatusAll);
 
-            this.medewerker = medewerker;
+            this.employee = employee;
 
-            if (medewerker.AccountTypeHuidigeMedewerkerIngelogd() == "IT-manager")
+            if (employee.AccountTypeOfCurrentEmployee() == "IT-manager")
                 btnRegistreerStoring.Visibility = Visibility.Hidden;              
         }
 
@@ -32,7 +32,7 @@ namespace DevicesEnStoringen
                 var c = dgrd.Columns[0];
                 dgrd.Columns.RemoveAt(0);
 
-                if (medewerker.AccountTypeHuidigeMedewerkerIngelogd() == "IT-beheerder")
+                if (employee.AccountTypeOfCurrentEmployee() == "IT-beheerder")
                     dgrd.Columns.Add(c);
             }
         }
@@ -56,7 +56,7 @@ namespace DevicesEnStoringen
 
         private void RegistreerStoringClick(object sender, RoutedEventArgs e)
         {
-            Storing storing = new Storing(medewerker);
+            Storing storing = new Storing(employee);
             storing.Show();
         }
     }

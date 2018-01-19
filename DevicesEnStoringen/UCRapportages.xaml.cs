@@ -11,23 +11,23 @@ namespace DevicesEnStoringen
 {
     public partial class UCRapportages : UserControl
     {
-        DatabaseConnectie conn = new DatabaseConnectie();
-        Medewerker medewerker;
+        DatabaseConnection conn = new DatabaseConnection();
+        Employee employee;
 
-        public UCRapportages(Medewerker medewerker)
+        public UCRapportages(Employee employee)
         {
             InitializeComponent();
 
             cboStoringJaar.ItemsSource = FillCombobox(ComboboxType.Year);
 
-            this.medewerker = medewerker;
+            this.employee = employee;
         }
 
         // Fill the combobox based on the combobox type
         public ObservableCollection<string> FillCombobox(ComboboxType type)
         {
             ObservableCollection<string> list = new ObservableCollection<string>();
-            DatabaseConnectie conn = new DatabaseConnectie();
+            DatabaseConnection conn = new DatabaseConnection();
             conn.OpenConnection();
 
             if (type == ComboboxType.Year)
@@ -135,7 +135,7 @@ namespace DevicesEnStoringen
 
                 SmtpServer.Send(mail);
                 */
-                MessageBox.Show("De bijlage is verstuurd naar " + medewerker.Emailadres);
+                MessageBox.Show("De bijlage is verstuurd naar " + employee.EmailAddress);
             }
         }
     }

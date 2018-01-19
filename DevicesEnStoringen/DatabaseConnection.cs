@@ -4,7 +4,7 @@ using System.Data.SQLite;
 
 namespace DevicesEnStoringen
 {
-    class DatabaseConnectie
+    class DatabaseConnection
     {
         private SQLiteConnection conn;
         private readonly string connString = ConfigurationManager.ConnectionStrings["DevicesEnStoringen"].ToString();

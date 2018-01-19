@@ -11,7 +11,7 @@ namespace DevicesEnStoringen
 {
     public partial class Device : Window
     {
-        DatabaseConnectie conn = new DatabaseConnectie();
+        DatabaseConnection conn = new DatabaseConnection();
         public static ObservableCollection<string> listDeviceTypes = FillCombobox(ComboboxType.DeviceType);
         int id;
 
@@ -65,7 +65,7 @@ namespace DevicesEnStoringen
         public static ObservableCollection<string> FillCombobox(ComboboxType type)
         {
             ObservableCollection<string> list = new ObservableCollection<string>();
-            DatabaseConnectie conn = new DatabaseConnectie();
+            DatabaseConnection conn = new DatabaseConnection();
             conn.OpenConnection();
 
             if (type == ComboboxType.Afdeling)

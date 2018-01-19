@@ -11,12 +11,12 @@ namespace DevicesEnStoringen
 
         private void btnInloggen_Click(object sender, RoutedEventArgs e)
         {
-            Medewerker medewerker = new Medewerker(txtGebruikersnaam.Text); // The username of the employee will be saved throughout the application
-            bool inloggegevensCorrect = medewerker.ControleerInlogGegevens(txtGebruikersnaam.Text, txtWachtwoord.Password); // checks whether the login details are correct
+            Employee employee = new Employee(txtGebruikersnaam.Text); // The username of the employee will be saved throughout the application
+            bool loginDetailsCorrect = employee.CheckLoginDetails(txtGebruikersnaam.Text, txtWachtwoord.Password); // checks whether the login details are correct
 
-            if (inloggegevensCorrect)
+            if (loginDetailsCorrect)
             {
-                Overzicht overzicht = new Overzicht(medewerker);
+                Overzicht overzicht = new Overzicht(employee);
                 overzicht.Show();
                 Close();
             }

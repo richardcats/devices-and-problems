@@ -5,15 +5,12 @@ using System.Windows.Controls;
 using System.Windows.Data;
 namespace DevicesEnStoringen
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class UCAlleDevices : UserControl
     {
-        DatabaseConnectie conn = new DatabaseConnectie();
-        Medewerker medewerker;
+        DatabaseConnection conn = new DatabaseConnection();
+        Employee employee;
 
-        public UCAlleDevices(Medewerker medewerker)
+        public UCAlleDevices(Employee employee)
         {
             InitializeComponent();
 
@@ -22,9 +19,9 @@ namespace DevicesEnStoringen
 
             cboType.ItemsSource = Device.FillCombobox(ComboboxType.DeviceTypeAll);
 
-            this.medewerker = medewerker;
+            this.employee = employee;
 
-            if (medewerker.AccountTypeHuidigeMedewerkerIngelogd() == "IT-manager")
+            if (employee.AccountTypeOfCurrentEmployee() == "IT-manager")
                 btnRegistreerDevice.Visibility = Visibility.Hidden;
         }
 
@@ -36,7 +33,7 @@ namespace DevicesEnStoringen
                 var c = dgrd.Columns[0];
                 dgrd.Columns.RemoveAt(0);
 
-                if (medewerker.AccountTypeHuidigeMedewerkerIngelogd() == "IT-beheerder")
+                if (employee.AccountTypeOfCurrentEmployee   () == "IT-beheerder")
                     dgrd.Columns.Add(c);
             }
         }

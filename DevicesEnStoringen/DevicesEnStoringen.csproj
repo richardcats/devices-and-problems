@@ -128,7 +128,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DatabaseConnectie.cs" />
+    <Compile Include="DatabaseConnection.cs" />
     <Compile Include="Inloggen.xaml.cs">
       <DependentUpon>Inloggen.xaml</DependentUpon>
     </Compile>
@@ -158,7 +158,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Medewerker.cs" />
+    <Compile Include="Employee.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

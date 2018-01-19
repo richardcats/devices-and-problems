@@ -12,7 +12,7 @@ namespace DevicesEnStoringen
 {
     public partial class Storing : Window
     {
-        DatabaseConnectie conn = new DatabaseConnectie();
+        DatabaseConnection conn = new DatabaseConnection();
         public static ObservableCollection<string> listStatus = FillCombobox(ComboboxType.Status);
         Dictionary<object, object> deviceList = new Dictionary<object, object>();
         int medewerkerID;
@@ -38,6 +38,8 @@ namespace DevicesEnStoringen
 
             dgBetrokkenDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Device.DeviceID AS ID, Naam, Serienummer FROM Device INNER JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID WHERE DeviceStoring.StoringID ='" + id + "'") });
 
+            dgOpmerkingen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Date(Datum) AS Datum, Beschrijving FROM Opmerking WHERE StoringID ='" + id + "'") });
+
             foreach (DataRowView row in dgBetrokkenDevices.Items)
             {
                 deviceList.Add(row["ID"], row);
@@ -45,15 +47,16 @@ namespace DevicesEnStoringen
 
             dgBetrokkenDevices.ItemsSource = null;
             dgBetrokkenDevices.ItemsSource = deviceList.Values;
+
             this.id = id;
         }
 
         // When a new malfunction is registered. It also passes an object of the employee, so this name will be displayed in the database
-        public Storing(Medewerker medewerker)
+        public Storing(Employee employee)
         {
             InitializeComponent();
             Title = "Storing registreren";
-            txtToegevoegdDoor.Text = medewerker.NaamHuidigeMedewerkerIngelogd();
+            txtToegevoegdDoor.Text = employee.FirstNameOfCurrentEmployee();
 
             cboStatus.ItemsSource = FillCombobox(ComboboxType.Status);
             cboBehandeldDoor.ItemsSource = FillCombobox(ComboboxType.Medewerker);
@@ -65,7 +68,7 @@ namespace DevicesEnStoringen
             cvsRegistreerKnoppen.Visibility = Visibility.Visible;
             cvsBewerkKnoppen.Visibility = Visibility.Hidden;
 
-            medewerkerID = medewerker.IDHuidigeMedewerkerIngelogd();
+            medewerkerID = employee.IDOfCurrentEmployee();
         }
 
         private void FillTextBoxes(int id)
@@ -89,7 +92,7 @@ namespace DevicesEnStoringen
         public static ObservableCollection<string> FillCombobox(ComboboxType type)
         {
             ObservableCollection<string> list = new ObservableCollection<string>();
-            DatabaseConnectie conn = new DatabaseConnectie();
+            DatabaseConnection conn = new DatabaseConnection();
             conn.OpenConnection();
 
             if (type == ComboboxType.Status)
@@ -209,23 +212,26 @@ namespace DevicesEnStoringen
             {
                 conn.OpenConnection();
 
-            if (datDatumAfhandeling.SelectedDate == null)
-                conn.ExecuteQueries("UPDATE Storing SET Beschrijving = '" + txtBeschrijving.Text + "', Prioriteit = '" + cboPrioriteit.SelectedValue + "', Ernst = '" + cboErnst.SelectedValue + "', Status = '" + cboStatus.SelectedValue + "', DatumAfhandeling = NULL, MedewerkerBehandeld = '" + Convert.ToInt32(cboBehandeldDoor.SelectedIndex + 1) + "' WHERE StoringID = '" + id + "'");
-            else
-                conn.ExecuteQueries("UPDATE Storing SET Beschrijving = '" + txtBeschrijving.Text + "', Prioriteit = '" + cboPrioriteit.SelectedValue + "', Ernst = '" + cboErnst.SelectedValue + "', Status = '" + cboStatus.SelectedValue + "', DatumAfhandeling = '" + datDatumAfhandeling.SelectedDate.Value.ToString("yyyy-MM-dd") + "', MedewerkerBehandeld = '" + Convert.ToInt32(cboBehandeldDoor.SelectedIndex + 1) + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE StoringID = '" + id + "'");
+                if (datDatumAfhandeling.SelectedDate == null)
+                    conn.ExecuteQueries("UPDATE Storing SET Beschrijving = '" + txtBeschrijving.Text + "', Prioriteit = '" + cboPrioriteit.SelectedValue + "', Ernst = '" + cboErnst.SelectedValue + "', Status = '" + cboStatus.SelectedValue + "', DatumAfhandeling = NULL, MedewerkerBehandeld = '" + Convert.ToInt32(cboBehandeldDoor.SelectedIndex + 1) + "' WHERE StoringID = '" + id + "'");
+                else
+                    conn.ExecuteQueries("UPDATE Storing SET Beschrijving = '" + txtBeschrijving.Text + "', Prioriteit = '" + cboPrioriteit.SelectedValue + "', Ernst = '" + cboErnst.SelectedValue + "', Status = '" + cboStatus.SelectedValue + "', DatumAfhandeling = '" + datDatumAfhandeling.SelectedDate.Value.ToString("yyyy-MM-dd") + "', MedewerkerBehandeld = '" + Convert.ToInt32(cboBehandeldDoor.SelectedIndex + 1) + "' WHERE StoringID = '" + id + "'");
 
-            conn.ExecuteQueries("DELETE FROM DeviceStoring WHERE StoringID = '" + id + "'");
+                conn.ExecuteQueries("DELETE FROM DeviceStoring WHERE StoringID = '" + id + "'");
 
-            foreach (object deviceID in deviceList.Keys)
-                conn.ExecuteQueries("INSERT INTO DeviceStoring (StoringID, DeviceID) VALUES ('" + id + "','" + Convert.ToInt32(deviceID) + "')");
+                foreach (object deviceID in deviceList.Keys)
+                    conn.ExecuteQueries("INSERT INTO DeviceStoring (StoringID, DeviceID) VALUES ('" + id + "','" + Convert.ToInt32(deviceID) + "')");
 
-            conn.CloseConnection();
-            btnToepassen.IsEnabled = false;
+                
+                    
 
-            Button button = (Button)sender;
+                conn.CloseConnection();
+                btnToepassen.IsEnabled = false;
 
-            if (button.Name == "btnOK")
-                Close();
+                Button button = (Button)sender;
+
+                if (button.Name == "btnOK")
+                    Close();
             }
             else
             {
@@ -272,6 +278,32 @@ namespace DevicesEnStoringen
 
             if (dgBetrokkenDevices.Items.Count == 0)
                 tbBetrokkenDevices.Foreground = Brushes.Red;
+        }
+
+        private void RemoveComment(object sender, RoutedEventArgs e)
+        {
+            DataRowView row = (DataRowView)dgOpmerkingen.SelectedItems[0];
+
+            conn.OpenConnection();
+                conn.ExecuteQueries("DELETE FROM Opmerking WHERE Beschrijving = '" + row["Beschrijving"] + "' AND StoringID = '" + id + "'");
+            conn.CloseConnection();
+
+            dgOpmerkingen.ItemsSource = null;
+            dgOpmerkingen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Date(Datum) AS Datum, Beschrijving FROM Opmerking WHERE StoringID ='" + id + "'") });
+        }
+
+        private void AddComment(object sender, RoutedEventArgs e)
+        {
+            if (txtOpmerking.Text != "")
+            {
+                conn.OpenConnection();
+                conn.ExecuteQueries("INSERT INTO Opmerking (StoringID, Datum, Beschrijving) VALUES ('" + id + "', date('now'), '" + txtOpmerking.Text + "')");
+                conn.CloseConnection();
+                txtOpmerking.Text = "";
+            }
+
+            dgOpmerkingen.ItemsSource = null;
+            dgOpmerkingen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Date(Datum) AS Datum, Beschrijving FROM Opmerking WHERE StoringID ='" + id + "'") });
         }
     }
 }

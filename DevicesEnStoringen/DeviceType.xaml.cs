@@ -10,12 +10,12 @@ namespace DevicesEnStoringen
 {
     public partial class DeviceType : Window
     {
-        DatabaseConnectie conn = new DatabaseConnectie();
+        DatabaseConnection conn = new DatabaseConnection();
         int id;
-        Medewerker medewerker;
+        Employee employee;
 
         // When an existing device-type is clicked
-        public DeviceType(int id, Medewerker medewerker)
+        public DeviceType(int id, Employee employee)
         {
             InitializeComponent();
 
@@ -29,7 +29,7 @@ namespace DevicesEnStoringen
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
 
             this.id = id;
-            this.medewerker = medewerker;
+            this.employee = employee;
         }
 
         // When a new device-type is registered
@@ -69,7 +69,7 @@ namespace DevicesEnStoringen
                 var c = dgrd.Columns[0];
                 dgrd.Columns.RemoveAt(0);
 
-                if (medewerker.AccountTypeHuidigeMedewerkerIngelogd() == "IT-beheerder")
+                if (employee.AccountTypeOfCurrentEmployee() == "IT-beheerder")
                     dgrd.Columns.Add(c);
             }
         }
