@@ -43,7 +43,12 @@ namespace DevicesEnStoringen
         {
             DataRowView row = (DataRowView)dgDevices.SelectedItems[0];
             Device device = new Device(Convert.ToInt32(row["ID"]));
-            device.Show();
+
+            if (device.ShowDialog().Value)
+            {
+                dgDevices.ItemsSource = null;
+                dgDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Device.DeviceID AS ID, Device.Naam, DeviceType.Naam AS Type, Serienummer, Date(Device.DatumToegevoegd) AS Toegevoegd, COUNT(Storing.StoringID) AS Storingen FROM Device LEFT JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID LEFT JOIN Storing ON DeviceStoring.StoringID = Storing.StoringID AND Status='Open' LEFT JOIN DeviceType ON DeviceType.DeviceTypeID = Device.DeviceTypeID GROUP BY Device.DeviceID") });
+            }
         }
 
         // Filters the datagrid based on a textbox and a combobox
@@ -59,7 +64,12 @@ namespace DevicesEnStoringen
         private void RegistreerDeviceClick(object sender, RoutedEventArgs e)
         {
             Device device = new Device();
-            device.Show();
+
+            if (device.ShowDialog().Value)
+            {
+                dgDevices.ItemsSource = null;
+                dgDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Device.DeviceID AS ID, Device.Naam, DeviceType.Naam AS Type, Serienummer, Date(Device.DatumToegevoegd) AS Toegevoegd, COUNT(Storing.StoringID) AS Storingen FROM Device LEFT JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID LEFT JOIN Storing ON DeviceStoring.StoringID = Storing.StoringID AND Status='Open' LEFT JOIN DeviceType ON DeviceType.DeviceTypeID = Device.DeviceTypeID GROUP BY Device.DeviceID") });
+            }
         }
     }
 }

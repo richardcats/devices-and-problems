@@ -14,7 +14,7 @@ namespace DevicesEnStoringen
         {
             InitializeComponent();
 
-            grdDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceType.DeviceTypeID AS ID, DeviceType.Naam, COUNT(Device.DeviceTypeID) AS 'Aantal devices', DeviceType.Opmerkingen FROM DeviceType LEFT JOIN Device ON Device.DeviceTypeID = DeviceType.DeviceTypeID GROUP BY DeviceType.DeviceTypeID ORDER BY ID") });
+            dgDeviceTypes.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceType.DeviceTypeID AS ID, DeviceType.Naam, COUNT(Device.DeviceTypeID) AS 'Aantal devices', DeviceType.Opmerkingen FROM DeviceType LEFT JOIN Device ON Device.DeviceTypeID = DeviceType.DeviceTypeID GROUP BY DeviceType.DeviceTypeID ORDER BY ID") });
             this.employee = employee;
         }
 
@@ -32,20 +32,30 @@ namespace DevicesEnStoringen
         // When the user clicks on a device-type, it will pass the ID to a new window
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
-            DataRowView row = (DataRowView)grdDevices.SelectedItems[0];
+            DataRowView row = (DataRowView)dgDeviceTypes.SelectedItems[0];
             DeviceType deviceType = new DeviceType(Convert.ToInt32(row["ID"]), employee);
-            deviceType.Show();
+
+            if (deviceType.ShowDialog().Value)
+            {
+                dgDeviceTypes.ItemsSource = null;
+                dgDeviceTypes.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceType.DeviceTypeID AS ID, DeviceType.Naam, COUNT(Device.DeviceTypeID) AS 'Aantal devices', DeviceType.Opmerkingen FROM DeviceType LEFT JOIN Device ON Device.DeviceTypeID = DeviceType.DeviceTypeID GROUP BY DeviceType.DeviceTypeID ORDER BY ID") });
+            }
         }
 
         private void FilterDatagrid(object sender, EventArgs e)
         {
-            grdDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceType.DeviceTypeID AS ID, DeviceType.Naam, COUNT(Device.DeviceTypeID) AS 'Aantal devices', DeviceType.Opmerkingen FROM DeviceType LEFT JOIN Device ON Device.DeviceTypeID = DeviceType.DeviceTypeID WHERE DeviceType.Naam LIKE '%" + txtZoek.Text + "%' GROUP BY DeviceType.DeviceTypeID ORDER BY ID") });
+            dgDeviceTypes.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceType.DeviceTypeID AS ID, DeviceType.Naam, COUNT(Device.DeviceTypeID) AS 'Aantal devices', DeviceType.Opmerkingen FROM DeviceType LEFT JOIN Device ON Device.DeviceTypeID = DeviceType.DeviceTypeID WHERE DeviceType.Naam LIKE '%" + txtZoek.Text + "%' GROUP BY DeviceType.DeviceTypeID ORDER BY ID") });
         }
 
         private void RegistreerDeviceClick(object sender, RoutedEventArgs e)
         {
             DeviceType deviceType = new DeviceType();
-            deviceType.Show();
+
+            if (deviceType.ShowDialog().Value)
+            {
+                dgDeviceTypes.ItemsSource = null;
+                dgDeviceTypes.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceType.DeviceTypeID AS ID, DeviceType.Naam, COUNT(Device.DeviceTypeID) AS 'Aantal devices', DeviceType.Opmerkingen FROM DeviceType LEFT JOIN Device ON Device.DeviceTypeID = DeviceType.DeviceTypeID GROUP BY DeviceType.DeviceTypeID ORDER BY ID") });
+            }
         }
     }
 }

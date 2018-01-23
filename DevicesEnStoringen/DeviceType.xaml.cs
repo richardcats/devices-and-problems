@@ -90,7 +90,7 @@ namespace DevicesEnStoringen
                 conn.OpenConnection();
                 conn.ExecuteQueries("INSERT INTO DeviceType (Naam, Opmerkingen) VALUES ( '" + txtNaam.Text + "','" + txtOpmerkingen.Text + "')");
                 conn.CloseConnection();
-                Close();
+                DialogResult = true;
             }
             else
             {
@@ -113,7 +113,7 @@ namespace DevicesEnStoringen
                     Button button = (Button)sender;
 
                     if (button.Name == "btnOK")
-                        Close();
+                        DialogResult = true;
                 }
                 catch (Exception)
                 {
@@ -150,7 +150,7 @@ namespace DevicesEnStoringen
                     {
                         conn.OpenConnection();
                         conn.ExecuteQueries("DELETE FROM DeviceType WHERE DeviceTypeID = '" + id + "'");
-                        Close();
+                        DialogResult = true;
                     }
                     catch (Exception)
                     {

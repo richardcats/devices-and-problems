@@ -124,8 +124,8 @@ namespace DevicesEnStoringen
             {
                 conn.OpenConnection();
                 conn.ExecuteQueries("INSERT INTO Device (DeviceTypeID, Naam, Serienummer, Afdeling, Opmerkingen, DatumToegevoegd) VALUES ( '" + Convert.ToInt32(cboDeviceType.SelectedIndex + 1) + "','" + txtNaam.Text + "','" + txtSerienummer.Text + "','" + cboAfdeling.SelectedValue + "','" + txtOpmerkingen.Text + "', date('now'))");
+                DialogResult = true;
                 conn.CloseConnection();
-                Close();
             }
             else
             {
@@ -148,7 +148,7 @@ namespace DevicesEnStoringen
                     Button button = (Button)sender;
 
                     if (button.Name == "btnOK")
-                        Close();
+                        DialogResult = true;
                 }
                 catch (Exception)
                 {
@@ -190,7 +190,7 @@ namespace DevicesEnStoringen
                 {
                     conn.OpenConnection();
                     conn.ExecuteQueries("DELETE FROM Device WHERE DeviceID = '" + id + "'");
-                    Close();
+                    DialogResult = true;
                 }
                 catch (Exception)
                 {

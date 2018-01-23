@@ -42,7 +42,12 @@ namespace DevicesEnStoringen
         {
             DataRowView row = (DataRowView)dgStoringen.SelectedItems[0];
             Storing storing = new Storing(Convert.ToInt32(row["ID"]));
-            storing.Show();
+
+            if (storing.ShowDialog().Value)
+            {
+                dgStoringen.ItemsSource = null;
+                dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing") });
+            }
         }
 
         // Filters the datagrid based on a textbox and a combobox
@@ -57,7 +62,12 @@ namespace DevicesEnStoringen
         private void RegistreerStoringClick(object sender, RoutedEventArgs e)
         {
             Storing storing = new Storing(employee);
-            storing.Show();
+
+            if (storing.ShowDialog().Value)
+            {
+                dgStoringen.ItemsSource = null;
+                dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing") });
+            }
         }
     }
 }

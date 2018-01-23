@@ -196,7 +196,7 @@ namespace DevicesEnStoringen
                     conn.ExecuteQueries("INSERT INTO DeviceStoring (StoringID, DeviceID) VALUES ('" + Convert.ToInt32(dr["LastID"]) + "','" + Convert.ToInt32(deviceID) + "')");
 
                 conn.CloseConnection();
-                Close();
+                DialogResult = true;
             }
             else
             {
@@ -223,15 +223,12 @@ namespace DevicesEnStoringen
                     conn.ExecuteQueries("INSERT INTO DeviceStoring (StoringID, DeviceID) VALUES ('" + id + "','" + Convert.ToInt32(deviceID) + "')");
 
                 
-                    
-
                 conn.CloseConnection();
                 btnToepassen.IsEnabled = false;
-
                 Button button = (Button)sender;
 
                 if (button.Name == "btnOK")
-                    Close();
+                    DialogResult = true;
             }
             else
             {
@@ -262,8 +259,7 @@ namespace DevicesEnStoringen
                 conn.ExecuteQueries("DELETE FROM DeviceStoring WHERE StoringID = '" + id + "'");
                 conn.ExecuteQueries("DELETE FROM Storing WHERE StoringID = '" + id + "'");
                 conn.CloseConnection();
-
-                Close();
+                DialogResult = true;
             }
         }
 
