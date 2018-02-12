@@ -5,11 +5,12 @@ namespace DevicesEnStoringen
     public partial class Overzicht : Window
     {
         Employee employee;
+        UCAlleStoringen alleStoringen;
         public Overzicht(Employee employee)
         {
             InitializeComponent();
 
-            UCAlleStoringen alleStoringen = new UCAlleStoringen(employee);
+            alleStoringen = new UCAlleStoringen(employee);
             stkOverzicht.Children.Add(alleStoringen);
             txtIngelogdAls.Text = employee.FirstNameOfCurrentEmployee();
             this.employee = employee;
@@ -22,7 +23,7 @@ namespace DevicesEnStoringen
         {
             Title = "Alle storingen";
             stkOverzicht.Children.Clear();
-            UCAlleStoringen alleStoringen = new UCAlleStoringen(employee);
+            alleStoringen = new UCAlleStoringen(employee);
             stkOverzicht.Children.Add(alleStoringen);
         }
 
@@ -30,6 +31,7 @@ namespace DevicesEnStoringen
         {
             Title = "Alle devices";
             stkOverzicht.Children.Clear();
+            alleStoringen.ClearDatabaseConnection();
             UCAlleDevices alleDevices = new UCAlleDevices(employee);
             stkOverzicht.Children.Add(alleDevices);
         }
@@ -38,6 +40,7 @@ namespace DevicesEnStoringen
         {
             Title = "Alle device-types";
             stkOverzicht.Children.Clear();
+            alleStoringen.ClearDatabaseConnection();
             UCAlleDeviceTypes alleDeviceTypes = new UCAlleDeviceTypes(employee);
             stkOverzicht.Children.Add(alleDeviceTypes);
         }

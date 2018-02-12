@@ -13,9 +13,10 @@ namespace DevicesEnStoringen
         DatabaseConnection conn = new DatabaseConnection();
         int id;
         Employee employee;
+        UCAlleDeviceTypes overzicht;
 
         // When an existing device-type is clicked
-        public DeviceType(int id, Employee employee)
+        public DeviceType(int id, Employee employee, UCAlleDeviceTypes overzicht)
         {
             InitializeComponent();
 
@@ -30,6 +31,7 @@ namespace DevicesEnStoringen
 
             this.id = id;
             this.employee = employee;
+            this.overzicht = overzicht;
         }
 
         // When a new device-type is registered
@@ -78,7 +80,7 @@ namespace DevicesEnStoringen
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)grdDevices.SelectedItems[0];
-            Device device = new Device(Convert.ToInt32(row["ID"]));
+            Device device = new Device(Convert.ToInt32(row["ID"]), null);
             device.Show();
         }
 
@@ -107,7 +109,9 @@ namespace DevicesEnStoringen
                 try
                 {
                     conn.OpenConnection();
+                    overzicht.ClearDatabaseConnection();
                     conn.ExecuteQueries("UPDATE DeviceType SET Naam = '" + txtNaam.Text + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceTypeID = '" + id + "'");
+                    conn.CloseConnection();
                     btnToepassen.IsEnabled = false;
 
                     Button button = (Button)sender;

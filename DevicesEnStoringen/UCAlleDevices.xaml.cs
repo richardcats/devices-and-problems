@@ -14,8 +14,9 @@ namespace DevicesEnStoringen
         {
             InitializeComponent();
 
-
+            conn.OpenConnection();
             dgDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Device.DeviceID AS ID, Device.Naam, DeviceType.Naam AS Type, Serienummer, Date(Device.DatumToegevoegd) AS Toegevoegd, COUNT(Storing.StoringID) AS Storingen FROM Device LEFT JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID LEFT JOIN Storing ON DeviceStoring.StoringID = Storing.StoringID AND Status='Open' LEFT JOIN DeviceType ON DeviceType.DeviceTypeID = Device.DeviceTypeID GROUP BY Device.DeviceID") });
+            conn.CloseConnection();
 
             cboType.ItemsSource = Device.FillCombobox(ComboboxType.DeviceTypeAll);
 
@@ -42,12 +43,14 @@ namespace DevicesEnStoringen
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)dgDevices.SelectedItems[0];
-            Device device = new Device(Convert.ToInt32(row["ID"]));
+            Device device = new Device(Convert.ToInt32(row["ID"]), this);
 
             if (device.ShowDialog().Value)
             {
                 dgDevices.ItemsSource = null;
+                conn.OpenConnection();
                 dgDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Device.DeviceID AS ID, Device.Naam, DeviceType.Naam AS Type, Serienummer, Date(Device.DatumToegevoegd) AS Toegevoegd, COUNT(Storing.StoringID) AS Storingen FROM Device LEFT JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID LEFT JOIN Storing ON DeviceStoring.StoringID = Storing.StoringID AND Status='Open' LEFT JOIN DeviceType ON DeviceType.DeviceTypeID = Device.DeviceTypeID GROUP BY Device.DeviceID") });
+                conn.CloseConnection();
             }
         }
 
@@ -70,6 +73,10 @@ namespace DevicesEnStoringen
                 dgDevices.ItemsSource = null;
                 dgDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Device.DeviceID AS ID, Device.Naam, DeviceType.Naam AS Type, Serienummer, Date(Device.DatumToegevoegd) AS Toegevoegd, COUNT(Storing.StoringID) AS Storingen FROM Device LEFT JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID LEFT JOIN Storing ON DeviceStoring.StoringID = Storing.StoringID AND Status='Open' LEFT JOIN DeviceType ON DeviceType.DeviceTypeID = Device.DeviceTypeID GROUP BY Device.DeviceID") });
             }
+        }
+        public void ClearDatabaseConnection()
+        {
+            dgDevices.ItemsSource = null;
         }
     }
 }

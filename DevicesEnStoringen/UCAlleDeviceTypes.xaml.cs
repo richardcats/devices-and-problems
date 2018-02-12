@@ -13,8 +13,9 @@ namespace DevicesEnStoringen
         public UCAlleDeviceTypes(Employee employee)
         {
             InitializeComponent();
-
+            conn.OpenConnection();
             dgDeviceTypes.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceType.DeviceTypeID AS ID, DeviceType.Naam, COUNT(Device.DeviceTypeID) AS 'Aantal devices', DeviceType.Opmerkingen FROM DeviceType LEFT JOIN Device ON Device.DeviceTypeID = DeviceType.DeviceTypeID GROUP BY DeviceType.DeviceTypeID ORDER BY ID") });
+            conn.CloseConnection();
             this.employee = employee;
         }
 
@@ -33,12 +34,14 @@ namespace DevicesEnStoringen
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)dgDeviceTypes.SelectedItems[0];
-            DeviceType deviceType = new DeviceType(Convert.ToInt32(row["ID"]), employee);
+            DeviceType deviceType = new DeviceType(Convert.ToInt32(row["ID"]), employee, this);
 
             if (deviceType.ShowDialog().Value)
             {
                 dgDeviceTypes.ItemsSource = null;
+                conn.OpenConnection();
                 dgDeviceTypes.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceType.DeviceTypeID AS ID, DeviceType.Naam, COUNT(Device.DeviceTypeID) AS 'Aantal devices', DeviceType.Opmerkingen FROM DeviceType LEFT JOIN Device ON Device.DeviceTypeID = DeviceType.DeviceTypeID GROUP BY DeviceType.DeviceTypeID ORDER BY ID") });
+                conn.CloseConnection();
             }
         }
 
@@ -56,6 +59,10 @@ namespace DevicesEnStoringen
                 dgDeviceTypes.ItemsSource = null;
                 dgDeviceTypes.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceType.DeviceTypeID AS ID, DeviceType.Naam, COUNT(Device.DeviceTypeID) AS 'Aantal devices', DeviceType.Opmerkingen FROM DeviceType LEFT JOIN Device ON Device.DeviceTypeID = DeviceType.DeviceTypeID GROUP BY DeviceType.DeviceTypeID ORDER BY ID") });
             }
+        }
+        public void ClearDatabaseConnection()
+        {
+            dgDeviceTypes.ItemsSource = null;
         }
     }
 }

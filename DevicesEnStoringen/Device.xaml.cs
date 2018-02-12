@@ -14,9 +14,10 @@ namespace DevicesEnStoringen
         DatabaseConnection conn = new DatabaseConnection();
         public static ObservableCollection<string> listDeviceTypes = FillCombobox(ComboboxType.DeviceType);
         int id;
+        UCAlleDevices overzicht;
 
         // When an existing device is clicked
-        public Device(int id)
+        public Device(int id, UCAlleDevices overzicht)
         {
             InitializeComponent();
 
@@ -31,6 +32,7 @@ namespace DevicesEnStoringen
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
 
             this.id = id;
+            this.overzicht = overzicht;
         }
 
         // When a new device is registered
@@ -142,8 +144,13 @@ namespace DevicesEnStoringen
                 try
                 {
                     conn.OpenConnection();
+                    overzicht.ClearDatabaseConnection();
+                    dgOpenstaandeStoringen.ItemsSource = null;
+                    conn.OpenConnection();
                     conn.ExecuteQueries("UPDATE Device SET DeviceTypeID = '" + Convert.ToInt32(cboDeviceType.SelectedIndex + 1) + "', Naam = '" + txtNaam.Text + "', Serienummer = '" + txtSerienummer.Text + "', Afdeling = '" + cboAfdeling.SelectedValue + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceID = '" + id + "'");
+                    conn.CloseConnection();
                     btnToepassen.IsEnabled = false;
+
 
                     Button button = (Button)sender;
 
@@ -190,6 +197,7 @@ namespace DevicesEnStoringen
                 {
                     conn.OpenConnection();
                     conn.ExecuteQueries("DELETE FROM Device WHERE DeviceID = '" + id + "'");
+                    conn.CloseConnection();
                     DialogResult = true;
                 }
                 catch (Exception)

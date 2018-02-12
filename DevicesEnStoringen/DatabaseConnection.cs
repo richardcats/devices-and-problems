@@ -31,12 +31,12 @@ namespace DevicesEnStoringen
             return dr;
         }
 
-        public object ShowDataInGridView(string Query_)
+        public DataTable ShowDataInGridView(string Query_)
         {
             SQLiteDataAdapter dr = new SQLiteDataAdapter(Query_, connString);
             DataSet ds = new DataSet();
             dr.Fill(ds);
-            object dataum = ds.Tables[0];
+            DataTable dataum = ds.Tables[0];
             return dataum;
         }
 

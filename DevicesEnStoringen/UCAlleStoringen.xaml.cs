@@ -13,8 +13,10 @@ namespace DevicesEnStoringen
         public UCAlleStoringen(Employee employee)
         {
             InitializeComponent();
-            
+
+            conn.OpenConnection();
             dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing") });
+            conn.CloseConnection();
 
             cboStatus.ItemsSource = Storing.FillCombobox(ComboboxType.StatusAll);
 
@@ -46,7 +48,9 @@ namespace DevicesEnStoringen
             if (storing.ShowDialog().Value)
             {
                 dgStoringen.ItemsSource = null;
+                conn.OpenConnection();
                 dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing") });
+                conn.CloseConnection();
             }
         }
 
@@ -68,6 +72,11 @@ namespace DevicesEnStoringen
                 dgStoringen.ItemsSource = null;
                 dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing") });
             }
+        }
+
+        public void ClearDatabaseConnection()
+        {
+            dgStoringen.ItemsSource = null;
         }
     }
 }
