@@ -1,86 +1,65 @@
-﻿using System;
-using System.Data;
-using System.Data.SQLite;
+﻿using DevicesEnStoringen.Extensions;
+using DevicesEnStoringen.Services;
+using Model;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 
-namespace DevicesEnStoringen
+namespace DevicesEnStoringen.View
 {
-    public partial class DeviceType : Window
+    public partial class DeviceTypeDetailView : Window
     {
-        DatabaseConnection conn = new DatabaseConnection();
-        int id;
-        Employee employee;
-        UCAlleDeviceTypes overzicht;
+        private DeviceTypeDataService deviceTypeDataService = new DeviceTypeDataService();
+        private Employee currentEmployee;
+        public DeviceType SelectedDeviceType { get; set; }
+        public ObservableCollection<Device> DevicesOfCurrentDeviceType { get; set; }
+
+
+        void DeviceTypeDetailView_Loaded(object sender, RoutedEventArgs e)
+        {
+            DataContext = SelectedDeviceType;
+            dgDevices.DataContext = this;    
+        }
+
 
         // When an existing device-type is clicked
-        public DeviceType(int id, Employee employee, UCAlleDeviceTypes overzicht)
+        public DeviceTypeDetailView(DeviceType selectedDeviceType, Employee currentEmployee)
         {
             InitializeComponent();
 
             Title = "Device-type bewerken";
-
-            FillTextBoxes(id);
-
-            grdDevices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT DeviceID AS ID, Naam, Afdeling, Date(DatumToegevoegd) AS Datum FROM Device WHERE DeviceTypeID = '" + id + "'") });
-
+            SelectedDeviceType = selectedDeviceType;
+            this.currentEmployee = currentEmployee;
+            DevicesOfCurrentDeviceType = deviceTypeDataService.GetDevicesOfDeviceType(SelectedDeviceType.DeviceTypeId).ToObservableCollection();
+            
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
 
-            this.id = id;
-            this.employee = employee;
-            this.overzicht = overzicht;
-        }
+            Loaded += DeviceTypeDetailView_Loaded;
+    }
 
         // When a new device-type is registered
-        public DeviceType()
+        public DeviceTypeDetailView()
         {
             InitializeComponent();
+
             Title = "Device-type registreren";
 
             cvsRegistreerKnoppen.Visibility = Visibility.Visible;
             cvsBewerkKnoppen.Visibility = Visibility.Hidden;
             cvsOpenstaandeStoringen.Visibility = Visibility.Hidden;
+
             Height = 180;
-        }
-
-        private void FillTextBoxes(int id)
-        {
-            conn.OpenConnection();
-            SQLiteDataReader dr = conn.DataReader("SELECT * FROM DeviceType WHERE DeviceTypeID='" + id + "'");
-            dr.Read();
-
-            txtNaam.Text = dr["Naam"].ToString();
-            txtOpmerkingen.Text = dr["Opmerkingen"].ToString();
-            conn.CloseConnection();
-        }
-
-
-        private void Cancel(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        // Ensures that the manage device button is placed at the end of the datagrid. Only the IT Administrator will see this.
-        private void ChangeGridButtonPositionToEnd(object sender, EventArgs e)
-        {
-            var dgrd = sender as DataGrid;
-            {
-                var c = dgrd.Columns[0];
-                dgrd.Columns.RemoveAt(0);
-
-                if (employee.AccountTypeOfCurrentEmployee() == "IT-beheerder")
-                    dgrd.Columns.Add(c);
-            }
         }
 
         // When the IT administrator clicks on a device, it will pass the ID to a new window
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
-            DataRowView row = (DataRowView)grdDevices.SelectedItems[0];
-            Device device = new Device(Convert.ToInt32(row["ID"]), null);
+            Device selectedDevice = (Device)dgDevices.SelectedItems[0];
+            DeviceDetailView device = new DeviceDetailView(selectedDevice); // tijdelijk
             device.Show();
         }
 
@@ -89,9 +68,13 @@ namespace DevicesEnStoringen
         {
             if (txtNaam.Text != "")
             {
-                conn.OpenConnection();
-                conn.ExecuteQueries("INSERT INTO DeviceType (Naam, Opmerkingen) VALUES ( '" + txtNaam.Text + "','" + txtOpmerkingen.Text + "')");
-                conn.CloseConnection();
+                DeviceType newDeviceType = new DeviceType
+                {
+                    DeviceTypeName = txtNaam.Text,
+                    Description = txtOpmerkingen.Text
+                };
+
+                deviceTypeDataService.AddDeviceType(newDeviceType);
                 DialogResult = true;
             }
             else
@@ -108,11 +91,15 @@ namespace DevicesEnStoringen
             {
                 try
                 {
-                    conn.OpenConnection();
-                    overzicht.ClearDatabaseConnection();
-                    conn.ExecuteQueries("UPDATE DeviceType SET Naam = '" + txtNaam.Text + "', Opmerkingen = '" + txtOpmerkingen.Text + "' WHERE DeviceTypeID = '" + id + "'");
-                    conn.CloseConnection();
                     btnToepassen.IsEnabled = false;
+
+                    DeviceType newDeviceType = new DeviceType
+                    {
+                        DeviceTypeName = txtNaam.Text,
+                        Description = txtOpmerkingen.Text
+                    };
+
+                    deviceTypeDataService.UpdateDeviceType(SelectedDeviceType, newDeviceType);
 
                     Button button = (Button)sender;
 
@@ -123,16 +110,17 @@ namespace DevicesEnStoringen
                 {
                     MessageBox.Show("Er is iets misgegaan bij het updaten van de database. Excuses voor het ongemak.");
                 }
-                finally
-                {
-                    conn.CloseConnection();
-                }
             }
             else
             {
                 MarkEmptyFieldsRed();
                 MessageBox.Show("Niet alle verplichte velden zijn ingevuld", Title, MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+        }
+
+        private void Cancel(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
 
         // As soon as a change has occurred in one of the fields, the "submit" button will be enabled again
@@ -145,28 +133,23 @@ namespace DevicesEnStoringen
         // The user first receives a message before the device-type is permanently removed from the database
         private void RemoveDeviceType(object sender, RoutedEventArgs e)
         {
-            if (grdDevices.Items.Count == 0)
+            if (dgDevices.Items.Count == 0)
             {
-
-                if (MessageBox.Show("Device-type " + id + " wordt permanent verwijderd", "Device-type", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Device-type " + SelectedDeviceType.DeviceTypeId + " wordt permanent verwijderd", "Device-type", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     try
                     {
-                        conn.OpenConnection();
-                        conn.ExecuteQueries("DELETE FROM DeviceType WHERE DeviceTypeID = '" + id + "'");
+                        deviceTypeDataService.DeleteDeviceType(SelectedDeviceType); // Delete from the database
+                        DeviceTypeOverviewView.DeviceTypes.Remove(DeviceTypeOverviewView.DeviceTypes.Where(i => i.DeviceTypeId == SelectedDeviceType.DeviceTypeId).Single()); // Delete from the ObservableCollection
+
                         DialogResult = true;
                     }
                     catch (Exception)
                     {
                         MessageBox.Show("Er is iets misgegaan bij het updaten van de database. Excuses voor het ongemak.");
                     }
-                    finally
-                    {
-                        conn.CloseConnection();
-                    }
                 }
             }
-                
             else
             {
                 MessageBox.Show("Het is niet mogelijk om dit device-type te verwijderen. Zorg dat er geen devices gekoppeld zijn aan dit device-type.", "Device-type", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -181,5 +164,6 @@ namespace DevicesEnStoringen
             if (txtNaam.Text == "")
                 tbNaam.Foreground = Brushes.Red;
         }
+
     }
 }

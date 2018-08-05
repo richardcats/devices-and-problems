@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Inloggen" Height="310" Width="300" FontSize="14" ResizeMode="NoResize">
     <Window.Background>
-        <ImageBrush ImageSource="Images\background2.jpg"></ImageBrush>
+        <ImageBrush ImageSource="..\Images\background2.jpg"></ImageBrush>
     </Window.Background>
 
         <StackPanel Margin="20">

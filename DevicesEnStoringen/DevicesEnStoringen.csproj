@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>DevicesEnStoringen</RootNamespace>
     <AssemblyName>DevicesEnStoringen</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -30,6 +30,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -43,12 +44,13 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -88,39 +90,45 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Device.xaml.cs">
-      <DependentUpon>Device.xaml</DependentUpon>
+    <Compile Include="Services\DeviceDataService.cs" />
+    <Compile Include="Services\ProblemDataService.cs" />
+    <Compile Include="View\DeviceDetailView.xaml.cs">
+      <DependentUpon>DeviceDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DeviceType.xaml.cs">
-      <DependentUpon>DeviceType.xaml</DependentUpon>
+    <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="View\DeviceTypeDetailView.xaml.cs">
+      <DependentUpon>DeviceTypeDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Overzicht.xaml.cs">
+    <Compile Include="View\Overzicht.xaml.cs">
       <DependentUpon>Overzicht.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Storing.xaml.cs">
-      <DependentUpon>Storing.xaml</DependentUpon>
+    <Compile Include="Services\DeviceTypeDataService.cs" />
+    <Compile Include="View\ProblemDetailView.xaml.cs">
+      <DependentUpon>ProblemDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UCAlleDevices.xaml.cs">
-      <DependentUpon>UCAlleDevices.xaml</DependentUpon>
+    <Compile Include="View\DeviceOverviewView.xaml.cs">
+      <DependentUpon>DeviceOverviewView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UCAlleDeviceTypes.xaml.cs">
-      <DependentUpon>UCAlleDeviceTypes.xaml</DependentUpon>
+    <Compile Include="View\DeviceTypeOverviewView.xaml.cs">
+      <DependentUpon>DeviceTypeOverviewView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UCAlleStoringen.xaml.cs">
-      <DependentUpon>UCAlleStoringen.xaml</DependentUpon>
+    <Compile Include="View\ProblemOverviewView.xaml.cs">
+      <DependentUpon>ProblemOverviewView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UCRapportages.xaml.cs">
+    <Compile Include="View\UCRapportages.xaml.cs">
       <DependentUpon>UCRapportages.xaml</DependentUpon>
     </Compile>
-    <Page Include="Device.xaml">
+    <Compile Include="ViewModel\DeviceTypeOverviewViewModel.cs" />
+    <Compile Include="ViewModel\DeviceTypeViewModel.cs" />
+    <Page Include="View\DeviceDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DeviceType.xaml">
+    <Page Include="View\DeviceTypeDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Inloggen.xaml">
+    <Page Include="View\Inloggen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -129,30 +137,30 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DatabaseConnection.cs" />
-    <Compile Include="Inloggen.xaml.cs">
+    <Compile Include="View\Inloggen.xaml.cs">
       <DependentUpon>Inloggen.xaml</DependentUpon>
     </Compile>
-    <Page Include="Overzicht.xaml">
+    <Page Include="View\Overzicht.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Storing.xaml">
+    <Page Include="View\ProblemDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UCAlleDevices.xaml">
+    <Page Include="View\DeviceOverviewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UCAlleDeviceTypes.xaml">
+    <Page Include="View\DeviceTypeOverviewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UCAlleStoringen.xaml">
+    <Page Include="View\ProblemOverviewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UCRapportages.xaml">
+    <Page Include="View\UCRapportages.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -175,6 +183,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Data\DevicesEnStoringen.sqlite" />
     <None Include="packages.config" />
@@ -205,6 +214,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\background.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Model\DevicesEnStoringen.Model.csproj">
+      <Project>{d2b8b996-6e83-4f79-a84f-9f689cbabf18}</Project>
+      <Name>DevicesEnStoringen.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.106.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.106.0\build\net451\System.Data.SQLite.Core.targets')" />

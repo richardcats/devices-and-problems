@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -10,27 +11,35 @@ using System.Windows.Media;
 
 namespace DevicesEnStoringen
 {
-    public partial class Storing : Window
+    public partial class ProblemDetailView : Window
     {
         DatabaseConnection conn = new DatabaseConnection();
         public static ObservableCollection<string> listStatus = FillCombobox(ComboboxType.Status);
         Dictionary<object, object> deviceList = new Dictionary<object, object>();
         int medewerkerID;
         int id;
+        public Problem SelectedProblem { get; set; }
 
-        // When an existing malfunction is clicked
-        public Storing(int id)
+        void ProblemDetailView_Loaded(object sender, RoutedEventArgs e)
+        {
+            DataContext = SelectedProblem;
+            dgBetrokkenDevices.DataContext = this;
+        }
+
+        // When an existing problem is clicked
+        public ProblemDetailView(Problem selectedProblem)
         {
             InitializeComponent();
 
             Title = "Storing bewerken";
+            SelectedProblem = selectedProblem;
 
             cboStatus.ItemsSource = FillCombobox(ComboboxType.Status);
             cboBehandeldDoor.ItemsSource = FillCombobox(ComboboxType.Medewerker);
             cboErnst.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
             cboPrioriteit.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
 
-            FillTextBoxes(id);
+            //FillTextBoxes(id);
             FillDataGrid();
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
@@ -48,15 +57,15 @@ namespace DevicesEnStoringen
             dgBetrokkenDevices.ItemsSource = null;
             dgBetrokkenDevices.ItemsSource = deviceList.Values;
 
-            this.id = id;
+  
         }
 
         // When a new malfunction is registered. It also passes an object of the employee, so this name will be displayed in the database
-        public Storing(Employee employee)
+        public ProblemDetailView(Employee currentEmployee)
         {
             InitializeComponent();
             Title = "Storing registreren";
-            txtToegevoegdDoor.Text = employee.FirstNameOfCurrentEmployee();
+            txtToegevoegdDoor.Text = currentEmployee.FirstNameOfCurrentEmployee();
 
             cboStatus.ItemsSource = FillCombobox(ComboboxType.Status);
             cboBehandeldDoor.ItemsSource = FillCombobox(ComboboxType.Medewerker);
@@ -68,10 +77,10 @@ namespace DevicesEnStoringen
             cvsRegistreerKnoppen.Visibility = Visibility.Visible;
             cvsBewerkKnoppen.Visibility = Visibility.Hidden;
 
-            medewerkerID = employee.IDOfCurrentEmployee();
+            medewerkerID = currentEmployee.IDOfCurrentEmployee();
         }
 
-        private void FillTextBoxes(int id)
+        /*private void FillTextBoxes(int id)
         {
             conn.OpenConnection();
             SQLiteDataReader dr = conn.DataReader("SELECT Storing.StoringID, Storing.*, Medewerker.* FROM Storing LEFT JOIN Medewerker ON Storing.MedewerkerGeregistreerd = Medewerker.MedewerkerID WHERE StoringID='" + id + "'");
@@ -86,7 +95,7 @@ namespace DevicesEnStoringen
             if (!DBNull.Value.Equals(dr["MedewerkerBehandeld"])) cboBehandeldDoor.SelectedIndex = Convert.ToInt32(dr["MedewerkerBehandeld"]) - 1;
 
             conn.CloseConnection();
-        }
+        }*/
 
         // Fill the combobox based on the combobox type 
         public static ObservableCollection<string> FillCombobox(ComboboxType type)

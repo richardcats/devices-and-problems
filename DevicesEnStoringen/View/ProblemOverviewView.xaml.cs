@@ -1,51 +1,53 @@
-﻿using System;
+﻿using DevicesEnStoringen.Extensions;
+using DevicesEnStoringen.Services;
+using Model;
+using System;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 namespace DevicesEnStoringen
 {
-    public partial class UCAlleStoringen : UserControl
+    public partial class ProblemOverviewView : UserControl
     {
         DatabaseConnection conn = new DatabaseConnection();
-        Employee employee;
 
-        public UCAlleStoringen(Employee employee)
+        private ProblemDataService problemDataService = new ProblemDataService();
+        private Employee currentEmployee;
+
+        public ObservableCollection<string> ComboboxProblemStatus { get; set; }
+        public static ObservableCollection<Problem> Problems { get; set; }
+
+
+        public ProblemOverviewView(Employee currentEmployee)
         {
             InitializeComponent();
 
-            conn.OpenConnection();
-            dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing") });
-            conn.CloseConnection();
+            this.currentEmployee = currentEmployee;
+            Problems = problemDataService.GetAllProblems().ToObservableCollection();
+            ComboboxProblemStatus = ProblemDetailView.FillCombobox(ComboboxType.StatusAll);
+            Loaded += ProblemOverviewView_Loaded;
 
-            cboStatus.ItemsSource = Storing.FillCombobox(ComboboxType.StatusAll);
-
-            this.employee = employee;
-
-            if (employee.AccountTypeOfCurrentEmployee() == "IT-manager")
+            if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
                 btnRegistreerStoring.Visibility = Visibility.Hidden;              
         }
 
-        // Ensures that the manage device button is placed at the end of the datagrid
-        private void ChangeGridButtonPositionToEnd(object sender, EventArgs e)
+        private void ProblemOverviewView_Loaded(object sender, RoutedEventArgs e)
         {
-            var dgrd = sender as DataGrid;
-            {
-                var c = dgrd.Columns[0];
-                dgrd.Columns.RemoveAt(0);
-
-                if (employee.AccountTypeOfCurrentEmployee() == "IT-beheerder")
-                    dgrd.Columns.Add(c);
-            }
+            DataContext = this;
         }
 
         // When the IT administrator clicks on a malfunction, it will pass the ID to a new window
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
-            DataRowView row = (DataRowView)dgStoringen.SelectedItems[0];
-            Storing storing = new Storing(Convert.ToInt32(row["ID"]));
+            Problem selectedProblem = (Problem)dgStoringen.SelectedItems[0];
+            ProblemDetailView problemDetailView = new ProblemDetailView(selectedProblem)
+            {
+                SelectedProblem = selectedProblem
+            };
 
-            if (storing.ShowDialog().Value)
+            if (problemDetailView.ShowDialog().Value)
             {
                 dgStoringen.ItemsSource = null;
                 conn.OpenConnection();
@@ -65,9 +67,9 @@ namespace DevicesEnStoringen
 
         private void RegistreerStoringClick(object sender, RoutedEventArgs e)
         {
-            Storing storing = new Storing(employee);
+            ProblemDetailView problemDetailView = new ProblemDetailView(currentEmployee);
 
-            if (storing.ShowDialog().Value)
+            if (problemDetailView.ShowDialog().Value)
             {
                 dgStoringen.ItemsSource = null;
                 dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing") });

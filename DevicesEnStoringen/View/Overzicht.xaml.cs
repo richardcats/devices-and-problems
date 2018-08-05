@@ -4,18 +4,18 @@ namespace DevicesEnStoringen
 {
     public partial class Overzicht : Window
     {
-        Employee employee;
-        UCAlleStoringen alleStoringen;
-        public Overzicht(Employee employee)
+        Employee currentEmployee;
+        ProblemOverviewView problemOverviewView;
+        public Overzicht(Employee currentEmployee)
         {
             InitializeComponent();
 
-            alleStoringen = new UCAlleStoringen(employee);
-            stkOverzicht.Children.Add(alleStoringen);
-            txtIngelogdAls.Text = employee.FirstNameOfCurrentEmployee();
-            this.employee = employee;
+            problemOverviewView = new ProblemOverviewView(currentEmployee);
+            stkOverzicht.Children.Add(problemOverviewView);
+            txtIngelogdAls.Text = currentEmployee.FirstNameOfCurrentEmployee();
+            this.currentEmployee = currentEmployee;
 
-            if (employee.AccountTypeOfCurrentEmployee() == "IT-manager")
+            if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
                 btnRapportages.Visibility = Visibility.Visible;
         }
 
@@ -23,33 +23,33 @@ namespace DevicesEnStoringen
         {
             Title = "Alle storingen";
             stkOverzicht.Children.Clear();
-            alleStoringen = new UCAlleStoringen(employee);
-            stkOverzicht.Children.Add(alleStoringen);
+            problemOverviewView = new ProblemOverviewView(currentEmployee);
+            stkOverzicht.Children.Add(problemOverviewView);
         }
 
         private void DevicesClick(object sender, RoutedEventArgs e)
         {
             Title = "Alle devices";
             stkOverzicht.Children.Clear();
-            alleStoringen.ClearDatabaseConnection();
-            UCAlleDevices alleDevices = new UCAlleDevices(employee);
-            stkOverzicht.Children.Add(alleDevices);
+            problemOverviewView.ClearDatabaseConnection();
+            DeviceOverviewView deviceOverviewView = new DeviceOverviewView(currentEmployee);
+            stkOverzicht.Children.Add(deviceOverviewView);
         }
 
         private void DeviceTypesClick(object sender, RoutedEventArgs e)
         {
             Title = "Alle device-types";
             stkOverzicht.Children.Clear();
-            alleStoringen.ClearDatabaseConnection();
-            UCAlleDeviceTypes alleDeviceTypes = new UCAlleDeviceTypes(employee);
-            stkOverzicht.Children.Add(alleDeviceTypes);
+            problemOverviewView.ClearDatabaseConnection();
+            DeviceTypeOverviewView deviceTypeOverviewView = new DeviceTypeOverviewView(currentEmployee);
+            stkOverzicht.Children.Add(deviceTypeOverviewView);
         }
 
         private void RapportagesClick(object sender, RoutedEventArgs e)
         {
             Title = "Rapportage storingen";
             stkOverzicht.Children.Clear();
-            UCRapportages rapportages = new UCRapportages(employee);
+            UCRapportages rapportages = new UCRapportages(currentEmployee);
             stkOverzicht.Children.Add(rapportages);
         }
 

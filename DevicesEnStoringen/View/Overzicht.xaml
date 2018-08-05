@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Alle storingen" Height="360" Width="610" ResizeMode="NoResize">
     <Window.Background>
-        <ImageBrush ImageSource="Images\background.jpg"></ImageBrush>
+        <ImageBrush ImageSource="..\Images\background.jpg"></ImageBrush>
     </Window.Background>
     <Grid>
         <Canvas x:Name="cvsNavigatie" Margin="10,10,0,0">
