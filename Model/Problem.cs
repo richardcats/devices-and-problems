@@ -30,8 +30,22 @@ namespace Model
             }
         }
 
-        private string handledBy;
-        public string HandledBy
+        private int raisedByID;
+        public int RaisedByID
+        {
+            get
+            {
+                return raisedByID;
+            }
+            set
+            {
+                raisedByID = value;
+                RaisePropertyChanged("RaisedByID");
+            }
+        }
+
+        private int handledBy;
+        public int HandledBy
         {
             get
             {
@@ -44,10 +58,18 @@ namespace Model
             }
         }
 
+        private string description;
         public string Description
         {
-            get;
-            set;
+            get
+            {
+                return description;
+            }
+            set
+            {
+                description = value;
+                RaisePropertyChanged("Description");
+            }
         }
 
         private int priority;
@@ -98,8 +120,8 @@ namespace Model
             set;
         }
 
-        private DateTime closureDate;
-        public DateTime ClosureDate
+        private DateTime? closureDate;
+        public DateTime? ClosureDate
         {
             get
             {

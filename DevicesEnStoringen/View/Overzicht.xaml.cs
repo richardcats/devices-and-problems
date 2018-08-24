@@ -31,7 +31,6 @@ namespace DevicesEnStoringen
         {
             Title = "Alle devices";
             stkOverzicht.Children.Clear();
-            problemOverviewView.ClearDatabaseConnection();
             DeviceOverviewView deviceOverviewView = new DeviceOverviewView(currentEmployee);
             stkOverzicht.Children.Add(deviceOverviewView);
         }
@@ -40,7 +39,6 @@ namespace DevicesEnStoringen
         {
             Title = "Alle device-types";
             stkOverzicht.Children.Clear();
-            problemOverviewView.ClearDatabaseConnection();
             DeviceTypeOverviewView deviceTypeOverviewView = new DeviceTypeOverviewView(currentEmployee);
             stkOverzicht.Children.Add(deviceTypeOverviewView);
         }

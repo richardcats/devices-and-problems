@@ -28,14 +28,16 @@ namespace DevicesEnStoringen
             Loaded += DeviceOverviewView_Loaded;
 
             if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
+            {
                 btnRegistreerDevice.Visibility = Visibility.Hidden;
+                dgDevices.Columns[6].Visibility = Visibility.Hidden;
+            }
         }
 
         void DeviceOverviewView_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = this;
         }
-
 
         // When the user clicks on a device, it will set the SelectedDevice of the new window
         private void RowButtonClick(object sender, RoutedEventArgs e)
@@ -73,7 +75,6 @@ namespace DevicesEnStoringen
             dgDevices.ItemsSource = Itemlist;
         }
 
-
         private void RegistreerDeviceClick(object sender, RoutedEventArgs e)
         {
             DeviceDetailView deviceDetailView = new DeviceDetailView();
@@ -81,7 +82,6 @@ namespace DevicesEnStoringen
             // Force the datagrid to refresh after a device is registered (temporary)
             if (deviceDetailView.ShowDialog().Value)
                 RefreshDatagrid();
-
         }
 
         private void RefreshDatagrid()

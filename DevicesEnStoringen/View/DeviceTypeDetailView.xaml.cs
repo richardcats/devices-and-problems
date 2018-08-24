@@ -39,7 +39,10 @@ namespace DevicesEnStoringen.View
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
 
             Loaded += DeviceTypeDetailView_Loaded;
-    }
+
+            if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
+                dgDevices.Columns[4].Visibility = Visibility.Hidden;
+        }
 
         // When a new device-type is registered
         public DeviceTypeDetailView()

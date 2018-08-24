@@ -108,8 +108,6 @@ namespace DevicesEnStoringen
             {
                 try
                 {
-                    btnToepassen.IsEnabled = false;
-
                     Device newDevice = new Device
                     {
                         DeviceName = txtNaam.Text,
@@ -122,6 +120,7 @@ namespace DevicesEnStoringen
 
                     deviceDataService.UpdateDevice(SelectedDevice, newDevice);
 
+                    btnToepassen.IsEnabled = false;
                     Button button = (Button)sender;
 
                     if (button.Name == "btnOK")

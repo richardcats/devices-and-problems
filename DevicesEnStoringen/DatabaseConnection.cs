@@ -257,7 +257,8 @@ namespace DevicesEnStoringen
             using (conn)
             {
                 //conn.Open();
-                string query = "SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing";
+                //string query = "SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing";
+                string query = "SELECT Storing.StoringID AS ID, MedewerkerGeregistreerd, Beschrijving, Date(DatumToegevoegd) AS DatumToegevoegd, Date(DatumAfhandeling) AS DatumAfhandeling, Prioriteit, Ernst, Status, MedewerkerBehandeld, Medewerker.* FROM Storing LEFT JOIN Medewerker ON Storing.MedewerkerGeregistreerd = Medewerker.MedewerkerID";
                 using (SQLiteCommand command = new SQLiteCommand(query, conn))
                 {
                     using (SQLiteDataReader reader = command.ExecuteReader())
@@ -268,11 +269,21 @@ namespace DevicesEnStoringen
                             {
                                 ProblemId = Convert.ToInt32(reader["ID"]),
                                 Description = Convert.ToString(reader["Beschrijving"]),
-                                DateRaised = Convert.ToDateTime(reader["Datum"]),
+                                DateRaised = Convert.ToDateTime(reader["DatumToegevoegd"]),
+                                RaisedBy = Convert.ToString(reader["Voornaam"]),
+                                
                                 Priority = Convert.ToInt32(reader["Prioriteit"]),
                                 Severity = Convert.ToInt32(reader["Ernst"]),
                                 Status = Convert.ToString(reader["Status"])
-                            };
+                             };
+
+
+                            if (!DBNull.Value.Equals(reader["MedewerkerBehandeld"]))
+                                problem.HandledBy = Convert.ToInt32(reader["MedewerkerBehandeld"]) - 1;
+
+                            if (!DBNull.Value.Equals(reader["DatumAfhandeling"]))
+                                problem.ClosureDate = Convert.ToDateTime(reader["DatumAfhandeling"]).Date;
+
                             columnData.Add(problem);
                         }
                     }
@@ -280,6 +291,72 @@ namespace DevicesEnStoringen
             }
 
             return columnData;
+        }
+
+
+        public List<Device> GetDevicesOfCurrentProblem(int id)
+        {
+            List<Device> columnData = new List<Device>();
+
+            using (conn)
+            {
+                //conn.Open();
+                string query = "SELECT Device.DeviceID AS ID, Naam, Serienummer FROM Device INNER JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID WHERE DeviceStoring.StoringID ='" + id + "'";
+                using (SQLiteCommand command = new SQLiteCommand(query, conn))
+                {
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Device device = new Device()
+                            {
+                                DeviceId = Convert.ToInt32(reader["ID"]),
+                                DeviceName = Convert.ToString(reader["Naam"]),
+                                SerialNumber = Convert.ToString(reader["Serienummer"])
+                            };
+                            columnData.Add(device);
+                        }
+                    }
+                }
+            }
+
+            return columnData;
+        }
+
+        public void AddProblem(Problem newProblem, ObservableCollection<Device> DevicesOfCurrentProblem)
+        {
+            using (conn)
+            {
+                ExecuteQueries("INSERT INTO Storing(Beschrijving, MedewerkerGeregistreerd, MedewerkerBehandeld, Prioriteit, Ernst, Status, DatumToegevoegd) VALUES('" + newProblem.Description + "', '" + newProblem.RaisedByID + "', '" + newProblem.HandledBy + "', '" + newProblem.Priority + "', '" + newProblem.Severity + "', '" + newProblem.Status + "', date('now'))");
+
+                SQLiteDataReader dr = DataReader("SELECT last_insert_rowid() AS LastID;");
+                dr.Read();
+
+                foreach (Device device in DevicesOfCurrentProblem)
+                    ExecuteQueries("INSERT INTO DeviceStoring (StoringID, DeviceID) VALUES ('" + Convert.ToInt32(dr["LastID"]) + "','" + device.DeviceId + "')");
+            }
+        }
+
+        public void UpdateProblem(Problem selectedProblem, Problem newProblem, ObservableCollection<Device> DevicesOfCurrentProblem)
+        {
+            using (conn)
+            {
+                ExecuteQueries("UPDATE Storing SET Beschrijving = '" + newProblem.Description + "', Prioriteit = '" + newProblem.Priority + "', Ernst = '" + newProblem.Severity + "', Status = '" + newProblem.Status + "', DatumAfhandeling = '" + newProblem.ClosureDate + "', MedewerkerBehandeld = '" + newProblem.HandledBy + "' WHERE StoringID = '" + selectedProblem.ProblemId + "'");
+
+                ExecuteQueries("DELETE FROM DeviceStoring WHERE StoringID = '" + selectedProblem.ProblemId + "'");
+
+                foreach (Device device in DevicesOfCurrentProblem)
+                    ExecuteQueries("INSERT INTO DeviceStoring (StoringID, DeviceID) VALUES ('" + selectedProblem.ProblemId + "','" + device.DeviceId + "')");
+            }
+        }
+
+        public void DeleteProblem(Problem selectedProblem)
+        {
+            using (conn)
+            {
+                ExecuteQueries("DELETE FROM DeviceStoring WHERE StoringID = '" + selectedProblem.ProblemId + "'");
+                ExecuteQueries("DELETE FROM Storing WHERE StoringID = '" + selectedProblem.ProblemId + "'");
+            }
         }
 
         public SQLiteCommand ReturnSQLiteCommand(string Query_)

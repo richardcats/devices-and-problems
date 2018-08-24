@@ -3,6 +3,7 @@ using DevicesEnStoringen.Services;
 using Model;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,14 +12,11 @@ namespace DevicesEnStoringen
 {
     public partial class ProblemOverviewView : UserControl
     {
-        DatabaseConnection conn = new DatabaseConnection();
-
         private ProblemDataService problemDataService = new ProblemDataService();
         private Employee currentEmployee;
 
         public ObservableCollection<string> ComboboxProblemStatus { get; set; }
         public static ObservableCollection<Problem> Problems { get; set; }
-
 
         public ProblemOverviewView(Employee currentEmployee)
         {
@@ -30,7 +28,10 @@ namespace DevicesEnStoringen
             Loaded += ProblemOverviewView_Loaded;
 
             if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
-                btnRegistreerStoring.Visibility = Visibility.Hidden;              
+            {
+                btnRegistreerStoring.Visibility = Visibility.Hidden;
+                dgStoringen.Columns[6].Visibility = Visibility.Hidden;
+            }
         }
 
         private void ProblemOverviewView_Loaded(object sender, RoutedEventArgs e)
@@ -47,38 +48,46 @@ namespace DevicesEnStoringen
                 SelectedProblem = selectedProblem
             };
 
-            if (problemDetailView.ShowDialog().Value)
-            {
-                dgStoringen.ItemsSource = null;
-                conn.OpenConnection();
-                dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing") });
-                conn.CloseConnection();
-            }
+            // when the user clicks cancel, force the datagrid to refresh to show the old values (temporary)
+            if (!problemDetailView.ShowDialog().Value)
+                RefreshDatagrid();
         }
 
         // Filters the datagrid based on a textbox and a combobox
         private void FilterDatagrid(object sender, EventArgs e)
         {
+            var _itemSourceList = new CollectionViewSource() { Source = Problems };
+
+            // ICollectionView the View/UI part 
+            ICollectionView Itemlist = _itemSourceList.View;
+            Predicate<object> searchFilter;
             if (cboStatus.SelectedIndex == 0 || cboStatus.SelectedIndex == -1)
-                dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing WHERE Beschrijving LIKE '%" + txtZoek.Text + "%'") });
+            {
+                searchFilter = new Predicate<object>(item => ((Problem)item).Description.ToLower().Contains(txtZoek.Text.ToLower()));
+                Itemlist.Filter = searchFilter;
+            }
             else
-                dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing WHERE Beschrijving LIKE '%" + txtZoek.Text + "%' AND Status='" + cboStatus.SelectedItem + "'") });
+            {
+                searchFilter = new Predicate<object>(item => ((Problem)item).Description.ToLower().Contains(txtZoek.Text.ToLower()) && ((Problem)item).Status == (string)cboStatus.SelectedItem);
+                Itemlist.Filter = searchFilter;
+            }
+
+            dgStoringen.ItemsSource = Itemlist;
         }
 
         private void RegistreerStoringClick(object sender, RoutedEventArgs e)
         {
             ProblemDetailView problemDetailView = new ProblemDetailView(currentEmployee);
 
+            // Force the datagrid to refresh after a device is registered (temporary)
             if (problemDetailView.ShowDialog().Value)
-            {
-                dgStoringen.ItemsSource = null;
-                dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Status FROM Storing") });
-            }
+                RefreshDatagrid();
         }
 
-        public void ClearDatabaseConnection()
+        private void RefreshDatagrid()
         {
-            dgStoringen.ItemsSource = null;
+            Problems = problemDataService.GetAllProblems().ToObservableCollection();
+            dgStoringen.ItemsSource = Problems;
         }
     }
 }
