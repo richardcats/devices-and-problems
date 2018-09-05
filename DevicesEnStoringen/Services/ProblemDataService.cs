@@ -32,26 +32,44 @@ namespace DevicesEnStoringen.Services
         
         public void AddProblem(Problem newProblem, ObservableCollection<Device> DevicesOfCurrentProblem)
         {
-            conn.OpenConnection();
+            //conn.OpenConnection();
             conn.AddProblem(newProblem, DevicesOfCurrentProblem);
         }
 
         public void UpdateProblem(Problem selectedProblem, Problem newProblem, ObservableCollection<Device> DevicesOfCurrentProblem)
         {
-            conn.OpenConnection();
+            //conn.OpenConnection();
             conn.UpdateProblem(selectedProblem, newProblem, DevicesOfCurrentProblem);
         }
 
         public void DeleteProblem(Problem selectedProblem)
         {
-            conn.OpenConnection();
+            //conn.OpenConnection();
             conn.DeleteProblem(selectedProblem);
         }
 
-        public static ObservableCollection<string> FillCombobox(ComboboxType type)
+        public void AddComment(Problem selectedProblem, Comment newComment)
+        {
+            //conn.OpenConnection();
+            conn.AddComment(selectedProblem, newComment);
+        }
+
+        public void RemoveComment(Comment selectedComment, Problem selectedProblem)
+        {
+            //conn.OpenConnection();
+            conn.RemoveComment(selectedComment, selectedProblem);
+        }
+
+        public List<Comment> GetCommentsOfCurrentProblem(Problem selectedProblem)
+        {
+            //conn.OpenConnection();
+            return conn.GetCommentsOfCurrentProblem(selectedProblem);
+        }
+
+        public ObservableCollection<string> FillCombobox(ComboboxType type)
         {
             // conn.OpenConnection();
-            return DatabaseConnection.FillCombobox(type);
+            return conn.FillCombobox(type);
         }
     }
 }

@@ -13,18 +13,19 @@ namespace DevicesEnStoringen
     public partial class DeviceOverviewView : UserControl
     {
         private DeviceDataService deviceDataService = new DeviceDataService();
-        private Employee currentEmployee;
+        private ProblemDataService problemDataService = new ProblemDataService();
+        private EmployeeDataService currentEmployee;
 
         public ObservableCollection<string> ComboboxDeviceTypes { get; set; }
         public static ObservableCollection<Device> Devices { get; set; }
 
-        public DeviceOverviewView(Employee currentEmployee)
+        public DeviceOverviewView(EmployeeDataService currentEmployee)
         {
             InitializeComponent();
 
             this.currentEmployee = currentEmployee;
             Devices = deviceDataService.GetAllDevices().ToObservableCollection();
-            ComboboxDeviceTypes = ProblemDataService.FillCombobox(ComboboxType.DeviceTypeAll);
+            ComboboxDeviceTypes = problemDataService.FillCombobox(ComboboxType.DeviceTypeAll);
             Loaded += DeviceOverviewView_Loaded;
 
             if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")

@@ -14,10 +14,10 @@ namespace DevicesEnStoringen
     public partial class DeviceTypeOverviewView : UserControl
     {
         private DeviceTypeDataService deviceTypeDataService = new DeviceTypeDataService();
-        private Employee currentEmployee;
+        private EmployeeDataService currentEmployee;
         public static ObservableCollection<DeviceType> DeviceTypes { get; set; }
 
-        public DeviceTypeOverviewView(Employee currentEmployee)
+        public DeviceTypeOverviewView(EmployeeDataService currentEmployee)
         {
             InitializeComponent();
 

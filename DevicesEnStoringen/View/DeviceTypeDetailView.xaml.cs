@@ -13,7 +13,7 @@ namespace DevicesEnStoringen.View
     public partial class DeviceTypeDetailView : Window
     {
         private DeviceTypeDataService deviceTypeDataService = new DeviceTypeDataService();
-        private Employee currentEmployee;
+        private EmployeeDataService currentEmployee;
         public DeviceType SelectedDeviceType { get; set; }
         public ObservableCollection<Device> DevicesOfCurrentDeviceType { get; set; }
 
@@ -26,7 +26,7 @@ namespace DevicesEnStoringen.View
 
 
         // When an existing device-type is clicked
-        public DeviceTypeDetailView(DeviceType selectedDeviceType, Employee currentEmployee)
+        public DeviceTypeDetailView(DeviceType selectedDeviceType, EmployeeDataService currentEmployee)
         {
             InitializeComponent();
 

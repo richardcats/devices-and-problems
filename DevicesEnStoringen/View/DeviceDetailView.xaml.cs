@@ -34,8 +34,8 @@ namespace DevicesEnStoringen
             Title = "Device bewerken";
             SelectedDevice = selectedDevice;
 
-            cboDeviceType.ItemsSource = ProblemDataService.FillCombobox(ComboboxType.DeviceType);
-            cboAfdeling.ItemsSource = ProblemDataService.FillCombobox(ComboboxType.Afdeling);
+            cboDeviceType.ItemsSource = problemDataService.FillCombobox(ComboboxType.DeviceType);
+            cboAfdeling.ItemsSource = problemDataService.FillCombobox(ComboboxType.Afdeling);
             CurrentProblems = problemDataService.GetCurrentProblemsOfDevice(SelectedDevice.DeviceId).ToObservableCollection();
 
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
@@ -52,8 +52,8 @@ namespace DevicesEnStoringen
 
             Title = "Device registreren";
 
-            cboDeviceType.ItemsSource = ProblemDataService.FillCombobox(ComboboxType.DeviceType);
-            cboAfdeling.ItemsSource = ProblemDataService.FillCombobox(ComboboxType.Afdeling);
+            cboDeviceType.ItemsSource = problemDataService.FillCombobox(ComboboxType.DeviceType);
+            cboAfdeling.ItemsSource = problemDataService.FillCombobox(ComboboxType.Afdeling);
 
             cvsRegistreerKnoppen.Visibility = Visibility.Visible;
             cvsBewerkKnoppen.Visibility = Visibility.Hidden;
@@ -79,7 +79,7 @@ namespace DevicesEnStoringen
         // Ensures that all required fields are filled in before inserting the device into the database
         private void AddDevice(object sender, RoutedEventArgs e)
         {
-            if (txtNaam.Text != "" && cboDeviceType.SelectedIndex != -1 && cboAfdeling.SelectedIndex != -1)
+            if (txtNaam.Text != "" && cboDeviceType.SelectedIndex != -1 && cboAfdeling.Text != "")
             {
                 Device newDevice = new Device
                 {
@@ -104,7 +104,7 @@ namespace DevicesEnStoringen
         // Ensures that all required fields are filled in before updating the device in the database
         private void UpdateDevice(object sender, RoutedEventArgs e)
         {
-            if (txtNaam.Text != "" && cboDeviceType.SelectedIndex != -1 && cboAfdeling.SelectedIndex != -1)
+            if (txtNaam.Text != "" && cboDeviceType.SelectedIndex != -1 && cboAfdeling.Text != "")
             {
                 try
                 {

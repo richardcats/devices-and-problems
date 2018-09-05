@@ -1,12 +1,13 @@
-﻿using System.Windows;
+﻿using DevicesEnStoringen.Services;
+using System.Windows;
 
 namespace DevicesEnStoringen
 {
     public partial class Overzicht : Window
     {
-        Employee currentEmployee;
+        EmployeeDataService currentEmployee;
         ProblemOverviewView problemOverviewView;
-        public Overzicht(Employee currentEmployee)
+        public Overzicht(EmployeeDataService currentEmployee)
         {
             InitializeComponent();
 

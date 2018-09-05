@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevicesEnStoringen.Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SQLite;
@@ -12,9 +13,9 @@ namespace DevicesEnStoringen
     public partial class UCRapportages : UserControl
     {
         DatabaseConnection conn = new DatabaseConnection();
-        Employee employee;
+        EmployeeDataService employee;
 
-        public UCRapportages(Employee employee)
+        public UCRapportages(EmployeeDataService employee)
         {
             InitializeComponent();
 
@@ -44,7 +45,7 @@ namespace DevicesEnStoringen
                 while (dr.Read())
                     list.Add(dr["Month"].ToString());
             }
-            conn.CloseConnection();
+
             return list;
         }
 

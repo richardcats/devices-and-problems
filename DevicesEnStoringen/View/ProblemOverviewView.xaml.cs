@@ -13,12 +13,12 @@ namespace DevicesEnStoringen
     public partial class ProblemOverviewView : UserControl
     {
         private ProblemDataService problemDataService = new ProblemDataService();
-        private Employee currentEmployee;
+        private EmployeeDataService currentEmployee;
 
         public ObservableCollection<string> ComboboxProblemStatus { get; set; }
         public static ObservableCollection<Problem> Problems { get; set; }
 
-        public ProblemOverviewView(Employee currentEmployee)
+        public ProblemOverviewView(EmployeeDataService currentEmployee)
         {
             InitializeComponent();
 

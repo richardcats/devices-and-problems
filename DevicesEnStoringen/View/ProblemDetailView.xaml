@@ -80,8 +80,10 @@
             <TextBox x:Name="txtOpmerking" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="152" Canvas.Left="118" Canvas.Top="-110" MaxLength="30"/>
             <Button Content="+" HorizontalAlignment="Left" VerticalAlignment="Top" Width="20" Click="AddComment" Height="20" Canvas.Left="279" Canvas.Top="-110" />
 
-            <DataGrid x:Name="dgOpmerkingen" HorizontalAlignment="Left" Height="94" VerticalAlignment="Top" Width="290" CanUserAddRows="false" IsReadOnly="True" Canvas.Left="9" Canvas.Top="-73">
+            <DataGrid x:Name="dgOpmerkingen" ItemsSource="{Binding Comments}" HorizontalAlignment="Left" Height="94" VerticalAlignment="Top" Width="290" CanUserAddRows="false" IsReadOnly="True" Canvas.Left="9" Canvas.Top="-73" AutoGenerateColumns="false">
                 <DataGrid.Columns>
+                    <DataGridTextColumn Header="Datum" Binding="{Binding Date}"/>
+                    <DataGridTextColumn Header="Beschrijving" Binding="{Binding Text}"/>
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

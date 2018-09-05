@@ -17,7 +17,6 @@ namespace DevicesEnStoringen
 {
     public partial class ProblemDetailView : Window
     {
-        DatabaseConnection conn = new DatabaseConnection();
         private ProblemDataService problemDataService = new ProblemDataService();
         private DeviceDataService deviceDataService = new DeviceDataService();
         public static ObservableCollection<string> listStatus = FillCombobox(ComboboxType.Status);
@@ -26,12 +25,14 @@ namespace DevicesEnStoringen
         public Problem SelectedProblem { get; set; }
         public ObservableCollection<Device> DevicesOfCurrentProblem { get; set; }
         public ObservableCollection<Device> AllDevices { get; set; }
+        public ObservableCollection<Comment> Comments { get; set; }
 
         void ProblemDetailView_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = SelectedProblem;
             dgBetrokkenDevices.DataContext = this;
             dgDevicesToevoegen.DataContext = this;
+            dgOpmerkingen.DataContext = this;
         }
 
         // When an existing problem is clicked
@@ -49,19 +50,18 @@ namespace DevicesEnStoringen
 
             DevicesOfCurrentProblem = problemDataService.GetDevicesOfCurrentProblem(SelectedProblem.ProblemId).ToObservableCollection();
             AllDevices = deviceDataService.GetAllDevices().ToObservableCollection();
+            Comments = problemDataService.GetCommentsOfCurrentProblem(SelectedProblem).ToObservableCollection();
 
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
             datDatumAfhandeling.IsEnabled = true;
-
-            dgOpmerkingen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Date(Datum) AS Datum, Beschrijving FROM Opmerking WHERE StoringID ='" + selectedProblem.ProblemId + "'") });
 
             Loaded += ProblemDetailView_Loaded;
             txtToegevoegdDoor.Text = SelectedProblem.RaisedBy; // tijdelijk
         }
 
         // When a new malfunction is registered. It also passes an object of the employee, so this name will be displayed in the database
-        public ProblemDetailView(Employee currentEmployee)
+        public ProblemDetailView(EmployeeDataService currentEmployee)
         {
             InitializeComponent();
 
@@ -88,44 +88,40 @@ namespace DevicesEnStoringen
         // Fill the combobox based on the combobox type 
         public static ObservableCollection<string> FillCombobox(ComboboxType type)
         {
-            ObservableCollection<string> list = new ObservableCollection<string>();
+            ObservableCollection<string> comboboxItems = new ObservableCollection<string>();
             DatabaseConnection conn = new DatabaseConnection();
-            conn.OpenConnection();
 
             if (type == ComboboxType.Status)
             {
-                list = new ObservableCollection<string>();
-                list.Add("Open");
-                list.Add("In behandeling");
-                list.Add("Afgehandeld");
+                comboboxItems = new ObservableCollection<string>();
+                comboboxItems.Add("Open");
+                comboboxItems.Add("In behandeling");
+                comboboxItems.Add("Afgehandeld");
             }
             else if (type == ComboboxType.StatusAll)
             {
-                list = new ObservableCollection<string>();
-                list.Add("Alle storingen"); 
-                list.Add("Open");
-                list.Add("In behandeling");
-                list.Add("Afgehandeld");
+                comboboxItems = new ObservableCollection<string>();
+                comboboxItems.Add("Alle storingen");
+                comboboxItems.Add("Open");
+                comboboxItems.Add("In behandeling");
+                comboboxItems.Add("Afgehandeld");
             }
 
             else if (type == ComboboxType.Medewerker)
             {
-                SQLiteDataReader dr = conn.DataReader("SELECT Voornaam FROM Medewerker");
-
-                while (dr.Read())
-                    list.Add(dr["Voornaam"].ToString());
+                EmployeeDataService employeeDataService = new EmployeeDataService();
+                comboboxItems = employeeDataService.GetAllEmployees();
             }
 
             else if (type == ComboboxType.PrioriteitErnst)
             {
-                list = new ObservableCollection<string>();
-                list.Add("0");
-                list.Add("1");
-                list.Add("2");
-                list.Add("3");
+                comboboxItems = new ObservableCollection<string>();
+                comboboxItems.Add("0");
+                comboboxItems.Add("1");
+                comboboxItems.Add("2");
+                comboboxItems.Add("3");
             }
-            conn.CloseConnection();
-            return list;
+            return comboboxItems;
         }
 
 
@@ -260,28 +256,27 @@ namespace DevicesEnStoringen
 
         private void RemoveComment(object sender, RoutedEventArgs e)
         {
-            DataRowView row = (DataRowView)dgOpmerkingen.SelectedItems[0];
+            Comment selectedComment = (Comment)dgOpmerkingen.SelectedItems[0];
 
-            conn.OpenConnection();
-                conn.ExecuteQueries("DELETE FROM Opmerking WHERE Beschrijving = '" + row["Beschrijving"] + "' AND StoringID = '" + SelectedProblem.ProblemId + "'");
-            conn.CloseConnection();
-
-            dgOpmerkingen.ItemsSource = null;
-            dgOpmerkingen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Date(Datum) AS Datum, Beschrijving FROM Opmerking WHERE StoringID ='" + SelectedProblem.ProblemId + "'") });
+            problemDataService.RemoveComment(selectedComment, SelectedProblem); // Delete from the database
+            Comments.Remove(Comments.Where(i => i.CommentID == selectedComment.CommentID).Single()); // Delete from the ObservableCollection
         }
 
         private void AddComment(object sender, RoutedEventArgs e)
         {
             if (txtOpmerking.Text != "")
             {
-                conn.OpenConnection();
-                conn.ExecuteQueries("INSERT INTO Opmerking (StoringID, Datum, Beschrijving) VALUES ('" + SelectedProblem.ProblemId + "', date('now'), '" + txtOpmerking.Text + "')");
-                conn.CloseConnection();
+                Comment newComment = new Comment
+                {
+                    Date = DateTime.Now,
+                    Text = txtOpmerking.Text
+                };
+
+                problemDataService.AddComment(SelectedProblem, newComment); // Add to the database
+                Comments.Add(newComment); // Add to the ObservableCollection
+
                 txtOpmerking.Text = "";
             }
-
-            dgOpmerkingen.ItemsSource = null;
-            dgOpmerkingen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT Date(Datum) AS Datum, Beschrijving FROM Opmerking WHERE StoringID ='" + SelectedProblem.ProblemId + "'") });
         }
     }
 }
