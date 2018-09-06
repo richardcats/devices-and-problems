@@ -116,8 +116,8 @@
     <Compile Include="View\ProblemOverviewView.xaml.cs">
       <DependentUpon>ProblemOverviewView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UCRapportages.xaml.cs">
-      <DependentUpon>UCRapportages.xaml</DependentUpon>
+    <Compile Include="View\ReportsView.xaml.cs">
+      <DependentUpon>ReportsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\DeviceTypeOverviewViewModel.cs" />
     <Compile Include="ViewModel\DeviceTypeViewModel.cs" />
@@ -161,7 +161,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UCRapportages.xaml">
+    <Page Include="View\ReportsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

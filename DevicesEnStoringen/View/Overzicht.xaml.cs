@@ -48,7 +48,7 @@ namespace DevicesEnStoringen
         {
             Title = "Rapportage storingen";
             stkOverzicht.Children.Clear();
-            UCRapportages rapportages = new UCRapportages(currentEmployee);
+            ReportsView rapportages = new ReportsView(currentEmployee);
             stkOverzicht.Children.Add(rapportages);
         }
 

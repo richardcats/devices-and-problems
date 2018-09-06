@@ -299,6 +299,41 @@ namespace DevicesEnStoringen
                     while (dr.Read())
                         comboboxItems.Add(dr["Voornaam"].ToString());
                 }
+
+            }
+            return comboboxItems;
+        }
+
+        public ObservableCollection<int> FillComboboxYears()
+        {
+            ObservableCollection<int> comboboxItems = new ObservableCollection<int>();
+            using (SQLiteConnection connection = new SQLiteConnection(connString))
+            {
+                connection.Open();
+
+                string query = "SELECT strftime('%Y', DatumToegevoegd) as Year FROM Storing GROUP BY Year";
+                SQLiteCommand command = new SQLiteCommand(query, connection);
+                SQLiteDataReader dr = command.ExecuteReader();
+
+                while (dr.Read())
+                    comboboxItems.Add(Convert.ToInt32(dr["Year"]));
+            }
+            return comboboxItems;
+        }
+
+        public ObservableCollection<int> FillComboboxMonthsBasedOnYear(int selectedYear)
+        {
+            ObservableCollection<int> comboboxItems = new ObservableCollection<int>();
+            using (SQLiteConnection connection = new SQLiteConnection(connString))
+            {
+                connection.Open();
+
+                string query = "SELECT strftime('%m', DatumToegevoegd) as Month, strftime('%Y', DatumToegevoegd) AS Year FROM Storing WHERE Year = '" + selectedYear + "' GROUP BY Month";
+                SQLiteCommand command = new SQLiteCommand(query, connection);
+                SQLiteDataReader dr = command.ExecuteReader();
+
+                while (dr.Read())
+                    comboboxItems.Add(Convert.ToInt32(dr["Month"]));
             }
             return comboboxItems;
         }

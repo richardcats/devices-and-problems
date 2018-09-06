@@ -1,6 +1,9 @@
-﻿using DevicesEnStoringen.Services;
+﻿using DevicesEnStoringen.Extensions;
+using DevicesEnStoringen.Services;
+using Model;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
@@ -10,69 +13,78 @@ using System.Windows.Data;
 
 namespace DevicesEnStoringen
 {
-    public partial class UCRapportages : UserControl
+    public partial class ReportsView : UserControl
     {
         DatabaseConnection conn = new DatabaseConnection();
-        EmployeeDataService employee;
+        private ProblemDataService problemDataService = new ProblemDataService();
+        private EmployeeDataService currentEmployee;
 
-        public UCRapportages(EmployeeDataService employee)
+        public ObservableCollection<int> SelectableYears { get; set; }
+        public ObservableCollection<Problem> Problems { get; set; }
+        public int AmountSolvedProblems { get; set; }
+
+        public ReportsView(EmployeeDataService currentEmployee)
         {
             InitializeComponent();
 
-            cboStoringJaar.ItemsSource = FillCombobox(ComboboxType.Year);
+            Problems = problemDataService.GetAllProblems().ToObservableCollection();
+            SelectableYears = problemDataService.FillComboboxYears().ToObservableCollection();
+            this.currentEmployee = currentEmployee;
 
-            this.employee = employee;
+
+            Loaded += ReportsView_Loaded;
+            ShowExtraDatagridInformation();
         }
 
-        // Fill the combobox based on the combobox type
-        public ObservableCollection<string> FillCombobox(ComboboxType type)
+        void ReportsView_Loaded(object sender, RoutedEventArgs e)
         {
-            ObservableCollection<string> list = new ObservableCollection<string>();
-            DatabaseConnection conn = new DatabaseConnection();
-            conn.OpenConnection();
-
-            if (type == ComboboxType.Year)
-            {
-                SQLiteDataReader dr = conn.DataReader("SELECT strftime('%Y', DatumToegevoegd) as Year FROM Storing GROUP BY Year");
-
-                while (dr.Read())
-                    list.Add(dr["Year"].ToString());
-            }
-            else if (type == ComboboxType.Month)
-            {
-                SQLiteDataReader dr = conn.DataReader("SELECT strftime('%m', DatumToegevoegd) as Month, strftime('%Y', DatumToegevoegd) AS Year FROM Storing WHERE Year = '" + cboStoringJaar.SelectedValue + "' GROUP BY Month");
-
-                while (dr.Read())
-                    list.Add(dr["Month"].ToString());
-            }
-
-            return list;
+            DataContext = this;
         }
 
         // Shows the report for either the whole year or a specific month within a year
         private void ShowReport(object sender, RoutedEventArgs e)
         {
             cboStoringMaand.IsEnabled = true;
-            cboStoringMaand.ItemsSource = FillCombobox(ComboboxType.Month);
+            cboStoringMaand.ItemsSource = problemDataService.FillComboboxMonthsBasedOnYear((Convert.ToInt32(cboStoringJaar.SelectedValue)));
+
+            var _itemSourceList = new CollectionViewSource() { Source = Problems };
+
+            // ICollectionView the View/UI part 
+            ICollectionView Itemlist = _itemSourceList.View;
+            Predicate<object> searchFilter;
 
             if (cboStoringMaand.SelectedIndex == -1)
-                dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Beschrijving, Status FROM Storing WHERE strftime('%Y', DatumToegevoegd) = '" + cboStoringJaar.SelectedValue + "'") });
-            else
-                dgStoringen.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = conn.ShowDataInGridView("SELECT StoringID AS ID, Date(DatumToegevoegd) AS Datum, Prioriteit, Ernst, Beschrijving, Status FROM Storing WHERE strftime('%Y', DatumToegevoegd) = '" + cboStoringJaar.SelectedValue + "' AND strftime('%m', DatumToegevoegd) = '" + cboStoringMaand.SelectedValue + "'") });
-
-            tbGeregistreerdeStoringen.Text = dgStoringen.Items.Count.ToString();
-
-            int amountSolvedMalfunctions = 0;
-            foreach (DataRowView row in dgStoringen.Items)
             {
-                if ((string)row["Status"] == "Afgehandeld")
-                    amountSolvedMalfunctions++;
+                searchFilter = new Predicate<object>(item => ((Problem)item).DateRaised.Year == (int)cboStoringJaar.SelectedValue);
+                Itemlist.Filter = searchFilter;
+            }
+            else
+            {
+                searchFilter = new Predicate<object>(item => ((Problem)item).DateRaised.Year == (int)cboStoringJaar.SelectedValue && ((Problem)item).DateRaised.Month == (int)cboStoringMaand.SelectedValue);
+                Itemlist.Filter = searchFilter;
             }
 
-            tbAantalOpgelost.Text = amountSolvedMalfunctions.ToString();
-            tbPercentageAantalOpgelost.Text = Math.Round(amountSolvedMalfunctions * 100.0 / dgStoringen.Items.Count, MidpointRounding.AwayFromZero).ToString();
+            dgStoringen.ItemsSource = Itemlist;
+
+            ShowExtraDatagridInformation();
 
             btnExportToTxt.IsEnabled = true;
+        }
+
+        public void ShowExtraDatagridInformation()
+        {
+
+            AmountSolvedProblems = 0;
+
+            foreach (Problem problem in Problems)
+            {
+                if (problem.Status == "Afgehandeld")
+                    AmountSolvedProblems++;
+            }
+
+
+             tbAantalOpgelost.Text = AmountSolvedProblems.ToString();
+            // tbPercentageAantalOpgelost.Text = Math.Round(amountSolvedMalfunctions * 100.0 / dgStoringen.Items.Count, MidpointRounding.AwayFromZero).ToString();
         }
 
         private void btnExportToTxt_Click(object sender, RoutedEventArgs e)
@@ -136,7 +148,7 @@ namespace DevicesEnStoringen
 
                 SmtpServer.Send(mail);
                 */
-                MessageBox.Show("De bijlage is verstuurd naar " + employee.EmailAddress);
+                MessageBox.Show("De bijlage is verstuurd naar " + currentEmployee.EmailAddress);
             }
         }
     }
