@@ -3,10 +3,10 @@ using System.Windows;
 
 namespace DevicesEnStoringen
 {
-    public partial class Inloggen : Window
+    public partial class LoginView : Window
     {
 
-        public Inloggen()
+        public LoginView()
         {
             InitializeComponent();
         }

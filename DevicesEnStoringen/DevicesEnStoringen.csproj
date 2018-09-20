@@ -129,7 +129,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Inloggen.xaml">
+    <Page Include="View\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -138,8 +138,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DatabaseConnection.cs" />
-    <Compile Include="View\Inloggen.xaml.cs">
-      <DependentUpon>Inloggen.xaml</DependentUpon>
+    <Compile Include="View\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Page Include="View\Overzicht.xaml">
       <SubType>Designer</SubType>

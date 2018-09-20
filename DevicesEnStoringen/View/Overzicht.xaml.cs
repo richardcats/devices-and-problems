@@ -5,8 +5,8 @@ namespace DevicesEnStoringen
 {
     public partial class Overzicht : Window
     {
-        EmployeeDataService currentEmployee;
-        ProblemOverviewView problemOverviewView;
+        private EmployeeDataService currentEmployee;
+        private ProblemOverviewView problemOverviewView;
         public Overzicht(EmployeeDataService currentEmployee)
         {
             InitializeComponent();
@@ -48,14 +48,14 @@ namespace DevicesEnStoringen
         {
             Title = "Rapportage storingen";
             stkOverzicht.Children.Clear();
-            ReportsView rapportages = new ReportsView(currentEmployee);
-            stkOverzicht.Children.Add(rapportages);
+            ReportsView reportsView = new ReportsView(currentEmployee);
+            stkOverzicht.Children.Add(reportsView);
         }
 
         private void Logout(object sender, RoutedEventArgs e)
         {
-            Inloggen inloggen = new Inloggen();
-            inloggen.Show();
+            LoginView loginView = new LoginView();
+            loginView.Show();
             Close();
         }
     }

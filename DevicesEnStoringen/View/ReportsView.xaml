@@ -12,10 +12,10 @@
             <ComboBox x:Name="cboStoringJaar" ItemsSource="{Binding SelectableYears}" Width="80" Canvas.Left="35" SelectionChanged="ShowReport"/>
             <TextBlock TextWrapping="Wrap" Text="Maand" Canvas.Left="140"/>
             <ComboBox x:Name="cboStoringMaand" Width="50" Canvas.Left="190" IsEnabled="False" SelectionChanged="ShowReport" x:FieldModifier="public"/>
-            <Button x:Name="btnExportToTxt" Content="Exporteer" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Canvas.Left="420"  Height="22" Click="btnExportToTxt_Click" IsEnabled="False"/>
-            <Button x:Name="btnSendMail" Content="Verstuur" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Canvas.Left="510"  Height="22" Click="SendMail"/>
+            <Button x:Name="btnExport" Content="Exporteer" IsEnabled="False" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Canvas.Left="420"  Height="22" Click="ExportToTxtClick" />
+            <Button Content="Verstuur" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Canvas.Left="510"  Height="22" Click="SendMailClick"/>
 
-            <DataGrid x:Name="dgStoringen" ItemsSource="{Binding Problems}" HorizontalAlignment="Left" Height="163" VerticalAlignment="Top" Width="580" Canvas.Top="32" AutoGenerateColumns="false">
+            <DataGrid x:Name="dgStoringen"  HorizontalAlignment="Left" Height="163" VerticalAlignment="Top" Width="580" Canvas.Top="32" AutoGenerateColumns="false">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding ProblemId}"/>
                     <DataGridTextColumn Header="Datum" Binding="{Binding DateRaised}"/>
@@ -26,11 +26,11 @@
                 </DataGrid.Columns>
             </DataGrid>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Totaal aantal geregistreerde storingen:" VerticalAlignment="Top" Canvas.Top="200"/>
-            <TextBlock x:Name="tbGeregistreerdeStoringen" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Problems.Count}" VerticalAlignment="Top" Canvas.Top="200" Canvas.Left="220"/>
+            <TextBlock x:Name="tbGeregistreerdeStoringen" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding AmountProblems}" VerticalAlignment="Top" Canvas.Top="200" Canvas.Left="220"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Totaal aantal opgeloste storingen:" VerticalAlignment="Top" Canvas.Top="220"/>
             <TextBlock x:Name="tbAantalOpgelost" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Text ="{Binding AmountSolvedProblems}" Canvas.Top="220" Canvas.Left="220"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Percentage opgeloste storingen:" VerticalAlignment="Top" Canvas.Top="240"/>
-            <TextBlock x:Name="tbPercentageAantalOpgelost" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Canvas.Top="240" Canvas.Left="220"/>
+            <TextBlock x:Name="tbPercentageAantalOpgelost" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Text ="{Binding PercentageAmountSolvedProblems}" Canvas.Top="240" Canvas.Left="220"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Canvas.Top="240" Canvas.Left="240"/>
         </Canvas>
     </Grid>
