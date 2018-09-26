@@ -90,9 +90,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Messages\UpdateListMessage.cs" />
     <Compile Include="Services\DeviceDataService.cs" />
     <Compile Include="Services\EmployeeDataService.cs" />
     <Compile Include="Services\ProblemDataService.cs" />
+    <Compile Include="Utility\CustomCommand.cs" />
+    <Compile Include="Utility\Messenger.cs" />
+    <Compile Include="ViewModel\DeviceTypeDetailViewModel.cs" />
     <Compile Include="View\DeviceDetailView.xaml.cs">
       <DependentUpon>DeviceDetailView.xaml</DependentUpon>
     </Compile>
@@ -120,7 +124,6 @@
       <DependentUpon>ReportsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\DeviceTypeOverviewViewModel.cs" />
-    <Compile Include="ViewModel\DeviceTypeViewModel.cs" />
     <Page Include="View\DeviceDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

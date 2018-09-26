@@ -20,7 +20,7 @@ namespace DevicesEnStoringen.View
 
         void DeviceTypeDetailView_Loaded(object sender, RoutedEventArgs e)
         {
-            DataContext = SelectedDeviceType;
+            //DataContext = SelectedDeviceType;
             dgDevices.DataContext = this;    
         }
 

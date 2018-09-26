@@ -19,7 +19,7 @@
                     <DataGridTextColumn Header="Naam" Binding="{Binding DeviceName}"/>
                     <DataGridTextColumn Header="Type" Binding="{Binding DeviceTypeName}"/>
                     <DataGridTextColumn Header="Serienummer" Binding="{Binding SerialNumber}"/>
-                    <DataGridTextColumn Header="Toegevoegd" Binding="{Binding FirstAddedDate}"/>
+                    <DataGridTextColumn Header="Toegevoegd" Binding="{Binding FirstAddedDate, StringFormat='dd-MM-yyyy'}"/>
                     <DataGridTextColumn Header="Storingen" Binding="{Binding NumberOfFaults}"/>
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>

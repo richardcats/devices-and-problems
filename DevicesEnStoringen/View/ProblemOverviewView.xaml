@@ -17,7 +17,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding ProblemId}"/>
                     <DataGridTextColumn Header="Beschrijving" Binding="{Binding Description}"/>
-                    <DataGridTextColumn Header="Datum" Binding="{Binding DateRaised}"/>
+                    <DataGridTextColumn Header="Datum" Binding="{Binding DateRaised, StringFormat='dd-MM-yyyy'}"/>
                     <DataGridTextColumn Header="Prioriteit" Binding="{Binding Priority}"/>
                     <DataGridTextColumn Header="Ernst" Binding="{Binding Severity}"/>
                     <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>

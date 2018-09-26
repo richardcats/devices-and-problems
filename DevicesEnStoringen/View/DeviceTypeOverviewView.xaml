@@ -5,13 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DevicesEnStoringen"
              mc:Ignorable="d" 
-             d:DesignHeight="350" d:DesignWidth="600">
+             d:DesignHeight="350" d:DesignWidth="600"
+             xmlns:viewmodel="clr-namespace:DevicesEnStoringen.ViewModel">
+    <UserControl.DataContext>
+        <viewmodel:DeviceTypeOverviewViewModel></viewmodel:DeviceTypeOverviewViewModel>
+    </UserControl.DataContext>
     <Grid>
         <Canvas x:Name="cvsInhoud" Margin="0,40,0,0">
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Zoek device-type:" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
             <TextBox x:Name="txtZoek" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" TextChanged="FilterDatagrid" Canvas.Left="117" Canvas.Top="10" RenderTransformOrigin="1.3,0.323"/>
             <Button Content="Registreer device-type" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.541,3.635" Width="140" Click="RegisterDeviceTypeClick" Canvas.Left="443" Canvas.Top="11" />
-            <DataGrid x:Name="dgDeviceTypes" ItemsSource="{Binding DeviceTypes}" HorizontalAlignment="Left" Height="220" VerticalAlignment="Top" Width="574" AutoGenerateColumns="false" Canvas.Left="10" Canvas.Top="48">
+            <DataGrid x:Name="dgDeviceTypes" ItemsSource="{Binding DeviceTypes}" SelectedItem="{Binding SelectedDeviceType}"  HorizontalAlignment="Left" Height="220" VerticalAlignment="Top" Width="574" AutoGenerateColumns="false" Canvas.Left="10" Canvas.Top="48">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding DeviceTypeId}"/>
                     <DataGridTextColumn Header="Naam" Binding="{Binding DeviceTypeName}"/>
@@ -21,7 +25,8 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Click="RowButtonClick" Content="..." Width="20"/>
+                                    <Button Content="..." Command="{Binding DataContext.EditCommand,
+                                                RelativeSource={RelativeSource AncestorType=DataGrid}}" Width="20"></Button>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

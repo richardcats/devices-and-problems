@@ -18,7 +18,7 @@
             <DataGrid x:Name="dgStoringen"  HorizontalAlignment="Left" Height="163" VerticalAlignment="Top" Width="580" Canvas.Top="32" AutoGenerateColumns="false">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding ProblemId}"/>
-                    <DataGridTextColumn Header="Datum" Binding="{Binding DateRaised}"/>
+                    <DataGridTextColumn Header="Datum" Binding="{Binding DateRaised, StringFormat='dd-MM-yyyy'}"/>
                     <DataGridTextColumn Header="Prioriteit" Binding="{Binding Priority}"/>
                     <DataGridTextColumn Header="Ernst" Binding="{Binding Severity}"/>
                     <DataGridTextColumn Header="Beschrijving" Binding="{Binding Description}"/>

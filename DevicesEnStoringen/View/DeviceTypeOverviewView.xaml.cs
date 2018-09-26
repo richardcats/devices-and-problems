@@ -22,14 +22,6 @@ namespace DevicesEnStoringen
             InitializeComponent();
 
             this.currentEmployee = currentEmployee;
-            DeviceTypes = deviceTypeDataService.GetAllDeviceTypes().ToObservableCollection();
-            Loaded += DeviceTypeOverviewView_Loaded;
-        }
-
-
-        void DeviceTypeOverviewView_Loaded(object sender, RoutedEventArgs e)
-        {
-            DataContext = this;
         }
 
         // When the user clicks on a device-type, it will set the SelectedDeviceType of the new window

@@ -31,7 +31,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding ProblemId}"/>
                     <DataGridTextColumn Header="Beschrijving" Binding="{Binding Description}"/>
-                    <DataGridTextColumn Header="Datum" Binding="{Binding DateRaised}"/>
+                    <DataGridTextColumn Header="Datum" Binding="{Binding DateRaised, StringFormat='dd-MM-yyyy'}"/>
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
