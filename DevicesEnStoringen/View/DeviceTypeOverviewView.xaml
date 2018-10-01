@@ -6,10 +6,7 @@
              xmlns:local="clr-namespace:DevicesEnStoringen"
              mc:Ignorable="d" 
              d:DesignHeight="350" d:DesignWidth="600"
-             xmlns:viewmodel="clr-namespace:DevicesEnStoringen.ViewModel">
-    <UserControl.DataContext>
-        <viewmodel:DeviceTypeOverviewViewModel></viewmodel:DeviceTypeOverviewViewModel>
-    </UserControl.DataContext>
+             DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=DeviceTypeOverviewViewModel}">
     <Grid>
         <Canvas x:Name="cvsInhoud" Margin="0,40,0,0">
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Zoek device-type:" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>

@@ -4,10 +4,15 @@
              xmlns:local="clr-namespace:DevicesEnStoringen"
              StartupUri="View\LoginView.xaml">
     <Application.Resources>
-        <Style TargetType="DataGrid">
-            <Setter Property="CanUserAddRows" Value="false"/>
-            <Setter Property="IsReadOnly" Value="True"/>
-            <Setter Property="Opacity" Value="0.7"/>
-        </Style>
+
+        <ResourceDictionary>
+            <local:ViewModelLocator x:Key="mainViewModelLocator"></local:ViewModelLocator>
+            
+            <Style TargetType="DataGrid">
+                <Setter Property="CanUserAddRows" Value="false"/>
+                <Setter Property="IsReadOnly" Value="True"/>
+                <Setter Property="Opacity" Value="0.7"/>
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

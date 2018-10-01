@@ -20,7 +20,7 @@ namespace DevicesEnStoringen.View
 
         void DeviceTypeDetailView_Loaded(object sender, RoutedEventArgs e)
         {
-            //DataContext = SelectedDeviceType;
+            // DataContext = this;
             dgDevices.DataContext = this;    
         }
 
@@ -40,8 +40,8 @@ namespace DevicesEnStoringen.View
 
             Loaded += DeviceTypeDetailView_Loaded;
 
-            if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
-                dgDevices.Columns[4].Visibility = Visibility.Hidden;
+            //if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
+            //    dgDevices.Columns[4].Visibility = Visibility.Hidden;  // to do: fix dat je het juiste employee mee geeft (maak extra service?)
         }
 
         // When a new device-type is registered
@@ -129,8 +129,8 @@ namespace DevicesEnStoringen.View
         // As soon as a change has occurred in one of the fields, the "submit" button will be enabled again
         private void EnableToepassen(object sender, TextChangedEventArgs e)
         {
-            if (btnToepassen.IsEnabled == false)
-                btnToepassen.IsEnabled = true;
+            //if (btnToepassen.IsEnabled == false)
+            //    btnToepassen.IsEnabled = true;
         }
 
         // The user first receives a message before the device-type is permanently removed from the database

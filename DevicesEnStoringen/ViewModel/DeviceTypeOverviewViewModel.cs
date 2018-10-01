@@ -18,6 +18,7 @@ namespace DevicesEnStoringen.ViewModel
     public class DeviceTypeOverviewViewModel : INotifyPropertyChanged
     {
         private DeviceTypeDataService deviceTypeDataService = new DeviceTypeDataService();
+        private DialogService dialogService = new DialogService();
         private EmployeeDataService currentEmployee;
         public static ObservableCollection<DeviceType> DeviceTypes { get; set; }
 
@@ -34,6 +35,7 @@ namespace DevicesEnStoringen.ViewModel
         private void OnUpdateListMessageReceived(UpdateListMessage obj)
         {
             LoadData();
+            dialogService.CloseDialog();
         }
 
         private void LoadCommands()
@@ -44,6 +46,8 @@ namespace DevicesEnStoringen.ViewModel
         private void EditDeviceType(object obj)
         {
             Messenger.Default.Send<DeviceType>(selectedDeviceType);
+            currentEmployee = new EmployeeDataService();
+            dialogService.ShowEditDialog(selectedDeviceType, currentEmployee); // to do: fix dat je het juiste employee mee geeft (maak extra service?)
         }
 
         private bool CanEditDeviceType(object obj)

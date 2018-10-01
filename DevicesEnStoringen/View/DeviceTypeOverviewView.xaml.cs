@@ -28,7 +28,7 @@ namespace DevicesEnStoringen
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
             DeviceType selectedDeviceType = (DeviceType)dgDeviceTypes.SelectedItems[0];
-            DeviceTypeDetailView deviceTypeDetailView = new DeviceTypeDetailView(selectedDeviceType, currentEmployee)
+            DeviceTypeDetailView deviceTypeDetailView = new DeviceTypeDetailView(selectedDeviceType, currentEmployee) 
             {
                 SelectedDeviceType = selectedDeviceType
             };
