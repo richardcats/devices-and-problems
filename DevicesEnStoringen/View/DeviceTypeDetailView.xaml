@@ -11,10 +11,10 @@
     </Window.Background>
     <Grid>
         <TextBlock x:Name="tbNaam" HorizontalAlignment="Left" Margin="9,20,0,0" TextWrapping="Wrap" Text="Naam *" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtNaam" Text="{Binding backupCopy.DeviceTypeName, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen" MaxLength="20"/>
+        <TextBox x:Name="txtNaam" Text="{Binding SelectedDeviceTypeCopy.DeviceTypeName, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen" MaxLength="20"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="9,50,0,0" TextWrapping="Wrap" Text="Opmerkingen" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtOpmerkingen" Text="{Binding SelectedDeviceType.Description, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="266" Height="37" TextChanged="EnableToepassen"/>
+        <TextBox x:Name="txtOpmerkingen" Text="{Binding SelectedDeviceTypeCopy.Description, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="266" Height="37" TextChanged="EnableToepassen"/>
 
         <Canvas x:Name="cvsOpenstaandeStoringen" Margin="9,101,0,0" >
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Alle devices van dit type" VerticalAlignment="Top"/>

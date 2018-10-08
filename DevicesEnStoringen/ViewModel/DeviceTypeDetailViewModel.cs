@@ -15,21 +15,11 @@ using System.Windows.Input;
 
 namespace DevicesEnStoringen.ViewModel
 {
-    public class DeviceTypeDetailViewModel : INotifyPropertyChanged, IEditableObject
+    public class DeviceTypeDetailViewModel : INotifyPropertyChanged
     {
         private DeviceTypeDataService deviceTypeDataService;
 
-        public ICommand SaveCommand { get; set; }
-        public ICommand DeleteCommand { get; set; }
-        public ICommand CancelCommand { get; set; }
-
-        public DeviceType backupCopy { get; set; }
-        private bool inEdit;
-
-
         private DeviceType selectedDeviceType;
-        public ObservableCollection<Device> DevicesOfCurrentDeviceType { get; set; }
-
         public DeviceType SelectedDeviceType
         {
             get
@@ -43,6 +33,12 @@ namespace DevicesEnStoringen.ViewModel
             }
         }
 
+        public DeviceType SelectedDeviceTypeCopy { get; set; }
+        public ObservableCollection<Device> DevicesOfCurrentDeviceType { get; set; }
+        public ICommand SaveCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
+
         public DeviceTypeDetailViewModel()
         {
             LoadCommands();
@@ -53,7 +49,7 @@ namespace DevicesEnStoringen.ViewModel
         private void OnDeviceTypeReceived(DeviceType deviceType)
         {
             SelectedDeviceType = deviceType;
-            BeginEdit();
+            SelectedDeviceTypeCopy = SelectedDeviceType.Copy(); // make a copy in case the user wants to cancel the change
             DevicesOfCurrentDeviceType = deviceTypeDataService.GetDevicesOfDeviceType(SelectedDeviceType.DeviceTypeId).ToObservableCollection();
         }
 
@@ -71,8 +67,7 @@ namespace DevicesEnStoringen.ViewModel
 
         private void Cancel(object obj)
         {
-            CancelEdit();
-            Messenger.Default.Send<UpdateListMessage>(new UpdateListMessage());
+            Messenger.Default.Send(new UpdateListMessage());
         }
 
         private bool CanDeleteDeviceType(object obj)
@@ -83,7 +78,7 @@ namespace DevicesEnStoringen.ViewModel
         private void DeleteDeviceType(object obj)
         {
             deviceTypeDataService.DeleteDeviceType(SelectedDeviceType);
-            Messenger.Default.Send<UpdateListMessage>(new UpdateListMessage());
+            Messenger.Default.Send(new UpdateListMessage());
         }
 
         private bool CanSaveDeviceType(object obj)
@@ -93,8 +88,9 @@ namespace DevicesEnStoringen.ViewModel
 
         private void SaveDeviceType(object obj)
         {
+            SelectedDeviceType = SelectedDeviceTypeCopy;
             deviceTypeDataService.UpdateDeviceType(SelectedDeviceType, SelectedDeviceType.DeviceTypeId);
-            Messenger.Default.Send<UpdateListMessage>(new UpdateListMessage());
+            Messenger.Default.Send(new UpdateListMessage());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -102,24 +98,6 @@ namespace DevicesEnStoringen.ViewModel
         private void RaisePropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public void BeginEdit()
-        {
-            if (inEdit) return;
-            inEdit = true;
-            backupCopy = selectedDeviceType.Copy();
-        }
-
-        public void EndEdit()
-        {
-        }
-
-        public void CancelEdit()
-        {
-            if (!inEdit) return;
-            inEdit = false;
-            SelectedDeviceType = backupCopy;
         }
     }
 }

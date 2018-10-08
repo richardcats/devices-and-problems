@@ -20,8 +20,21 @@ namespace DevicesEnStoringen.ViewModel
         private DeviceTypeDataService deviceTypeDataService = new DeviceTypeDataService();
         private DialogService dialogService = new DialogService();
         private EmployeeDataService currentEmployee;
-        public static ObservableCollection<DeviceType> DeviceTypes { get; set; }
+        private ObservableCollection<DeviceType> deviceTypes;
 
+        public ObservableCollection<DeviceType> DeviceTypes
+        {
+           get
+           {
+               return deviceTypes;
+           }
+           set
+           {
+               deviceTypes = value;
+               RaisePropertyChanged("DeviceTypes");
+           }
+        }
+        
         public ICommand EditCommand { get; set; }
 
         public DeviceTypeOverviewViewModel()
