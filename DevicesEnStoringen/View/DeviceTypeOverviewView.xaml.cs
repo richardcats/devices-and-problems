@@ -21,21 +21,15 @@ namespace DevicesEnStoringen
         {
             InitializeComponent();
 
-            this.currentEmployee = currentEmployee;
+            this.currentEmployee = currentEmployee; // tijdelijk
         }
 
         // When the user clicks on a device-type, it will set the SelectedDeviceType of the new window
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
-            DeviceType selectedDeviceType = (DeviceType)dgDeviceTypes.SelectedItems[0];
-            DeviceTypeDetailView deviceTypeDetailView = new DeviceTypeDetailView(selectedDeviceType, currentEmployee) 
-            {
-                SelectedDeviceType = selectedDeviceType
-            };
-
             // when the user clicks cancel, force the datagrid to refresh to show the old values (temporary)
-            if (!deviceTypeDetailView.ShowDialog().Value)
-                RefreshDatagrid();
+            //if (!deviceTypeDetailView.ShowDialog().Value)
+            //    RefreshDatagrid();
         }
 
         private void FilterDatagrid(object sender, EventArgs e)
@@ -54,17 +48,15 @@ namespace DevicesEnStoringen
 
         private void RegisterDeviceTypeClick(object sender, RoutedEventArgs e)
         {
-            DeviceTypeDetailView deviceTypeDetailView = new DeviceTypeDetailView();
-
-            // Force the datagrid to refresh after a device-type is registered (temporary)
-            if (deviceTypeDetailView.ShowDialog().Value)
-                RefreshDatagrid();
+             // Force the datagrid to refresh after a device-type is registered (temporary)
+            //if (deviceTypeDetailView.ShowDialog().Value)
+            //    RefreshDatagrid();
         }
 
-        private void RefreshDatagrid()
+        /*private void RefreshDatagrid()
         {
             DeviceTypes = deviceTypeDataService.GetAllDeviceTypes().ToObservableCollection();
             dgDeviceTypes.ItemsSource = DeviceTypes;
-        }
+        }*/
     }
 }

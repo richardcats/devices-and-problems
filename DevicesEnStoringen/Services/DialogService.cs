@@ -21,7 +21,7 @@ namespace DevicesEnStoringen.Services
 
         public void ShowEditDialog(DeviceType selectedDevice, EmployeeDataService currentEmployee)
         {
-            deviceTypeDetailView = new DeviceTypeDetailView(selectedDevice, currentEmployee);
+            deviceTypeDetailView = new DeviceTypeDetailView(currentEmployee);
             deviceTypeDetailView.ShowDialog();
         }
 

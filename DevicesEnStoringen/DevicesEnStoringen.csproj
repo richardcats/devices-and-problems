@@ -90,6 +90,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Messages\UpdateListMessage.cs" />
     <Compile Include="Services\DeviceDataService.cs" />
     <Compile Include="Services\DialogService.cs" />

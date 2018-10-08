@@ -11,10 +11,10 @@
     </Window.Background>
     <Grid>
         <TextBlock x:Name="tbNaam" HorizontalAlignment="Left" Margin="9,20,0,0" TextWrapping="Wrap" Text="Naam *" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtNaam" Text="{Binding SelectedDeviceType.DeviceTypeName, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen" MaxLength="20"/>
+        <TextBox x:Name="txtNaam" Text="{Binding backupCopy.DeviceTypeName, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen" MaxLength="20"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="9,50,0,0" TextWrapping="Wrap" Text="Opmerkingen" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtOpmerkingen" Text="{Binding SelectedDeviceType.Description}" HorizontalAlignment="Left"  Margin="118,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="266" Height="37" TextChanged="EnableToepassen"/>
+        <TextBox x:Name="txtOpmerkingen" Text="{Binding SelectedDeviceType.Description, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="266" Height="37" TextChanged="EnableToepassen"/>
 
         <Canvas x:Name="cvsOpenstaandeStoringen" Margin="9,101,0,0" >
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Alle devices van dit type" VerticalAlignment="Top"/>
@@ -39,13 +39,13 @@
         </Canvas>
         <Canvas x:Name="cvsRegistreerKnoppen" Margin="0,80,0,0" >
             <Button x:Name="btnToevoegen" Content="Toevoegen" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="AddDeviceType" Canvas.Left="219" Canvas.Top="36"/>
-            <Button x:Name="btnAnnuleren" Content="Annuleren" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Cancel" Canvas.Left="309" Canvas.Top="36" RenderTransformOrigin="1.205,0.552"/>
+            <Button Content="Annuleren" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Cancel" Canvas.Left="309" Canvas.Top="36" RenderTransformOrigin="1.205,0.552"/>
         </Canvas>
 
         <Canvas x:Name="cvsBewerkKnoppen" Margin="0,210,0,0"  >
             <Button x:Name="btnVerwijder" Command="{Binding DeleteCommand}" Content="Verwijder" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="RemoveDeviceType" Canvas.Left="15" Canvas.Top="36"/>
-            <Button x:Name="btnOK" Command="{Binding SaveCommand}" Content="OK" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="UpdateDeviceType" Canvas.Left="129" Canvas.Top="36"/>
-            <Button Content="Annuleren" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Cancel"  Canvas.Left="219" Canvas.Top="36"/>
+            <Button x:Name="btnOK" Command="{Binding SaveCommand}" Content="OK" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Left="129" Canvas.Top="36"/>
+            <Button Content="Annuleren" Command="{Binding CancelCommand}"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Left="219" Canvas.Top="36"/>
             <Button x:Name="btnToepassen" Content="Toepassen" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="UpdateDeviceType" Canvas.Left="309" Canvas.Top="36"/>
         </Canvas>
     </Grid>

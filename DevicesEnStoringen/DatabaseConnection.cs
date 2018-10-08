@@ -103,12 +103,12 @@ namespace DevicesEnStoringen
             return deviceTypes;
         }
 
-        public void UpdateDeviceType(DeviceType selectedDeviceType, DeviceType newDeviceType)
+        public void UpdateDeviceType(DeviceType newDeviceType, int selectedDeviceTypeId)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "UPDATE DeviceType SET Naam = '" + newDeviceType.DeviceTypeName + "', Opmerkingen = '" + newDeviceType.Description + "' WHERE DeviceTypeID = '" + selectedDeviceType.DeviceTypeId + "'";
+                string query = "UPDATE DeviceType SET Naam = '" + newDeviceType.DeviceTypeName + "', Opmerkingen = '" + newDeviceType.Description + "' WHERE DeviceTypeID = '" + selectedDeviceTypeId + "'";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 command.ExecuteNonQuery();

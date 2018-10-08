@@ -1,5 +1,6 @@
 ﻿using DevicesEnStoringen.Extensions;
 using DevicesEnStoringen.Services;
+using DevicesEnStoringen.ViewModel;
 using Model;
 using System;
 using System.Collections.ObjectModel;
@@ -18,27 +19,19 @@ namespace DevicesEnStoringen.View
         public ObservableCollection<Device> DevicesOfCurrentDeviceType { get; set; }
 
 
-        void DeviceTypeDetailView_Loaded(object sender, RoutedEventArgs e)
-        {
-            // DataContext = this;
-            dgDevices.DataContext = this;    
-        }
 
 
         // When an existing device-type is clicked
-        public DeviceTypeDetailView(DeviceType selectedDeviceType, EmployeeDataService currentEmployee)
+        public DeviceTypeDetailView(EmployeeDataService currentEmployee)
         {
             InitializeComponent();
 
             Title = "Device-type bewerken";
-            SelectedDeviceType = selectedDeviceType;
-            this.currentEmployee = currentEmployee;
-            DevicesOfCurrentDeviceType = deviceTypeDataService.GetDevicesOfDeviceType(SelectedDeviceType.DeviceTypeId).ToObservableCollection();
+            //SelectedDeviceType = selectedDeviceType;
+            //this.currentEmployee = currentEmployee;
             
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
-
-            Loaded += DeviceTypeDetailView_Loaded;
 
             //if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
             //    dgDevices.Columns[4].Visibility = Visibility.Hidden;  // to do: fix dat je het juiste employee mee geeft (maak extra service?)
@@ -102,7 +95,7 @@ namespace DevicesEnStoringen.View
                         Description = txtOpmerkingen.Text
                     };
 
-                    deviceTypeDataService.UpdateDeviceType(SelectedDeviceType, newDeviceType);
+                    //deviceTypeDataService.UpdateDeviceType(SelectedDeviceType, newDeviceType);
 
                     Button button = (Button)sender;
 

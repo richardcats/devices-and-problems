@@ -17,9 +17,9 @@ namespace DevicesEnStoringen.Services
             return conn.GetDeviceTypes();
         }
 
-        public void UpdateDeviceType(DeviceType selectedDeviceType, DeviceType newDeviceType)
+        public void UpdateDeviceType(DeviceType newDeviceType, int selectedDeviceTypeId)
         {
-            conn.UpdateDeviceType(selectedDeviceType, newDeviceType);
+            conn.UpdateDeviceType(newDeviceType, selectedDeviceTypeId);
         }
 
         public void AddDeviceType(DeviceType newDeviceType)
