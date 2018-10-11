@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 //Messenger downloaded from StackOverflow and small modifications made
-namespace JoeCoffeeStore.StockManagement.App.Utility
+namespace DevicesEnStoringen.Utility
 {
     public class Messenger
     {

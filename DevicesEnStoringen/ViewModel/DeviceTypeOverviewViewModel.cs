@@ -2,7 +2,6 @@
 using DevicesEnStoringen.Messages;
 using DevicesEnStoringen.Services;
 using DevicesEnStoringen.Utility;
-using JoeCoffeeStore.StockManagement.App.Utility;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -34,7 +33,9 @@ namespace DevicesEnStoringen.ViewModel
                RaisePropertyChanged("DeviceTypes");
            }
         }
-        
+
+        public ICommand AddCommand { get; set; }
+
         public ICommand EditCommand { get; set; }
 
         public DeviceTypeOverviewViewModel()
@@ -48,12 +49,24 @@ namespace DevicesEnStoringen.ViewModel
         private void OnUpdateListMessageReceived(UpdateListMessage obj)
         {
             LoadData();
-            dialogService.CloseDialog();
+            if (obj.CloseScreen == true)
+                dialogService.CloseDialog();
         }
 
         private void LoadCommands()
         {
+            AddCommand = new CustomCommand(AddDeviceType, CanAddDeviceType);
             EditCommand = new CustomCommand(EditDeviceType, CanEditDeviceType);
+        }
+
+        private bool CanAddDeviceType(object obj)
+        {
+            return true;
+        }
+
+        private void AddDeviceType(object obj)
+        {
+            dialogService.ShowAddDialog();
         }
 
         private void EditDeviceType(object obj)

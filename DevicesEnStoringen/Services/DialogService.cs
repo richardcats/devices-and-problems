@@ -13,15 +13,15 @@ namespace DevicesEnStoringen.Services
     {
         Window deviceTypeDetailView = null;
 
-        public void ShowEditDialog()
-        {
-            deviceTypeDetailView = new DeviceTypeDetailView();
-            deviceTypeDetailView.ShowDialog();
-        }
-
         public void ShowEditDialog(DeviceType selectedDevice, EmployeeDataService currentEmployee)
         {
             deviceTypeDetailView = new DeviceTypeDetailView(currentEmployee);
+            deviceTypeDetailView.ShowDialog();
+        }
+
+        public void ShowAddDialog()
+        {
+            deviceTypeDetailView = new DeviceTypeDetailView();
             deviceTypeDetailView.ShowDialog();
         }
 
@@ -29,6 +29,11 @@ namespace DevicesEnStoringen.Services
         {
             if (deviceTypeDetailView != null)
                 deviceTypeDetailView.Close();
+        }
+
+        public bool ShowDeleteWarningMessageBox(string type, int id)
+        {
+            return MessageBox.Show(type + " " + id + " wordt permanent verwijderd", "Device-type", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes;
         }
     }
 }
