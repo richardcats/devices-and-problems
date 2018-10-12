@@ -90,6 +90,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converter\BoolToColorConverter.cs" />
+    <Compile Include="Converter\DoNothingConverter.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Messages\UpdateListMessage.cs" />
     <Compile Include="Services\DeviceDataService.cs" />

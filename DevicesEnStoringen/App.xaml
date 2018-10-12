@@ -2,12 +2,14 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:DevicesEnStoringen"
+             xmlns:converter="clr-namespace:DevicesEnStoringen.Converter"
              StartupUri="View\LoginView.xaml">
     <Application.Resources>
 
         <ResourceDictionary>
             <local:ViewModelLocator x:Key="mainViewModelLocator"></local:ViewModelLocator>
-            
+            <converter:BoolToColorConverter x:Key="localBoolToColorConverter"></converter:BoolToColorConverter>
+            <converter:DoNothingConverter x:Key="localDoNothingConverter"></converter:DoNothingConverter>
             <Style TargetType="DataGrid">
                 <Setter Property="CanUserAddRows" Value="false"/>
                 <Setter Property="IsReadOnly" Value="True"/>

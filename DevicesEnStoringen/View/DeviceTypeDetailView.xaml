@@ -10,7 +10,7 @@
         <ImageBrush ImageSource="..\Images\background2.jpg"></ImageBrush>
     </Window.Background>
     <Grid>
-        <TextBlock x:Name="tbNaam" HorizontalAlignment="Left" Margin="9,20,0,0" TextWrapping="Wrap" Text="Naam *" VerticalAlignment="Top"/>
+        <TextBlock x:Name="tbNaam" Foreground="{Binding MarkRedIfFieldEmptyName, Converter={StaticResource localBoolToColorConverter}}"  HorizontalAlignment="Left" Margin="9,20,0,0" TextWrapping="Wrap" Text="Naam *" VerticalAlignment="Top"/>
         <TextBox x:Name="txtNaam" Text="{Binding SelectedDeviceTypeCopy.DeviceTypeName, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="InputChanged" MaxLength="20"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="9,50,0,0" TextWrapping="Wrap" Text="Opmerkingen" VerticalAlignment="Top"/>
@@ -38,7 +38,7 @@
             </DataGrid>
         </Canvas>
         <Canvas x:Name="cvsRegistreerKnoppen" Margin="0,80,0,0" >
-            <Button x:Name="btnToevoegen" Content="Toevoegen" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="AddDeviceType" Canvas.Left="219" Canvas.Top="36"/>
+            <Button Content="Toevoegen" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Left="219" Canvas.Top="36"/>
             <Button Content="Annuleren" Command="{Binding CancelCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Left="309" Canvas.Top="36" RenderTransformOrigin="1.205,0.552"/>
         </Canvas>
 

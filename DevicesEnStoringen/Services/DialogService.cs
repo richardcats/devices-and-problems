@@ -15,13 +15,13 @@ namespace DevicesEnStoringen.Services
 
         public void ShowEditDialog(DeviceType selectedDevice, EmployeeDataService currentEmployee)
         {
-            deviceTypeDetailView = new DeviceTypeDetailView(currentEmployee);
+            deviceTypeDetailView = new DeviceTypeDetailView(true);
             deviceTypeDetailView.ShowDialog();
         }
 
         public void ShowAddDialog()
         {
-            deviceTypeDetailView = new DeviceTypeDetailView();
+            deviceTypeDetailView = new DeviceTypeDetailView(false);
             deviceTypeDetailView.ShowDialog();
         }
 
@@ -31,9 +31,18 @@ namespace DevicesEnStoringen.Services
                 deviceTypeDetailView.Close();
         }
 
-        public bool ShowDeleteWarningMessageBox(string type, int id)
+        public bool ShowRemoveWarningMessageBox(string type, int id)
         {
-            return MessageBox.Show(type + " " + id + " wordt permanent verwijderd", "Device-type", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes;
+            return MessageBox.Show($"{type} {id} wordt permanent verwijderd", "Device-type", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes;
+        }
+
+        public void CanNotRemoveMessageBox(string deletableType, string preventingTypes)
+        {
+            MessageBox.Show($"Het is niet mogelijk om dit {deletableType} te verwijderen. Zorg dat er geen {preventingTypes} gekoppeld zijn aan dit {deletableType}.", deletableType, MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        public void ShowEmptyFieldMessageBox()
+        {
+            MessageBox.Show("Niet alle verplichte velden zijn ingevuld", "Ontbrekende informatie", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
 }

@@ -1,10 +1,8 @@
 ﻿using DevicesEnStoringen.Extensions;
 using DevicesEnStoringen.Services;
-using DevicesEnStoringen.ViewModel;
 using Model;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -19,6 +17,7 @@ namespace DevicesEnStoringen.View
         public ObservableCollection<Device> DevicesOfCurrentDeviceType { get; set; }
 
 
+
         // As soon as a change has occurred in one of the fields, the "submit" and "OK" button will either be enabled or disabled
         private void InputChanged(object sender, TextChangedEventArgs e)
         {
@@ -26,36 +25,37 @@ namespace DevicesEnStoringen.View
             binding.UpdateSource();
         }
 
-        // When an existing device-type is clicked
-        public DeviceTypeDetailView(EmployeeDataService currentEmployee)
+        public DeviceTypeDetailView(bool editMode)
         {
             InitializeComponent();
 
-            Title = "Device-type bewerken";
-            //SelectedDeviceType = selectedDeviceType;
-            //this.currentEmployee = currentEmployee;
-            
-            cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
-            cvsBewerkKnoppen.Visibility = Visibility.Visible;
+            // When an existing device-type is clicked
+            if (editMode)
+            {
+                Title = "Device-type bewerken";
+                //SelectedDeviceType = selectedDeviceType;
+                //this.currentEmployee = currentEmployee;
 
-            //if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
-            //    dgDevices.Columns[4].Visibility = Visibility.Hidden;  // to do: fix dat je het juiste employee mee geeft (maak extra service?)
-        }
+                cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
+                cvsBewerkKnoppen.Visibility = Visibility.Visible;
 
-        // When a new device-type is registered
-        public DeviceTypeDetailView()
-        {
-            InitializeComponent();
+                //if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
+                //    dgDevices.Columns[4].Visibility = Visibility.Hidden;  // to do: fix dat je het juiste employee mee geeft (maak extra service?)
+            }
+            // When a new device-type is registered
+            else
+            {
+                Title = "Device-type registreren";
 
-            Title = "Device-type registreren";
+                cvsRegistreerKnoppen.Visibility = Visibility.Visible;
+                cvsBewerkKnoppen.Visibility = Visibility.Hidden;
+                cvsOpenstaandeStoringen.Visibility = Visibility.Hidden;
 
-            cvsRegistreerKnoppen.Visibility = Visibility.Visible;
-            cvsBewerkKnoppen.Visibility = Visibility.Hidden;
-            cvsOpenstaandeStoringen.Visibility = Visibility.Hidden;
+                Height = 180;
 
-            Height = 180;
-
-            txtNaam.Text = ""; // tijdelijk
+                tbNaam.Foreground = new SolidColorBrush(Colors.Black); // tijdelijk
+                txtNaam.Text = ""; // tijdelijk
+            }
         }
 
         // When the IT administrator clicks on a device, it will pass the ID to a new window
@@ -82,7 +82,7 @@ namespace DevicesEnStoringen.View
             }
             else
             {
-                MarkEmptyFieldsRed();
+                //MarkEmptyFieldsRed();
                 MessageBox.Show("Niet alle verplichte velden zijn ingevuld", Title, MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
@@ -120,42 +120,16 @@ namespace DevicesEnStoringen.View
         //        MessageBox.Show("Niet alle verplichte velden zijn ingevuld", Title, MessageBoxButton.OK, MessageBoxImage.Warning);
         //    }
         //}
+       
 
-
-
-        // The user first receives a message before the device-type is permanently removed from the database
-        //private void RemoveDeviceType(object sender, RoutedEventArgs e)
-        //{
-        //    if (dgDevices.Items.Count == 0)
-        //    {
-        //        if (MessageBox.Show("Device-type " + SelectedDeviceType.DeviceTypeId + " wordt permanent verwijderd", "Device-type", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-        //        {
-        //            try
-        //            {
-        //                deviceTypeDataService.DeleteDeviceType(SelectedDeviceType); // Delete from the database
-        //                DeviceTypeOverviewView.DeviceTypes.Remove(DeviceTypeOverviewView.DeviceTypes.Where(i => i.DeviceTypeId == SelectedDeviceType.DeviceTypeId).Single()); // Delete from the ObservableCollection
-
-        //                DialogResult = true;
-        //            }
-        //            catch (Exception)
-        //            {
-        //                MessageBox.Show("Er is iets misgegaan bij het updaten van de database. Excuses voor het ongemak.");
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Het is niet mogelijk om dit device-type te verwijderen. Zorg dat er geen devices gekoppeld zijn aan dit device-type.", "Device-type", MessageBoxButton.OK, MessageBoxImage.Error);
-        //    }
-        //}
 
         // Allows the user to see which required fields must be filled
-        private void MarkEmptyFieldsRed()
+       /* private void MarkEmptyFieldsRed()
         {
             tbNaam.Foreground = Brushes.Black;
 
             if (txtNaam.Text == "")
                 tbNaam.Foreground = Brushes.Red;
-        }
+        }*/
     }
 }
