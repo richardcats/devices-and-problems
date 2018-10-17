@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="DeviceType" Height="310" Width="410" ResizeMode="NoResize"
+        Title="{Binding Title}" Height="310" Width="410" ResizeMode="NoResize"
         DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=DeviceTypeDetailViewModel}">
     <Window.Background>
         <ImageBrush ImageSource="..\Images\background2.jpg"></ImageBrush>

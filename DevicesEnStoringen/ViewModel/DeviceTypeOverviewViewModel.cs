@@ -66,12 +66,13 @@ namespace DevicesEnStoringen.ViewModel
 
         private void AddDeviceType(object obj)
         {
+            Messenger.Default.Send("NewDeviceType");
             dialogService.ShowAddDialog();
         }
 
         private void EditDeviceType(object obj)
         {
-            Messenger.Default.Send<DeviceType>(selectedDeviceType);
+            Messenger.Default.Send(selectedDeviceType);
             currentEmployee = new EmployeeDataService();
             dialogService.ShowEditDialog(selectedDeviceType, currentEmployee); // to do: fix dat je het juiste employee mee geeft (maak extra service?)
         }

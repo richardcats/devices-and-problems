@@ -7,6 +7,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace DevicesEnStoringen.ViewModel
 {
@@ -14,6 +15,35 @@ namespace DevicesEnStoringen.ViewModel
     {
         private DeviceTypeDataService deviceTypeDataService;
         private DialogService dialogService = new DialogService();
+
+        private string title;
+        public string Title
+        {
+            get
+            {
+                return title;
+            }
+            set
+            {
+                title = value;
+                RaisePropertyChanged("Title");
+            }
+        }
+
+        private SolidColorBrush blackText;
+        public SolidColorBrush BlackText
+        {
+            get
+            {
+                return blackText;
+            }
+            set
+            {
+                blackText = value;
+                RaisePropertyChanged("BlackText");
+            }
+        }
+
 
         private DeviceType selectedDeviceType;
         public DeviceType SelectedDeviceType
@@ -56,15 +86,36 @@ namespace DevicesEnStoringen.ViewModel
         {
             LoadCommands();
             deviceTypeDataService = new DeviceTypeDataService();
+            Messenger.Default.Register<string>(this, OnNewDeviceType);
             Messenger.Default.Register<DeviceType>(this, OnDeviceTypeReceived);
+
         }
 
+        // When showing the add new device-type window, set the title, make all TextBlocks black and make sure all fields are empty
+        private void OnNewDeviceType(string obj)
+        {
+            Title = "Device-type registreren";
+
+            MarkTextBlocksBlack();
+
+            SelectedDeviceTypeCopy = new DeviceType()
+            {
+                DeviceTypeName = "",
+                Description = ""
+            };
+        }
+
+        // When showing the edit device-type window, set the title, make all TextBlocks black and set the selected devicetype
         private void OnDeviceTypeReceived(DeviceType deviceType)
         {
+            Title = "Device-type bewerken";
+
+            MarkTextBlocksBlack();
+
             SelectedDeviceType = deviceType;
             SelectedDeviceTypeCopy = SelectedDeviceType.Copy(); // Creates a deep copy in case the user wants to cancel the change
             DevicesOfCurrentDeviceType = deviceTypeDataService.GetDevicesOfDeviceType(SelectedDeviceType.DeviceTypeId).ToObservableCollection();
-            MarkFieldsBlack();
+            
         }
 
         private void LoadCommands()
@@ -78,12 +129,23 @@ namespace DevicesEnStoringen.ViewModel
 
         private bool CanAddDeviceType(object obj)
         {
-            return false;
+            return true;
         }
 
         private void AddDeviceType(object obj)
         {
-            throw new NotImplementedException();
+
+            if (!CheckIfFieldsNotEmpty()) // Ensures that all required fields are filled in before updating the device-type in the database
+            {
+                dialogService.ShowEmptyFieldMessageBox();
+                return;
+            }
+            else
+            {
+                SelectedDeviceType = SelectedDeviceTypeCopy;
+                deviceTypeDataService.AddDeviceType(SelectedDeviceTypeCopy);
+                Messenger.Default.Send(new UpdateListMessage(true));
+            }
         }
 
         private void SaveDeviceTypeWithoutClose(object obj)
@@ -101,7 +163,7 @@ namespace DevicesEnStoringen.ViewModel
             }
         }
 
-        // As soon as a change has occurred in one of the fields, the "OK" and "submit" button will be enabled again
+        // As soon as a change has occurred in one of the fields, the "submit" button will be enabled again
         private bool CanSaveDeviceTypeWithoutClose(object obj)
         {
             if (SelectedDeviceType != null && SelectedDeviceTypeCopy != null)
@@ -167,11 +229,11 @@ namespace DevicesEnStoringen.ViewModel
 
         public bool CheckIfFieldsNotEmpty()
         {
-            MarkFieldsBlack();
+            MarkTextBlocksBlack();
             bool noEmptyFields = true;
             if (SelectedDeviceTypeCopy.DeviceTypeName.Length == 0)
             {
-                MarkRedIfFieldEmptyName = true;
+                MarkRedIfFieldEmptyName = true; // By coloring it red, it allows the user to see which required fields must be filled 
                 noEmptyFields = false;
             }
 
@@ -181,7 +243,7 @@ namespace DevicesEnStoringen.ViewModel
             return false;
         }
 
-        public void MarkFieldsBlack()
+        public void MarkTextBlocksBlack()
         {
             MarkRedIfFieldEmptyName = false;
         }
