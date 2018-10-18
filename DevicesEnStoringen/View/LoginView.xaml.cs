@@ -1,4 +1,5 @@
 ﻿using DevicesEnStoringen.Services;
+using DevicesEnStoringen.Utility;
 using System.Windows;
 
 namespace DevicesEnStoringen
@@ -18,8 +19,9 @@ namespace DevicesEnStoringen
 
             if (loginDetailsCorrect)
             {
-                Overzicht overzicht = new Overzicht(employeeDataService);
+                OverviewView overzicht = new OverviewView();
                 overzicht.Show();
+                Messenger.Default.Send(employeeDataService);
                 Close();
             }
             else

@@ -1,11 +1,12 @@
-﻿<Window x:Class="DevicesEnStoringen.Overzicht"
+﻿<Window x:Class="DevicesEnStoringen.OverviewView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DevicesEnStoringen"
         mc:Ignorable="d"
-        Title="Alle storingen" Height="360" Width="610" ResizeMode="NoResize">
+        Title="Alle storingen" Height="360" Width="610" ResizeMode="NoResize"
+        DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=OverviewViewModel}">
     <Window.Background>
         <ImageBrush ImageSource="..\Images\background.jpg"></ImageBrush>
     </Window.Background>
@@ -16,11 +17,11 @@
             <Button Content="Device-types" Width="75" Canvas.Left="180" Click="DeviceTypesClick"/>
             <Button x:Name="btnRapportages" Content="Rapportages" Width="75" Canvas.Left="270" Click="RapportagesClick" Visibility="Hidden" />
             <TextBlock TextWrapping="Wrap" Text="Ingelogd als:" Canvas.Left="370"/>
-            <TextBlock x:Name="txtIngelogdAls" TextWrapping="Wrap" Text="" Canvas.Left="440"/>
+            <TextBlock TextWrapping="Wrap" Text="{Binding LoggedInAs}" Canvas.Left="440"/>
             <TextBlock x:Name="txtUitloggen" TextWrapping="Wrap" Canvas.Left="520"><Hyperlink Click="Logout">Uitloggen</Hyperlink></TextBlock>
             <Separator  Height="57"  Width="574"/>
 
         </Canvas>
-        <StackPanel Name="stkOverzicht"/>
+        <StackPanel Name="overviewContainer"/>
     </Grid>
 </Window>

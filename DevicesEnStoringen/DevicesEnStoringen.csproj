@@ -102,6 +102,7 @@
     <Compile Include="Utility\Messenger.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModel\DeviceTypeDetailViewModel.cs" />
+    <Compile Include="ViewModel\OverviewViewModel.cs" />
     <Compile Include="View\DeviceDetailView.xaml.cs">
       <DependentUpon>DeviceDetailView.xaml</DependentUpon>
     </Compile>
@@ -109,8 +110,8 @@
     <Compile Include="View\DeviceTypeDetailView.xaml.cs">
       <DependentUpon>DeviceTypeDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Overzicht.xaml.cs">
-      <DependentUpon>Overzicht.xaml</DependentUpon>
+    <Compile Include="View\OverviewView.xaml.cs">
+      <DependentUpon>OverviewView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\DeviceTypeDataService.cs" />
     <Compile Include="View\ProblemDetailView.xaml.cs">
@@ -149,7 +150,7 @@
     <Compile Include="View\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
-    <Page Include="View\Overzicht.xaml">
+    <Page Include="View\OverviewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

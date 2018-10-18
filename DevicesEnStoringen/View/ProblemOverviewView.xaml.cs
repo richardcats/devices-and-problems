@@ -27,11 +27,11 @@ namespace DevicesEnStoringen
             ComboboxProblemStatus = ProblemDetailView.FillCombobox(ComboboxType.StatusAll);
             Loaded += ProblemOverviewView_Loaded;
 
-            if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
+            /*if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
             {
                 btnRegistreerStoring.Visibility = Visibility.Hidden;
                 dgStoringen.Columns[6].Visibility = Visibility.Hidden;
-            }
+            }*/
         }
 
         private void ProblemOverviewView_Loaded(object sender, RoutedEventArgs e)

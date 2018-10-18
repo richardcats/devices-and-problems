@@ -86,13 +86,13 @@ namespace DevicesEnStoringen.ViewModel
         {
             LoadCommands();
             deviceTypeDataService = new DeviceTypeDataService();
-            Messenger.Default.Register<string>(this, OnNewDeviceType);
+            Messenger.Default.Register<string>(this, OnNewDeviceTypeWindow);
             Messenger.Default.Register<DeviceType>(this, OnDeviceTypeReceived);
 
         }
 
         // When showing the add new device-type window, set the title, make all TextBlocks black and make sure all fields are empty
-        private void OnNewDeviceType(string obj)
+        private void OnNewDeviceTypeWindow(string obj)
         {
             Title = "Device-type registreren";
 
@@ -131,18 +131,16 @@ namespace DevicesEnStoringen.ViewModel
         {
             return true;
         }
-
+        
         private void AddDeviceType(object obj)
         {
-
-            if (!CheckIfFieldsNotEmpty()) // Ensures that all required fields are filled in before updating the device-type in the database
+            if (!CheckIfFieldsNotEmpty()) // Ensures that all required fields are filled in before inserting the device-type into the database
             {
                 dialogService.ShowEmptyFieldMessageBox();
                 return;
             }
             else
             {
-                SelectedDeviceType = SelectedDeviceTypeCopy;
                 deviceTypeDataService.AddDeviceType(SelectedDeviceTypeCopy);
                 Messenger.Default.Send(new UpdateListMessage(true));
             }

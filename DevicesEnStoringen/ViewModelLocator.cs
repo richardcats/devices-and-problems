@@ -8,12 +8,20 @@ using System.Threading.Tasks;
 namespace DevicesEnStoringen
 {
     public class ViewModelLocator
-    { 
-
+    {
+        private static OverviewViewModel overviewViewModel = new OverviewViewModel();
 
         private static DeviceTypeOverviewViewModel deviceTypeOverviewViewModel = new DeviceTypeOverviewViewModel();
 
         private static DeviceTypeDetailViewModel deviceTypeDetailViewModel = new DeviceTypeDetailViewModel();
+
+        public static OverviewViewModel OverviewViewModel
+        {
+            get
+            {
+                return overviewViewModel;
+            }
+        }
 
         public static DeviceTypeOverviewViewModel DeviceTypeOverviewViewModel
         {
@@ -30,6 +38,8 @@ namespace DevicesEnStoringen
                 return deviceTypeDetailViewModel;
             }
         }
+
+
     }
 }
 

@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace DevicesEnStoringen.ViewModel
 {
-    public class DeviceTypeOverviewViewModel : INotifyPropertyChanged
+    public class DeviceTypeOverviewViewModel : OverviewViewModel, INotifyPropertyChanged
     {
         private DeviceTypeDataService deviceTypeDataService = new DeviceTypeDataService();
         private DialogService dialogService = new DialogService();
@@ -45,6 +45,7 @@ namespace DevicesEnStoringen.ViewModel
 
             Messenger.Default.Register<UpdateListMessage>(this, OnUpdateListMessageReceived);
         }
+
 
         private void OnUpdateListMessageReceived(UpdateListMessage obj)
         {

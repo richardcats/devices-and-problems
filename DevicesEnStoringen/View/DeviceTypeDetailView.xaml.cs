@@ -8,12 +8,7 @@ namespace DevicesEnStoringen.View
 {
     public partial class DeviceTypeDetailView : Window
     {
-        private DeviceTypeDataService deviceTypeDataService = new DeviceTypeDataService();
         private EmployeeDataService currentEmployee;
-        public DeviceType SelectedDeviceType { get; set; }
-        public ObservableCollection<Device> DevicesOfCurrentDeviceType { get; set; }
-
-
 
         // As soon as a change has occurred in one of the fields, the "submit" and "OK" button will either be enabled or disabled
         private void InputChanged(object sender, TextChangedEventArgs e)
@@ -21,7 +16,7 @@ namespace DevicesEnStoringen.View
             var binding = ((TextBox)sender).GetBindingExpression(TextBox.TextProperty);
             binding.UpdateSource();
         }
-
+        
         public DeviceTypeDetailView(bool editMode)
         {
             InitializeComponent();
@@ -54,27 +49,6 @@ namespace DevicesEnStoringen.View
             Device selectedDevice = (Device)dgDevices.SelectedItems[0];
             DeviceDetailView device = new DeviceDetailView(selectedDevice); // tijdelijk
             device.Show();
-        }
-
-        // Ensures that all required fields are filled in before inserting the device-type into the database
-        private void AddDeviceType(object sender, RoutedEventArgs e)
-        {
-            if (txtNaam.Text != "")
-            {
-                DeviceType newDeviceType = new DeviceType
-                {
-                    DeviceTypeName = txtNaam.Text,
-                    Description = txtOpmerkingen.Text
-                };
-
-                deviceTypeDataService.AddDeviceType(newDeviceType);
-                DialogResult = true;
-            }
-            else
-            {
-                //MarkEmptyFieldsRed();
-                MessageBox.Show("Niet alle verplichte velden zijn ingevuld", Title, MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
         }
     }
 }

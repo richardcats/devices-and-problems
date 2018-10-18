@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace Model
 {
@@ -53,10 +48,18 @@ namespace Model
             }
         }
 
+        private int deviceAmount;
         public int DeviceAmount
         {
-            get;
-            set;
+            get
+            {
+                return deviceAmount;
+            }
+            set
+            {
+                deviceAmount = value;
+                RaisePropertyChanged("DeviceAmount");
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
