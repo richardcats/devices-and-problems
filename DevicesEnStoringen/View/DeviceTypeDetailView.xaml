@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:utility="clr-namespace:DevicesEnStoringen.Utility"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="310" Width="410" ResizeMode="NoResize"
         DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=DeviceTypeDetailViewModel}">
@@ -20,12 +21,15 @@
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Alle devices van dit type" VerticalAlignment="Top"/>
 
             <DataGrid x:Name="dgDevices" ItemsSource="{Binding DevicesOfCurrentDeviceType}" HorizontalAlignment="Left" Height="100" Canvas.Top ="21" VerticalAlignment="Top" Width="374" AutoGenerateColumns="false">
+                <DataGrid.Resources>
+                    <utility:BindingProxy x:Key="proxy" Data="{Binding}" />
+                </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding DeviceId}"/>
                     <DataGridTextColumn Header="Naam" Binding="{Binding DeviceName}"/>
                     <DataGridTextColumn Header="Afdeling" Binding="{Binding Department}"/>
                     <DataGridTextColumn Header="Datum" Binding="{Binding FirstAddedDate, StringFormat='dd-MM-yyyy'}"/>
-                    <DataGridTemplateColumn>
+                    <DataGridTemplateColumn Visibility="{Binding Data.ShowEditButton, Converter={StaticResource booleanToVisibilityConverter}, Source={StaticResource proxy}}" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">

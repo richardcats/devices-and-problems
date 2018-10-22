@@ -13,16 +13,14 @@ namespace DevicesEnStoringen
     public partial class ProblemOverviewView : UserControl
     {
         private ProblemDataService problemDataService = new ProblemDataService();
-        private EmployeeDataService currentEmployee;
 
         public ObservableCollection<string> ComboboxProblemStatus { get; set; }
         public static ObservableCollection<Problem> Problems { get; set; }
 
-        public ProblemOverviewView(EmployeeDataService currentEmployee)
+        public ProblemOverviewView()
         {
             InitializeComponent();
 
-            this.currentEmployee = currentEmployee;
             Problems = problemDataService.GetAllProblems().ToObservableCollection();
             ComboboxProblemStatus = ProblemDetailView.FillCombobox(ComboboxType.StatusAll);
             Loaded += ProblemOverviewView_Loaded;
@@ -77,11 +75,11 @@ namespace DevicesEnStoringen
 
         private void RegistreerStoringClick(object sender, RoutedEventArgs e)
         {
-            ProblemDetailView problemDetailView = new ProblemDetailView(currentEmployee);
+            //ProblemDetailView problemDetailView = new ProblemDetailView(currentEmployee);
 
             // Force the datagrid to refresh after a device is registered (temporary)
-            if (problemDetailView.ShowDialog().Value)
-                RefreshDatagrid();
+            //if (problemDetailView.ShowDialog().Value)
+            //    RefreshDatagrid();
         }
 
         private void RefreshDatagrid()

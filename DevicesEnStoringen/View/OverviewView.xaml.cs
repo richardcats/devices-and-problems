@@ -6,17 +6,15 @@ namespace DevicesEnStoringen
 {
     public partial class OverviewView : Window
     {
-        private EmployeeDataService currentEmployee;
         private ProblemOverviewView problemOverviewView;
         public OverviewView()
         {
             InitializeComponent();
 
-            problemOverviewView = new ProblemOverviewView(currentEmployee);
+            problemOverviewView = new ProblemOverviewView();
             overviewContainer.Children.Add(problemOverviewView);
-           // txtIngelogdAls.Text = currentEmployee.FirstNameOfCurrentEmployee();
             
-
+            // tijdelijk 
          //   if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
          //       btnRapportages.Visibility = Visibility.Visible;
         }
@@ -25,16 +23,15 @@ namespace DevicesEnStoringen
         {
             Title = "Alle storingen";
             overviewContainer.Children.Clear();
-            problemOverviewView = new ProblemOverviewView(currentEmployee);
+            problemOverviewView = new ProblemOverviewView();
             overviewContainer.Children.Add(problemOverviewView);
-            Messenger.Default.Send(currentEmployee);
         }
 
         private void DevicesClick(object sender, RoutedEventArgs e)
         {
             Title = "Alle devices";
             overviewContainer.Children.Clear();
-            DeviceOverviewView deviceOverviewView = new DeviceOverviewView(currentEmployee);
+            DeviceOverviewView deviceOverviewView = new DeviceOverviewView();
             overviewContainer.Children.Add(deviceOverviewView);
         }
 
@@ -42,15 +39,16 @@ namespace DevicesEnStoringen
         {
             Title = "Alle device-types";
             overviewContainer.Children.Clear();
-            DeviceTypeOverviewView deviceTypeOverviewView = new DeviceTypeOverviewView(currentEmployee);
+            DeviceTypeOverviewView deviceTypeOverviewView = new DeviceTypeOverviewView();
             overviewContainer.Children.Add(deviceTypeOverviewView);
+            Messenger.Default.Send("OpenDeviceTypeOverview");
         }
 
         private void RapportagesClick(object sender, RoutedEventArgs e)
         {
             Title = "Rapportage storingen";
             overviewContainer.Children.Clear();
-            ReportsView reportsView = new ReportsView(currentEmployee);
+            ReportsView reportsView = new ReportsView();
             overviewContainer.Children.Add(reportsView);
         }
 

@@ -14,25 +14,23 @@ namespace DevicesEnStoringen
     {
         private DeviceDataService deviceDataService = new DeviceDataService();
         private ProblemDataService problemDataService = new ProblemDataService();
-        private EmployeeDataService currentEmployee;
 
         public ObservableCollection<string> ComboboxDeviceTypes { get; set; }
         public static ObservableCollection<Device> Devices { get; set; }
 
-        public DeviceOverviewView(EmployeeDataService currentEmployee)
+        public DeviceOverviewView()
         {
             InitializeComponent();
 
-            this.currentEmployee = currentEmployee;
             Devices = deviceDataService.GetAllDevices().ToObservableCollection();
             ComboboxDeviceTypes = problemDataService.FillCombobox(ComboboxType.DeviceTypeAll);
             Loaded += DeviceOverviewView_Loaded;
 
-            if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
+           /* if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
             {
                 btnRegistreerDevice.Visibility = Visibility.Hidden;
                 dgDevices.Columns[6].Visibility = Visibility.Hidden;
-            }
+            }*/
         }
 
         void DeviceOverviewView_Loaded(object sender, RoutedEventArgs e)

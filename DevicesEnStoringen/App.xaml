@@ -10,6 +10,7 @@
             <local:ViewModelLocator x:Key="mainViewModelLocator"></local:ViewModelLocator>
             <converter:BoolToColorConverter x:Key="localBoolToColorConverter"></converter:BoolToColorConverter>
             <converter:DoNothingConverter x:Key="localDoNothingConverter"></converter:DoNothingConverter>
+            <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
             <Style TargetType="DataGrid">
                 <Setter Property="CanUserAddRows" Value="false"/>
                 <Setter Property="IsReadOnly" Value="True"/>

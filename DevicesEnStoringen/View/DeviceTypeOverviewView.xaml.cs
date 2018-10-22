@@ -13,14 +13,9 @@ namespace DevicesEnStoringen
 {
     public partial class DeviceTypeOverviewView : UserControl
     {
-        private EmployeeDataService currentEmployee;
-        public static ObservableCollection<DeviceType> DeviceTypes { get; set; }
-
-        public DeviceTypeOverviewView(EmployeeDataService currentEmployee)
+        public DeviceTypeOverviewView()
         {
             InitializeComponent();
-
-            this.currentEmployee = currentEmployee; // tijdelijk
         }
 
         private void FilterDatagrid(object sender, EventArgs e)

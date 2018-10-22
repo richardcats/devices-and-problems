@@ -98,6 +98,7 @@
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\EmployeeDataService.cs" />
     <Compile Include="Services\ProblemDataService.cs" />
+    <Compile Include="Utility\BindingProxy.cs" />
     <Compile Include="Utility\CustomCommand.cs" />
     <Compile Include="Utility\Messenger.cs" />
     <Compile Include="ViewModelLocator.cs" />

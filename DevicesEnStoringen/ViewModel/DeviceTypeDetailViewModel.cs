@@ -73,6 +73,20 @@ namespace DevicesEnStoringen.ViewModel
             }
         }
 
+        private bool showEditButton;
+        public bool ShowEditButton
+        {
+            get
+            {
+                return showEditButton;
+            }
+            set
+            {
+                showEditButton = value;
+                RaisePropertyChanged("ShowEditButton");
+            }
+        }
+
         public DeviceType SelectedDeviceTypeCopy { get; set; }
         public ObservableCollection<Device> DevicesOfCurrentDeviceType { get; set; }
         
@@ -88,7 +102,7 @@ namespace DevicesEnStoringen.ViewModel
             deviceTypeDataService = new DeviceTypeDataService();
             Messenger.Default.Register<string>(this, OnNewDeviceTypeWindow);
             Messenger.Default.Register<DeviceType>(this, OnDeviceTypeReceived);
-
+            Messenger.Default.Register<EmployeeDataService>(this, OnCurrentEmployeeReceived, "DeviceTypeDetailView");
         }
 
         // When showing the add new device-type window, set the title, make all TextBlocks black and make sure all fields are empty
@@ -116,6 +130,19 @@ namespace DevicesEnStoringen.ViewModel
             SelectedDeviceTypeCopy = SelectedDeviceType.Copy(); // Creates a deep copy in case the user wants to cancel the change
             DevicesOfCurrentDeviceType = deviceTypeDataService.GetDevicesOfDeviceType(SelectedDeviceType.DeviceTypeId).ToObservableCollection();
             
+        }
+
+        private void OnCurrentEmployeeReceived(EmployeeDataService receivedEmployeeData)
+        {
+            // Make sure that the IT manager can't edit or delete devices
+            if (receivedEmployeeData.AccountTypeOfCurrentEmployee() == "IT-manager")
+            {
+                ShowEditButton = false;
+            }
+            else
+            {
+                ShowEditButton = true;
+            }
         }
 
         private void LoadCommands()

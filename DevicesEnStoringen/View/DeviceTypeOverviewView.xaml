@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DevicesEnStoringen"
+             xmlns:utility="clr-namespace:DevicesEnStoringen.Utility"
              mc:Ignorable="d" 
              d:DesignHeight="350" d:DesignWidth="600"
              DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=DeviceTypeOverviewViewModel}">
@@ -11,19 +12,21 @@
         <Canvas x:Name="cvsInhoud" Margin="0,40,0,0">
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Zoek device-type:" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
             <TextBox x:Name="txtZoek" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" TextChanged="FilterDatagrid" Canvas.Left="117" Canvas.Top="10" RenderTransformOrigin="1.3,0.323"/>
-            <Button Content="Registreer device-type" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.541,3.635" Width="140" Canvas.Left="443" Canvas.Top="11" />
+            <Button Content="Registreer device-type" Command="{Binding AddCommand}" Visibility="{Binding Path=ShowAddButton, Converter={StaticResource booleanToVisibilityConverter}}" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.541,3.635" Width="140" Canvas.Left="443" Canvas.Top="11" />
             <DataGrid x:Name="dgDeviceTypes" ItemsSource="{Binding DeviceTypes}" SelectedItem="{Binding SelectedDeviceType}"  HorizontalAlignment="Left" Height="220" VerticalAlignment="Top" Width="574" AutoGenerateColumns="false" Canvas.Left="10" Canvas.Top="48">
+                <DataGrid.Resources>
+                    <utility:BindingProxy x:Key="proxy" Data="{Binding}" />
+                </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding DeviceTypeId}"/>
                     <DataGridTextColumn Header="Naam" Binding="{Binding DeviceTypeName}"/>
                     <DataGridTextColumn Header="Aantal devices" Binding="{Binding DeviceAmount}"/>
                     <DataGridTextColumn Header="Opmerkingen" Binding="{Binding Description}"/>
-                    <DataGridTemplateColumn>
+                    <DataGridTemplateColumn Visibility="{Binding Data.ShowEditButton, Converter={StaticResource booleanToVisibilityConverter}, Source={StaticResource proxy}}" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Content="..." Command="{Binding DataContext.EditCommand,
-                                                RelativeSource={RelativeSource AncestorType=DataGrid}}" Width="20"></Button>
+                                    <Button Content="..." Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" Width="20" ></Button>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

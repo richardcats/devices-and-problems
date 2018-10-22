@@ -18,7 +18,7 @@ namespace DevicesEnStoringen
     public partial class ReportsView : UserControl, INotifyPropertyChanged
     {
         private ProblemDataService problemDataService = new ProblemDataService();
-        private EmployeeDataService currentEmployee;
+
 
         public ObservableCollection<int> SelectableYears { get; set; }
         public ObservableCollection<Problem> Problems { get; set; }
@@ -44,11 +44,11 @@ namespace DevicesEnStoringen
             get { return _percentageAmountSolvedProblems; }
             set { _percentageAmountSolvedProblems = value; OnPropertyChanged("PercentageAmountSolvedProblems"); }
         }
-        public ReportsView(EmployeeDataService currentEmployee)
+        public ReportsView()
         {
             InitializeComponent();
 
-            this.currentEmployee = currentEmployee;
+     
             Problems = problemDataService.GetAllProblems().ToObservableCollection();
             SelectableYears = problemDataService.FillComboboxYears().ToObservableCollection();
             Loaded += ReportsView_Loaded;
@@ -181,7 +181,7 @@ namespace DevicesEnStoringen
 
                 SmtpServer.Send(mail);
                 */
-                MessageBox.Show("De bijlage is verstuurd naar " + currentEmployee.EmailAddress);
+                //MessageBox.Show("De bijlage is verstuurd naar " + currentEmployee.EmailAddress);
             }
         }
     }
