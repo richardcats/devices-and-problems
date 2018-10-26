@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace DevicesEnStoringen.ViewModel
@@ -25,7 +26,7 @@ namespace DevicesEnStoringen.ViewModel
         {
            get
            {
-               return deviceTypes;
+                return deviceTypes;
            }
            set
            {
@@ -33,6 +34,21 @@ namespace DevicesEnStoringen.ViewModel
                RaisePropertyChanged("DeviceTypes");
            }
         }
+
+        private string searchInput = "";
+        public string SearchInput
+        {
+            get
+            {
+                return searchInput;
+            }
+            set
+            {
+                searchInput = value;
+                RaisePropertyChanged("SearchInput");
+                FilterDataGrid();
+            }
+        } 
 
         private DeviceType selectedDeviceType;
 
@@ -76,6 +92,7 @@ namespace DevicesEnStoringen.ViewModel
                 RaisePropertyChanged("ShowAddButton");
             }
         }
+        
 
         public ICommand AddCommand { get; set; }
 
@@ -90,9 +107,29 @@ namespace DevicesEnStoringen.ViewModel
             Messenger.Default.Register<string>(this, OnDeviceTypeOverviewOpened);
         }
 
+
+        private void LoadData()
+        {
+            DeviceTypes = deviceTypeDataService.GetAllDeviceTypes().ToObservableCollection();
+        }
+
+        private void LoadCommands()
+        {
+            AddCommand = new CustomCommand(AddDeviceType, CanAddDeviceType);
+            EditCommand = new CustomCommand(EditDeviceType, CanEditDeviceType);
+        }
+
+        private void FilterDataGrid()
+        {
+            ICollectionView DeviceTypesView = CollectionViewSource.GetDefaultView(DeviceTypes);
+            var searchFilter = new Predicate<object>(item => ((DeviceType)item).DeviceTypeName.ToLower().Contains(SearchInput.ToLower()));
+            DeviceTypesView.Filter = searchFilter;
+        }
+
         private void OnUpdateListMessageReceived(UpdateListMessage obj)
         {
             LoadData();
+            FilterDataGrid();
 
             if (obj.CloseScreen == true)
                 dialogService.CloseDialog();
@@ -103,7 +140,7 @@ namespace DevicesEnStoringen.ViewModel
             ShowAddButton = true;
             ShowEditButton = true;
 
-            // tijdelijk use this code for ProblemOverviewViewModel en DeviceOverviewViewModel
+            // temporary .. use this code for ProblemOverviewViewModel and DeviceOverviewViewModel instead
             /*if (CurrentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
             {
                 ShowAddButton = false;
@@ -116,10 +153,10 @@ namespace DevicesEnStoringen.ViewModel
             }*/
         }
 
-        private void LoadCommands()
+        private void AddDeviceType(object obj)
         {
-            AddCommand = new CustomCommand(AddDeviceType, CanAddDeviceType);
-            EditCommand = new CustomCommand(EditDeviceType, CanEditDeviceType);
+            Messenger.Default.Send("NewDeviceType");
+            dialogService.ShowAddDialog();
         }
 
         private bool CanAddDeviceType(object obj)
@@ -127,27 +164,16 @@ namespace DevicesEnStoringen.ViewModel
             return true;
         }
 
-        private void AddDeviceType(object obj)
-        {
-            Messenger.Default.Send("NewDeviceType");
-            dialogService.ShowAddDialog();
-        }
-
         private void EditDeviceType(object obj)
         {
             Messenger.Default.Send(selectedDeviceType);
             Messenger.Default.Send(CurrentEmployee, "DeviceTypeDetailView");
-            dialogService.ShowEditDialog(); // to do: fix dat je het juiste employee mee geeft (maak extra service?)
+            dialogService.ShowEditDialog();
         }
 
         private bool CanEditDeviceType(object obj)
         {
             return true;
-        }
-
-        private void LoadData()
-        {
-            DeviceTypes = deviceTypeDataService.GetAllDeviceTypes().ToObservableCollection();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

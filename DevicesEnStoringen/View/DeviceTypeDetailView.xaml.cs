@@ -7,8 +7,25 @@ using System.Windows.Controls;
 namespace DevicesEnStoringen.View
 {
     public partial class DeviceTypeDetailView : Window
-    {
-        private EmployeeDataService currentEmployee;
+    {        
+        public DeviceTypeDetailView(bool editMode)
+        {
+            InitializeComponent();
+
+            if (editMode) // When an existing device-type is clicked
+            {
+                cvsRegisterButtons.Visibility = Visibility.Hidden;
+                cvsEditButtons.Visibility = Visibility.Visible;
+            }
+            else // When a new device-type is registered
+            {
+                cvsRegisterButtons.Visibility = Visibility.Visible;
+                cvsEditButtons.Visibility = Visibility.Hidden;
+                cvsOpenProblems.Visibility = Visibility.Hidden;
+
+                Height = 180;
+            }
+        }
 
         // As soon as a change has occurred in one of the fields, the "submit" and "OK" button will either be enabled or disabled
         private void InputChanged(object sender, TextChangedEventArgs e)
@@ -16,39 +33,13 @@ namespace DevicesEnStoringen.View
             var binding = ((TextBox)sender).GetBindingExpression(TextBox.TextProperty);
             binding.UpdateSource();
         }
-        
-        public DeviceTypeDetailView(bool editMode)
-        {
-            InitializeComponent();
 
-            // When an existing device-type is clicked
-            if (editMode)
-            {
-                //this.currentEmployee = currentEmployee;
-
-                cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
-                cvsBewerkKnoppen.Visibility = Visibility.Visible;
-
-                //if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
-                //    dgDevices.Columns[4].Visibility = Visibility.Hidden;  // to do: fix dat je het juiste employee mee geeft (maak extra service?)
-            }
-            // When a new device-type is registered
-            else
-            {
-                cvsRegistreerKnoppen.Visibility = Visibility.Visible;
-                cvsBewerkKnoppen.Visibility = Visibility.Hidden;
-                cvsOpenstaandeStoringen.Visibility = Visibility.Hidden;
-
-                Height = 180;
-            }
-        }
-
-        // When the IT administrator clicks on a device, it will pass the ID to a new window (tijdelijk)
+        // When the IT administrator clicks on a device, it will pass the ID to a new window (temporary - remove as soon as there are view models for problems and devices)
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
-            Device selectedDevice = (Device)dgDevices.SelectedItems[0];
-            DeviceDetailView device = new DeviceDetailView(selectedDevice); // tijdelijk
-            device.Show();
+           // Device selectedDevice = (Device)dgDevices.SelectedItems[0];
+           // DeviceDetailView device = new DeviceDetailView(selectedDevice); // tijdelijk
+           // device.Show();
         }
     }
 }

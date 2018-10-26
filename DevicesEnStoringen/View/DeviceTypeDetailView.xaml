@@ -11,16 +11,16 @@
         <ImageBrush ImageSource="..\Images\background2.jpg"></ImageBrush>
     </Window.Background>
     <Grid>
-        <TextBlock x:Name="tbNaam" Foreground="{Binding MarkRedIfFieldEmptyName, Converter={StaticResource localBoolToColorConverter}}"  HorizontalAlignment="Left" Margin="9,20,0,0" TextWrapping="Wrap" Text="Naam *" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtNaam" Text="{Binding SelectedDeviceTypeCopy.DeviceTypeName, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="InputChanged" MaxLength="20"/>
+        <TextBlock Foreground="{Binding MarkRedIfFieldEmptyName, Converter={StaticResource localBoolToColorConverter}}"  HorizontalAlignment="Left" Margin="9,20,0,0" Text="Naam *" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding SelectedDeviceTypeCopy.DeviceTypeName, Mode=TwoWay}" HorizontalAlignment="Left" Margin="118,20,0,0" VerticalAlignment="Top" Width="150" TextChanged="InputChanged" MaxLength="20"/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="9,50,0,0" TextWrapping="Wrap" Text="Opmerkingen" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtOpmerkingen" Text="{Binding SelectedDeviceTypeCopy.Description, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="266" Height="37" TextChanged="InputChanged"/>
+        <TextBlock HorizontalAlignment="Left" Margin="9,50,0,0" Text="Opmerkingen" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding SelectedDeviceTypeCopy.Description, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,50,0,0" VerticalAlignment="Top" Width="266" Height="37" TextChanged="InputChanged"/>
 
-        <Canvas x:Name="cvsOpenstaandeStoringen" Margin="9,101,0,0" >
-            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Alle devices van dit type" VerticalAlignment="Top"/>
+        <Canvas x:Name="cvsOpenProblems" Margin="9,101,0,0" >
+            <TextBlock Text="Alle devices van dit type" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-            <DataGrid x:Name="dgDevices" ItemsSource="{Binding DevicesOfCurrentDeviceType}" HorizontalAlignment="Left" Height="100" Canvas.Top ="21" VerticalAlignment="Top" Width="374" AutoGenerateColumns="false">
+            <DataGrid ItemsSource="{Binding DevicesOfCurrentDeviceType}" HorizontalAlignment="Left" Height="100" Canvas.Top ="21" VerticalAlignment="Top" Width="374" AutoGenerateColumns="false">
                 <DataGrid.Resources>
                     <utility:BindingProxy x:Key="proxy" Data="{Binding}" />
                 </DataGrid.Resources>
@@ -41,12 +41,12 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Canvas>
-        <Canvas x:Name="cvsRegistreerKnoppen" Margin="0,80,0,0" >
+        <Canvas x:Name="cvsRegisterButtons" Margin="0,80,0,0" >
             <Button Content="Toevoegen" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Left="219" Canvas.Top="36"/>
-            <Button Content="Annuleren" Command="{Binding CancelCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Left="309" Canvas.Top="36" RenderTransformOrigin="1.205,0.552"/>
+            <Button Content="Annuleren" Command="{Binding CancelCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Left="309" Canvas.Top="36" />
         </Canvas>
 
-        <Canvas x:Name="cvsBewerkKnoppen" Margin="0,210,0,0"  >
+        <Canvas x:Name="cvsEditButtons" Margin="0,210,0,0"  >
             <Button Content="Verwijder" Command="{Binding DeleteCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Left="15" Canvas.Top="36"/>
             <Button Content="OK" Command="{Binding SaveCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Left="129" Canvas.Top="36"/>
             <Button Content="Annuleren" Command="{Binding CancelCommand}"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Left="219" Canvas.Top="36"/>
