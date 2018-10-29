@@ -1,4 +1,6 @@
-﻿using DevicesEnStoringen.ViewModel;
+﻿using DataAccessLayer;
+using DevicesEnStoringen.Services;
+using DevicesEnStoringen.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +11,15 @@ namespace DevicesEnStoringen
 {
     public class ViewModelLocator
     {
+        private static IDialogService dialogService = new DialogService();
+
+        private static IDeviceTypeDataService deviceTypeDataService = new DeviceTypeDataService(new DeviceTypeRepository());
+
         private static OverviewViewModel overviewViewModel = new OverviewViewModel();
 
-        private static DeviceTypeOverviewViewModel deviceTypeOverviewViewModel = new DeviceTypeOverviewViewModel();
+        private static DeviceTypeOverviewViewModel deviceTypeOverviewViewModel = new DeviceTypeOverviewViewModel(deviceTypeDataService, dialogService);
 
-        private static DeviceTypeDetailViewModel deviceTypeDetailViewModel = new DeviceTypeDetailViewModel();
+        private static DeviceTypeDetailViewModel deviceTypeDetailViewModel = new DeviceTypeDetailViewModel(deviceTypeDataService, dialogService);
 
         public static OverviewViewModel OverviewViewModel
         {
@@ -38,8 +44,6 @@ namespace DevicesEnStoringen
                 return deviceTypeDetailViewModel;
             }
         }
-
-
     }
 }
 

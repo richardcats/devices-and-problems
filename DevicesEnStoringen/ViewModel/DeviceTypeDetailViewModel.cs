@@ -13,8 +13,8 @@ namespace DevicesEnStoringen.ViewModel
 {
     public class DeviceTypeDetailViewModel : INotifyPropertyChanged
     {
-        private DeviceTypeDataService deviceTypeDataService;
-        private DialogService dialogService = new DialogService();
+        private IDeviceTypeDataService deviceTypeDataService;
+        private IDialogService dialogService;
 
         private string title;
         public string Title
@@ -96,10 +96,13 @@ namespace DevicesEnStoringen.ViewModel
         public ICommand DeleteCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        public DeviceTypeDetailViewModel()
+        public DeviceTypeDetailViewModel(IDeviceTypeDataService deviceTypeDataService, IDialogService dialogService)
         {
+            this.deviceTypeDataService = deviceTypeDataService;
+            this.dialogService = dialogService;
+
             LoadCommands();
-            deviceTypeDataService = new DeviceTypeDataService();
+
             Messenger.Default.Register<string>(this, OnNewDeviceTypeWindow);
             Messenger.Default.Register<DeviceType>(this, OnDeviceTypeReceived);
             Messenger.Default.Register<EmployeeDataService>(this, OnCurrentEmployeeReceived, "DeviceTypeDetailView");

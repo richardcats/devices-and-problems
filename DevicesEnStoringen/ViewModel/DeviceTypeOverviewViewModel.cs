@@ -17,8 +17,8 @@ namespace DevicesEnStoringen.ViewModel
 {
     public class DeviceTypeOverviewViewModel : OverviewViewModel, INotifyPropertyChanged
     {
-        private DeviceTypeDataService deviceTypeDataService = new DeviceTypeDataService();
-        private DialogService dialogService = new DialogService();
+        private IDeviceTypeDataService deviceTypeDataService;
+        private IDialogService dialogService;
 
         private ObservableCollection<DeviceType> deviceTypes;
 
@@ -98,8 +98,11 @@ namespace DevicesEnStoringen.ViewModel
 
         public ICommand EditCommand { get; set; }
 
-        public DeviceTypeOverviewViewModel()
+        public DeviceTypeOverviewViewModel(IDeviceTypeDataService deviceTypeDataService, IDialogService dialogService)
         {
+            this.deviceTypeDataService = deviceTypeDataService;
+            this.dialogService = dialogService;
+
             LoadData();
             LoadCommands();
 

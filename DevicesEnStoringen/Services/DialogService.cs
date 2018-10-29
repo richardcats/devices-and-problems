@@ -1,15 +1,9 @@
 ﻿using DevicesEnStoringen.View;
-using Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace DevicesEnStoringen.Services
 {
-    public class DialogService
+    public class DialogService : IDialogService
     {
         Window deviceTypeDetailView = null;
 

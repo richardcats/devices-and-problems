@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using DataAccessLayer;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,34 +8,38 @@ using System.Threading.Tasks;
 
 namespace DevicesEnStoringen.Services
 {
-    class DeviceTypeDataService
+    public class DeviceTypeDataService : IDeviceTypeDataService
     {
+        IDeviceTypeRepository repository;
 
-        DatabaseConnection conn = new DatabaseConnection();
+        public DeviceTypeDataService(IDeviceTypeRepository repository)
+        {
+            this.repository = repository;
+        }
 
         public List<DeviceType> GetAllDeviceTypes()
         {
-            return conn.GetDeviceTypes();
+            return repository.GetDeviceTypes();
         }
 
         public void UpdateDeviceType(DeviceType newDeviceType, int selectedDeviceTypeId)
         {
-            conn.UpdateDeviceType(newDeviceType, selectedDeviceTypeId);
+            repository.UpdateDeviceType(newDeviceType, selectedDeviceTypeId);
         }
 
         public void AddDeviceType(DeviceType newDeviceType)
         {
-            conn.AddDeviceType(newDeviceType);
+            repository.AddDeviceType(newDeviceType);
         }
 
         public void DeleteDeviceType(DeviceType deviceType)
         {
-            conn.DeleteDeviceType(deviceType);
+            repository.DeleteDeviceType(deviceType);
         }
 
         public List<Device> GetDevicesOfDeviceType(int id)
         {
-            return conn.GetDevicesOfDeviceType(id);
+            return repository.GetDevicesOfDeviceType(id);
         }
     }
 }
