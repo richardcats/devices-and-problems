@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Model
 {
@@ -66,6 +68,35 @@ namespace Model
         private void RaisePropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public override bool Equals(Object obj)
+        {
+            if (obj == null)
+                return false;
+
+            DeviceType other = obj as DeviceType;
+            if ((Object)other == null)
+                return false;
+
+            return DeviceTypeId == other.DeviceTypeId
+                && DeviceTypeName == other.DeviceTypeName
+                && Description == other.Description
+                && DeviceAmount == other.DeviceAmount;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 2089894652;
+            hashCode = hashCode * -1521134295 + deviceTypeId.GetHashCode();
+            hashCode = hashCode * -1521134295 + DeviceTypeId.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(deviceTypeName);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(DeviceTypeName);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(description);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Description);
+            hashCode = hashCode * -1521134295 + deviceAmount.GetHashCode();
+            hashCode = hashCode * -1521134295 + DeviceAmount.GetHashCode();
+            return hashCode;
         }
     }
 }
