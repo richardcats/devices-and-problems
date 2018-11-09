@@ -64,13 +64,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Model\DevicesEnStoringen.Model.csproj">
+    <ProjectReference Include="..\DevicesAndProblems.Model\DevicesAndProblems.Model.csproj">
       <Project>{d2b8b996-6e83-4f79-a84f-9f689cbabf18}</Project>
       <Name>DevicesEnStoringen.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Data\DevicesAndProblems.sqlite" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

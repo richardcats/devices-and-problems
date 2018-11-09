@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevicesEnStoringen", "DevicesEnStoringen\DevicesEnStoringen.csproj", "{2D459BE7-3597-4730-8AB5-48F174CD9F4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevicesAndProblems.App", "DevicesAndProblems.App\DevicesAndProblems.App.csproj", "{2D459BE7-3597-4730-8AB5-48F174CD9F4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevicesEnStoringen.Model", "Model\DevicesEnStoringen.Model.csproj", "{D2B8B996-6E83-4F79-A84F-9F689CBABF18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevicesAndProblems.Model", "DevicesAndProblems.Model\DevicesAndProblems.Model.csproj", "{D2B8B996-6E83-4F79-A84F-9F689CBABF18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevicesEnStoringen.DataAccessLayer", "DataAccessLayer\DevicesEnStoringen.DataAccessLayer.csproj", "{6F692568-C716-4B1A-9C59-74643F8129F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevicesAndProblems.DAL", "DevicesAndProblems.DAL\DevicesAndProblems.DAL.csproj", "{6F692568-C716-4B1A-9C59-74643F8129F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevicesEnStoringen.Tests", "DevicesEnStoringen.Tests\DevicesEnStoringen.Tests.csproj", "{37E00F99-C65B-4B4F-BE51-892E44C004DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevicesAndProblems.Tests", "DevicesAndProblems.Tests\DevicesAndProblems.Tests.csproj", "{37E00F99-C65B-4B4F-BE51-892E44C004DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

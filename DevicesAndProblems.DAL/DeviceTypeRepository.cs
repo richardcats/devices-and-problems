@@ -11,7 +11,7 @@ namespace DataAccessLayer
 {
     public class DeviceTypeRepository : IDeviceTypeRepository
     {
-        private string connString = "Data Source = C:\\Projects\\devices-en-storingen\\DevicesEnStoringen\\Data\\DevicesEnStoringen.sqlite;Version=3";
+        private string connString = "Data Source = C:\\Projects\\devices-and-problems\\DevicesAndProblems.DAL\\Data\\DevicesAndProblems.sqlite;Version=3";
         public List<DeviceType> GetDeviceTypes()
         {
             List<DeviceType> deviceTypes = new List<DeviceType>();
