@@ -1,10 +1,7 @@
-﻿using DevicesEnStoringen.Services;
-using Model;
-using System.Collections.ObjectModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace DevicesEnStoringen.View
+namespace DevicesAndProblems.App.View
 {
     public partial class DeviceTypeDetailView : Window
     {        

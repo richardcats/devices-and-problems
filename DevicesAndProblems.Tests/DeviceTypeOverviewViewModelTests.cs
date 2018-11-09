@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using DataAccessLayer;
-using DevicesEnStoringen.Services;
-using DevicesEnStoringen.ViewModel;
+﻿using DevicesAndProblems.App.Services;
+using DevicesAndProblems.App.ViewModel;
+using DevicesAndProblems.DAL;
+using DevicesAndProblems.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Model;
+using System.Collections.ObjectModel;
 
-namespace DevicesEnStoringen.Tests
+namespace DevicesAndProblems.Tests
 {
     [TestClass]
     public class DeviceTypeOverviewViewModelTests

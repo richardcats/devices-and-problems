@@ -1,8 +1,8 @@
-﻿using DataAccessLayer;
-using DevicesEnStoringen.Services;
+﻿using DevicesAndProblems.App.Services;
+using DevicesAndProblems.DAL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DevicesEnStoringen.Tests
+namespace DevicesAndProblems.Tests
 {
     [TestClass]
     public class DeviceTypeDataServiceTest

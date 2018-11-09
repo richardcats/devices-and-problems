@@ -1,12 +1,7 @@
-﻿using Model;
-using System;
+﻿using DevicesAndProblems.Model;
 using System.Collections.Generic;
-using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DevicesEnStoringen.Services
+namespace DevicesAndProblems.App.Services
 {
     class DeviceDataService
     {

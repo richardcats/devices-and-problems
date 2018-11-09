@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using DevicesAndProblems.App.Extensions.ArrayExtensions;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
-using System.ArrayExtensions;
 
-namespace System
+namespace DevicesAndProblems.App.Extensions
 {
     public static class ObjectExtensions
     {

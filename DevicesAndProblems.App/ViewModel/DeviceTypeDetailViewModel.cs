@@ -1,15 +1,14 @@
-﻿using DevicesEnStoringen.Extensions;
-using DevicesEnStoringen.Messages;
-using DevicesEnStoringen.Services;
-using DevicesEnStoringen.Utility;
-using Model;
-using System;
+﻿using DevicesAndProblems.App.Extensions;
+using DevicesAndProblems.App.Messages;
+using DevicesAndProblems.App.Services;
+using DevicesAndProblems.App.Utility;
+using DevicesAndProblems.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace DevicesEnStoringen.ViewModel
+namespace DevicesAndProblems.App.ViewModel
 {
     public class DeviceTypeDetailViewModel : INotifyPropertyChanged
     {

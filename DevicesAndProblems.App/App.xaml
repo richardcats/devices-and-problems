@@ -1,8 +1,8 @@
-﻿<Application x:Class="DevicesEnStoringen.App"
+﻿<Application x:Class="DevicesAndProblems.App.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:DevicesEnStoringen"
-             xmlns:converter="clr-namespace:DevicesEnStoringen.Converter"
+             xmlns:local="clr-namespace:DevicesAndProblems.App"
+             xmlns:converter="clr-namespace:DevicesAndProblems.App.Converter"
              StartupUri="View\LoginView.xaml">
     <Application.Resources>
 

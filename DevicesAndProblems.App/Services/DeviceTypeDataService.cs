@@ -1,12 +1,8 @@
-﻿using DataAccessLayer;
-using Model;
-using System;
+﻿using DevicesAndProblems.DAL;
+using DevicesAndProblems.Model;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DevicesEnStoringen.Services
+namespace DevicesAndProblems.App.Services
 {
     public class DeviceTypeDataService : IDeviceTypeDataService
     {

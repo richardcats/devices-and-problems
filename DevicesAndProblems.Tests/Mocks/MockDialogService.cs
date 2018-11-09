@@ -1,7 +1,6 @@
-﻿using DevicesEnStoringen.View;
-using System.Windows;
+﻿using DevicesAndProblems.App.Services;
 
-namespace DevicesEnStoringen.Services
+namespace DevicesAndProblems.Tests
 {
     public class MockDialogService : IDialogService
     {

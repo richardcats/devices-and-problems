@@ -1,13 +1,8 @@
-﻿using Model;
-using System;
+﻿using DevicesAndProblems.DAL;
+using DevicesAndProblems.Model;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SQLite;
-using System.Configuration;
 
-namespace DataAccessLayer
+namespace DevicesAndProblems.Tests
 {
     public class MockRepository : IDeviceTypeRepository
     {

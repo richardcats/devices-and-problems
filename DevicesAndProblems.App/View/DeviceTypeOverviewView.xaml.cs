@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 
-namespace DevicesEnStoringen
+namespace DevicesAndProblems.App.View
 {
     public partial class DeviceTypeOverviewView : UserControl
     {

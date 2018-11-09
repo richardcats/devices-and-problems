@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace DevicesEnStoringen.Converter
+namespace DevicesAndProblems.App.Converter
 {
     public class BoolToColorConverter : IValueConverter
     {

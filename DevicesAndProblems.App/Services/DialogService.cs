@@ -1,7 +1,8 @@
-﻿using DevicesEnStoringen.View;
+﻿using DevicesAndProblems.App.View;
 using System.Windows;
 
-namespace DevicesEnStoringen.Services
+
+namespace DevicesAndProblems.App.Services
 {
     public class DialogService : IDialogService
     {

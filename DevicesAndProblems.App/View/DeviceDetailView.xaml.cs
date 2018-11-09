@@ -1,6 +1,6 @@
-﻿using DevicesEnStoringen.Extensions;
-using DevicesEnStoringen.Services;
-using Model;
+﻿using DevicesAndProblems.App.Extensions;
+using DevicesAndProblems.App.Services;
+using DevicesAndProblems.Model;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace DevicesEnStoringen
+namespace DevicesAndProblems.App.View
 {
     public partial class DeviceDetailView : Window
     {

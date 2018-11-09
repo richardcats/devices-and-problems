@@ -1,9 +1,8 @@
-﻿<Window x:Class="DevicesEnStoringen.ProblemDetailView"
+﻿<Window x:Class="DevicesAndProblems.App.View.ProblemDetailView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DevicesEnStoringen"
         mc:Ignorable="d"
         Title="Storing" Height="440" Width="630" ResizeMode="NoResize">
     <Window.Background>

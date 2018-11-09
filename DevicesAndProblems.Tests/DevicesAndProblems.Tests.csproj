@@ -77,13 +77,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DevicesAndProblems.App\DevicesAndProblems.App.csproj">
+      <Project>{2d459be7-3597-4730-8ab5-48f174cd9f4f}</Project>
+      <Name>DevicesAndProblems.App</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DevicesAndProblems.DAL\DevicesAndProblems.DAL.csproj">
       <Project>{6f692568-c716-4b1a-9c59-74643f8129f8}</Project>
       <Name>DevicesEnStoringen.DataAccessLayer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DevicesAndProblems.App\DevicesAndProblems.App.csproj">
-      <Project>{2d459be7-3597-4730-8ab5-48f174cd9f4f}</Project>
-      <Name>DevicesEnStoringen</Name>
     </ProjectReference>
     <ProjectReference Include="..\DevicesAndProblems.Model\DevicesAndProblems.Model.csproj">
       <Project>{d2b8b996-6e83-4f79-a84f-9f689cbabf18}</Project>

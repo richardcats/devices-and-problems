@@ -1,19 +1,18 @@
-﻿using DevicesEnStoringen.Extensions;
-using DevicesEnStoringen.Services;
+﻿using DevicesAndProblems.App.Extensions;
+using DevicesAndProblems.App.Services;
+using DevicesAndProblems.Model;
 using Microsoft.Win32;
-using Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace DevicesEnStoringen
+namespace DevicesAndProblems.App.View
 {
     public partial class ReportsView : UserControl, INotifyPropertyChanged
     {

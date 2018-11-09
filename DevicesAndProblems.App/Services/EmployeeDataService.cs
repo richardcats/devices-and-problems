@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DevicesAndProblems.App.View;
 using System.Collections.ObjectModel;
-using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DevicesEnStoringen.Services
+namespace DevicesAndProblems.App.Services
 {
     public class EmployeeDataService
     {

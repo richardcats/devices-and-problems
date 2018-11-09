@@ -1,8 +1,7 @@
-﻿using DevicesEnStoringen.Services;
-using DevicesEnStoringen.Utility;
+﻿using DevicesAndProblems.App.Utility;
 using System.Windows;
 
-namespace DevicesEnStoringen
+namespace DevicesAndProblems.App.View
 {
     public partial class OverviewView : Window
     {

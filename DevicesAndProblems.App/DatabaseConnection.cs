@@ -1,16 +1,16 @@
-﻿using System;
+﻿using DevicesAndProblems.App.View;
+using DevicesAndProblems.Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
-using System.Data;
 using System.Data.SQLite;
-using Model;
 
-namespace DevicesEnStoringen
+namespace DevicesAndProblems.App
 {
     class DatabaseConnection
     {
-        private readonly string connString = ConfigurationManager.ConnectionStrings["DevicesEnStoringen"].ToString();
+        private readonly string connString = ConfigurationManager.ConnectionStrings["DevicesAndProblems"].ToString();
 
         public bool CheckLoginDetails(string emailaddress, string password)
         {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Model
+namespace DevicesAndProblems.Model
 {
     public class DeviceType : INotifyPropertyChanged
     {

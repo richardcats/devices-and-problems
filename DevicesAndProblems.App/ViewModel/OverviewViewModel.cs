@@ -1,13 +1,8 @@
-﻿using DevicesEnStoringen.Services;
-using DevicesEnStoringen.Utility;
-using System;
-using System.Collections.Generic;
+﻿using DevicesAndProblems.App.Services;
+using DevicesAndProblems.App.Utility;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DevicesEnStoringen.ViewModel
+namespace DevicesAndProblems.App.ViewModel
 {
     public class OverviewViewModel : INotifyPropertyChanged
     {

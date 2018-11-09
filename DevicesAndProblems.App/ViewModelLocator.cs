@@ -1,13 +1,8 @@
-﻿using DataAccessLayer;
-using DevicesEnStoringen.Services;
-using DevicesEnStoringen.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DevicesAndProblems.App.Services;
+using DevicesAndProblems.App.ViewModel;
+using DevicesAndProblems.DAL;
 
-namespace DevicesEnStoringen
+namespace DevicesAndProblems.App
 {
     public class ViewModelLocator
     {

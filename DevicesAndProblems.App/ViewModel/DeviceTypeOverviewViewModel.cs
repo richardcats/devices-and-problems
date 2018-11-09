@@ -1,19 +1,15 @@
-﻿using DevicesEnStoringen.Extensions;
-using DevicesEnStoringen.Messages;
-using DevicesEnStoringen.Services;
-using DevicesEnStoringen.Utility;
-using Model;
+﻿using DevicesAndProblems.App.Extensions;
+using DevicesAndProblems.App.Messages;
+using DevicesAndProblems.App.Services;
+using DevicesAndProblems.App.Utility;
+using DevicesAndProblems.Model;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 
-namespace DevicesEnStoringen.ViewModel
+namespace DevicesAndProblems.App.ViewModel
 {
     public class DeviceTypeOverviewViewModel : OverviewViewModel, INotifyPropertyChanged
     {
