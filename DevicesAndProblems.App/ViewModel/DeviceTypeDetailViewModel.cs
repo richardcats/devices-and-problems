@@ -116,7 +116,7 @@ namespace DevicesAndProblems.App.ViewModel
 
             SelectedDeviceTypeCopy = new DeviceType()
             {
-                DeviceTypeName = "",
+                Name = "",
                 Description = ""
             };
         }
@@ -130,7 +130,7 @@ namespace DevicesAndProblems.App.ViewModel
 
             SelectedDeviceType = deviceType;
             SelectedDeviceTypeCopy = SelectedDeviceType.Copy(); // Creates a deep copy in case the user wants to cancel the change
-            DevicesOfCurrentDeviceType = deviceTypeDataService.GetDevicesOfDeviceType(SelectedDeviceType.DeviceTypeId).ToObservableCollection();
+            //DevicesOfCurrentDeviceType = deviceTypeDataService.GetDevicesOfDeviceType(SelectedDeviceType.Id).ToObservableCollection(); // temporary
             
         }
 
@@ -185,7 +185,7 @@ namespace DevicesAndProblems.App.ViewModel
             else
             {
                 SelectedDeviceType = SelectedDeviceTypeCopy.Copy(); // Creates a deep copy so that CanSaveDeviceTypeWithoutClose knows when a change is taking place in one of the fields again
-                deviceTypeDataService.UpdateDeviceType(SelectedDeviceTypeCopy, SelectedDeviceTypeCopy.DeviceTypeId);
+                deviceTypeDataService.UpdateDeviceType(SelectedDeviceTypeCopy, SelectedDeviceTypeCopy.Id);
                 Messenger.Default.Send(new UpdateListMessage(false));
             }
         }
@@ -195,7 +195,7 @@ namespace DevicesAndProblems.App.ViewModel
         {
             if (SelectedDeviceType != null && SelectedDeviceTypeCopy != null)
             {
-                if (SelectedDeviceTypeCopy.DeviceTypeName != SelectedDeviceType.DeviceTypeName || SelectedDeviceTypeCopy.Description != SelectedDeviceType.Description)
+                if (SelectedDeviceTypeCopy.Name != SelectedDeviceType.Name || SelectedDeviceTypeCopy.Description != SelectedDeviceType.Description)
                     return true;
             }
             return false;
@@ -211,7 +211,7 @@ namespace DevicesAndProblems.App.ViewModel
             else
             {
                 SelectedDeviceType = SelectedDeviceTypeCopy;
-                deviceTypeDataService.UpdateDeviceType(SelectedDeviceType, SelectedDeviceType.DeviceTypeId);
+                deviceTypeDataService.UpdateDeviceType(SelectedDeviceType, SelectedDeviceType.Id);
                 Messenger.Default.Send(new UpdateListMessage(true));
             }
         }
@@ -246,7 +246,7 @@ namespace DevicesAndProblems.App.ViewModel
             }
 
             // The user first receives a message before the device-type is permanently removed from the database
-            if (dialogService.ShowRemoveWarningMessageBox("Device-type", selectedDeviceType.DeviceTypeId))
+            if (dialogService.ShowRemoveWarningMessageBox("Device-type", selectedDeviceType.Id))
             {
                 deviceTypeDataService.DeleteDeviceType(SelectedDeviceType);
                 Messenger.Default.Send(new UpdateListMessage(true));
@@ -258,7 +258,7 @@ namespace DevicesAndProblems.App.ViewModel
         {
             MarkTextBlocksBlack();
             bool noEmptyFields = true;
-            if (SelectedDeviceTypeCopy.DeviceTypeName.Length == 0)
+            if (SelectedDeviceTypeCopy.Name.Length == 0)
             {
                 MarkRedIfFieldEmptyName = true; // By coloring it red, it allows the user to see which required fields must be filled 
                 noEmptyFields = false;

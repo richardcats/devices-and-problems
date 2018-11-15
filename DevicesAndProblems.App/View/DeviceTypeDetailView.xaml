@@ -12,7 +12,7 @@
     </Window.Background>
     <Grid>
         <TextBlock Foreground="{Binding MarkRedIfFieldEmptyName, Converter={StaticResource localBoolToColorConverter}}"  HorizontalAlignment="Left" Margin="9,20,0,0" Text="Naam *" VerticalAlignment="Top"/>
-        <TextBox Text="{Binding SelectedDeviceTypeCopy.DeviceTypeName, Mode=TwoWay}" HorizontalAlignment="Left" Margin="118,20,0,0" VerticalAlignment="Top" Width="150" TextChanged="InputChanged" MaxLength="20"/>
+        <TextBox Text="{Binding SelectedDeviceTypeCopy.Name, Mode=TwoWay}" HorizontalAlignment="Left" Margin="118,20,0,0" VerticalAlignment="Top" Width="150" TextChanged="InputChanged" MaxLength="20"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="9,50,0,0" Text="Opmerkingen" VerticalAlignment="Top"/>
         <TextBox Text="{Binding SelectedDeviceTypeCopy.Description, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,50,0,0" VerticalAlignment="Top" Width="266" Height="37" TextChanged="InputChanged"/>

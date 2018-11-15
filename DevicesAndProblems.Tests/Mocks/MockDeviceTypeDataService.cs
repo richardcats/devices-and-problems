@@ -15,12 +15,12 @@ namespace DevicesAndProblems.Tests
 
         public void UpdateDeviceType(DeviceType newDeviceType, int selectedDeviceTypeId)
         {
-            repository.UpdateDeviceType(newDeviceType, selectedDeviceTypeId);
+            repository.Update(newDeviceType, selectedDeviceTypeId);
         }
 
         public void AddDeviceType(DeviceType newDeviceType)
         {
-            repository.AddDeviceType(newDeviceType);
+            repository.Insert(newDeviceType);
         }
 
         public void DeleteDeviceType(DeviceType deviceType)
@@ -30,6 +30,11 @@ namespace DevicesAndProblems.Tests
         public List<Device> GetDevicesOfDeviceType(int id)
         {
             return repository.GetDevicesOfDeviceType(id);
+        }
+
+        int IDeviceTypeDataService.AddDeviceType(DeviceType newDeviceType)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

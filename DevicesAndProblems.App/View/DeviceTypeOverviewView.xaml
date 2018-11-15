@@ -17,8 +17,8 @@
                     <utility:BindingProxy x:Key="proxy" Data="{Binding}" />
                 </DataGrid.Resources>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding DeviceTypeId}"/>
-                    <DataGridTextColumn Header="Naam" Binding="{Binding DeviceTypeName}"/>
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="Naam" Binding="{Binding Name}"/>
                     <DataGridTextColumn Header="Aantal devices" Binding="{Binding DeviceAmount}"/>
                     <DataGridTextColumn Header="Opmerkingen" Binding="{Binding Description}"/>
                     <DataGridTemplateColumn Visibility="{Binding Data.ShowEditButton, Converter={StaticResource booleanToVisibilityConverter}, Source={StaticResource proxy}}" >

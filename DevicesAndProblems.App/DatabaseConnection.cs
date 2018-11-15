@@ -8,9 +8,10 @@ using System.Data.SQLite;
 
 namespace DevicesAndProblems.App
 {
+    // temporary - remove this class!
     class DatabaseConnection
     {
-        private readonly string connString = ConfigurationManager.ConnectionStrings["DevicesAndProblems"].ToString();
+        private readonly string connString = ConfigurationManager.ConnectionStrings["Default"].ToString();
 
         public bool CheckLoginDetails(string emailaddress, string password)
         {
@@ -112,7 +113,7 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "SELECT Device.DeviceID AS ID, Device.Naam AS DeviceNaam, DeviceType.DeviceTypeID AS DeviceTypeValue, DeviceType.Naam AS DeviceTypeName, Serienummer, Afdeling, Device.Opmerkingen AS DeviceOpmerkingen, Date(Device.DatumToegevoegd) AS Toegevoegd, COUNT(Storing.StoringID) AS Storingen FROM Device LEFT JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID LEFT JOIN Storing ON DeviceStoring.StoringID = Storing.StoringID AND Status='Open' LEFT JOIN DeviceType ON DeviceType.DeviceTypeID = Device.DeviceTypeID GROUP BY Device.DeviceID";
+                string query = "SELECT Device.DeviceID AS ID, Device.Naam AS DeviceNaam, DeviceType.ID AS DeviceTypeValue, DeviceType.Name AS DeviceTypeName, Serienummer, Afdeling, Device.Opmerkingen AS DeviceOpmerkingen, Date(Device.DatumToegevoegd) AS Toegevoegd, COUNT(Storing.StoringID) AS Storingen FROM Device LEFT JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID LEFT JOIN Storing ON DeviceStoring.StoringID = Storing.StoringID AND Status='Open' LEFT JOIN DeviceType ON DeviceType.ID = Device.DeviceTypeID GROUP BY Device.DeviceID";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 using (SQLiteDataReader reader = command.ExecuteReader())

@@ -121,7 +121,7 @@ namespace DevicesAndProblems.App.ViewModel
         private void FilterDataGrid()
         {
             ICollectionView DeviceTypesView = CollectionViewSource.GetDefaultView(DeviceTypes);
-            var searchFilter = new Predicate<object>(item => ((DeviceType)item).DeviceTypeName.ToLower().Contains(SearchInput.ToLower()));
+            var searchFilter = new Predicate<object>(item => ((DeviceType)item).Name.ToLower().Contains(SearchInput.ToLower()));
             DeviceTypesView.Filter = searchFilter;
         }
 

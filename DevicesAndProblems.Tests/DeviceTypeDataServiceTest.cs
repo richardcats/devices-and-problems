@@ -1,5 +1,6 @@
 ﻿using DevicesAndProblems.App.Services;
-using DevicesAndProblems.DAL;
+using DevicesAndProblems.DAL.Interface;
+using DevicesAndProblems.DAL.SQLite;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DevicesAndProblems.Tests

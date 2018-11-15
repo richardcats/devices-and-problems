@@ -1,6 +1,6 @@
 ﻿using DevicesAndProblems.App.Services;
 using DevicesAndProblems.App.ViewModel;
-using DevicesAndProblems.DAL;
+using DevicesAndProblems.DAL.SQLite;
 
 namespace DevicesAndProblems.App
 {

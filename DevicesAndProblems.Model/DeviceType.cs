@@ -4,35 +4,35 @@ using System.ComponentModel;
 
 namespace DevicesAndProblems.Model
 {
-    public class DeviceType : INotifyPropertyChanged
+    public class DeviceType : INotifyPropertyChanged, IEntity
     {
-        private int deviceTypeId;
+        private int id;
 
-        public int DeviceTypeId
+        public int Id
         {
             get
             {
-                return deviceTypeId;
+                return id;
             }
             set
             {
-                deviceTypeId = value;
-                RaisePropertyChanged("DeviceTypeId");
+                id = value;
+                RaisePropertyChanged("Id");
             }
         }
 
-        private string deviceTypeName;
+        private string name;
 
-        public string DeviceTypeName
+        public string Name
         {
             get
             {
-                return deviceTypeName;
+                return name;
             }
             set
             {
-                deviceTypeName = value;
-                RaisePropertyChanged("DeviceTypeName");
+                name = value;
+                RaisePropertyChanged("Name");
             }
         }
 
@@ -79,8 +79,8 @@ namespace DevicesAndProblems.Model
             if ((Object)other == null)
                 return false;
 
-            return DeviceTypeId == other.DeviceTypeId
-                && DeviceTypeName == other.DeviceTypeName
+            return Id == other.Id
+                && Name == other.Name
                 && Description == other.Description
                 && DeviceAmount == other.DeviceAmount;
         }
@@ -88,10 +88,10 @@ namespace DevicesAndProblems.Model
         public override int GetHashCode()
         {
             var hashCode = 2089894652;
-            hashCode = hashCode * -1521134295 + deviceTypeId.GetHashCode();
-            hashCode = hashCode * -1521134295 + DeviceTypeId.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(deviceTypeName);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(DeviceTypeName);
+            hashCode = hashCode * -1521134295 + Id.GetHashCode();
+            hashCode = hashCode * -1521134295 + Id.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(description);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Description);
             hashCode = hashCode * -1521134295 + deviceAmount.GetHashCode();

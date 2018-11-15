@@ -71,6 +71,7 @@
     <Compile Include="Mocks\MockRepository.cs" />
     <Compile Include="DeviceTypeOverviewViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DeviceTypeRepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -1,6 +1,7 @@
 ﻿using DevicesAndProblems.App.Services;
 using DevicesAndProblems.App.ViewModel;
 using DevicesAndProblems.DAL;
+using DevicesAndProblems.DAL.SQLite;
 using DevicesAndProblems.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.ObjectModel;

@@ -1,4 +1,4 @@
-﻿using DevicesAndProblems.DAL;
+﻿using DevicesAndProblems.DAL.Interface;
 using DevicesAndProblems.Model;
 using System.Collections.Generic;
 
@@ -19,36 +19,36 @@ namespace DevicesAndProblems.Tests
             {
                 new DeviceType()
                 {
-                    DeviceTypeId = 1,
-                    DeviceTypeName = "Telefoon",
+                    Id = 1,
+                    Name = "Telefoon",
                     Description = "",
                     DeviceAmount = 2
                 },
                 new DeviceType()
                 {
-                    DeviceTypeId = 2,
-                    DeviceTypeName = "Workstation",
+                    Id = 2,
+                    Name = "Workstation",
                     Description = "",
                     DeviceAmount = 3
                 },
                 new DeviceType()
                 {
-                    DeviceTypeId = 3,
-                    DeviceTypeName = "Server",
+                    Id = 3,
+                    Name = "Server",
                     Description = "",
                     DeviceAmount = 3
                 },
                 new DeviceType()
                 {
-                    DeviceTypeId = 4,
-                    DeviceTypeName = "Printer",
+                    Id = 4,
+                    Name = "Printer",
                     Description = "",
                     DeviceAmount = 2
                 },
                 new DeviceType()
                 {
-                    DeviceTypeId = 5,
-                    DeviceTypeName = "test",
+                    Id = 5,
+                    Name = "test",
                     Description = "",
                     DeviceAmount = 0
                 },
@@ -60,15 +60,6 @@ namespace DevicesAndProblems.Tests
             return deviceTypes;  
         }
 
-        public void UpdateDeviceType(DeviceType newDeviceType, int selectedDeviceTypeId)
-        {
-
-        }
-
-        public void AddDeviceType(DeviceType newDeviceType)
-        {
-
-        }
 
         public void DeleteDeviceType(DeviceType deviceType)
         {
@@ -80,5 +71,24 @@ namespace DevicesAndProblems.Tests
             return null;
         }
 
+        public List<DeviceType> SelectList()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Update(DeviceType newDeviceType, int selectedDeviceTypeId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public int Insert(DeviceType newDeviceType)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Delete(DeviceType deviceType)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
