@@ -171,7 +171,7 @@ namespace DevicesAndProblems.App.ViewModel
             else
             {
                 deviceTypeDataService.AddDeviceType(SelectedDeviceTypeCopy);
-                Messenger.Default.Send(new UpdateListMessage(true));
+                Messenger.Default.Send(new UpdateListMessage(true), "DeviceTypes");
             }
         }
 
@@ -186,7 +186,7 @@ namespace DevicesAndProblems.App.ViewModel
             {
                 SelectedDeviceType = SelectedDeviceTypeCopy.Copy(); // Creates a deep copy so that CanSaveDeviceTypeWithoutClose knows when a change is taking place in one of the fields again
                 deviceTypeDataService.UpdateDeviceType(SelectedDeviceTypeCopy, SelectedDeviceTypeCopy.Id);
-                Messenger.Default.Send(new UpdateListMessage(false));
+                Messenger.Default.Send(new UpdateListMessage(false), "DeviceTypes");
             }
         }
 
@@ -212,7 +212,7 @@ namespace DevicesAndProblems.App.ViewModel
             {
                 SelectedDeviceType = SelectedDeviceTypeCopy;
                 deviceTypeDataService.UpdateDeviceType(SelectedDeviceType, SelectedDeviceType.Id);
-                Messenger.Default.Send(new UpdateListMessage(true));
+                Messenger.Default.Send(new UpdateListMessage(true), "DeviceTypes");
             }
         }
 
@@ -228,7 +228,7 @@ namespace DevicesAndProblems.App.ViewModel
 
         private void Cancel(object obj)
         {
-            Messenger.Default.Send(new UpdateListMessage(true));
+            Messenger.Default.Send(new UpdateListMessage(true), "DeviceTypes");
         }
 
         private bool CanDeleteDeviceType(object obj)
@@ -249,7 +249,7 @@ namespace DevicesAndProblems.App.ViewModel
             if (dialogService.ShowRemoveWarningMessageBox("Device-type", selectedDeviceType.Id))
             {
                 deviceTypeDataService.DeleteDeviceType(SelectedDeviceType);
-                Messenger.Default.Send(new UpdateListMessage(true));
+                Messenger.Default.Send(new UpdateListMessage(true), "DeviceTypes");
             }
         }
 

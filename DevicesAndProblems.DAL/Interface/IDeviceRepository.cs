@@ -9,6 +9,7 @@ namespace DevicesAndProblems.DAL.Interface
 {
     public interface IDeviceRepository
     {
+        List<Device> SelectList();
         List<Device> SelectListByID(int id);
     }
 }

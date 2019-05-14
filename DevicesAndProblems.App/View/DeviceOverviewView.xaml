@@ -4,15 +4,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" 
-             d:DesignHeight="350" d:DesignWidth="600">
+             d:DesignHeight="350" d:DesignWidth="600"
+             DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=DeviceOverviewViewModel}">
     <Grid>
         <Canvas x:Name="cvsInhoud" Margin="0,40,0,0">
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Zoek device:" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
-            <TextBox x:Name="txtZoek" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" TextChanged="FilterDatagrid" Canvas.Left="84" Canvas.Top="10"/>
+            <TextBox Text="{Binding SearchInput}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" TextChanged="SearchInputChanged" Canvas.Left="84" Canvas.Top="10"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Device-type:" VerticalAlignment="Top" Canvas.Left="230" Canvas.Top="10"/>
-            <ComboBox x:Name="cboType" ItemsSource="{Binding ComboboxDeviceTypes}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120"  SelectionChanged="FilterDatagrid" Canvas.Left="312" Canvas.Top="9" Text="Alle device-types" IsReadOnly="True" IsEditable="True"/>
-            <Button x:Name="btnRegistreerDevice" Content="Registreer device" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.541,3.635" Width="120" Click="RegistreerDeviceClick" Canvas.Left="464" Canvas.Top="10" />
-            <DataGrid x:Name="dgDevices" ItemsSource="{Binding Devices}" HorizontalAlignment="Left" Height="220" VerticalAlignment="Top" Width="574"  AutoGenerateColumns="false" Canvas.Left="10" Canvas.Top="48">
+            <ComboBox x:Name="cboType" ItemsSource="{Binding ComboboxDeviceTypes}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120"  SelectionChanged="SearchInputChanged" Canvas.Left="312" Canvas.Top="9" Text="Alle device-types" IsReadOnly="True" IsEditable="True"/>
+            <Button Content="Registreer device" Command="{Binding AddCommand}" Visibility="{Binding Path=ShowAddButton, Converter={StaticResource booleanToVisibilityConverter}}" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.541,3.635" Width="120" Canvas.Left="464" Canvas.Top="10" />
+            <DataGrid ItemsSource="{Binding Devices}" HorizontalAlignment="Left" Height="220" VerticalAlignment="Top" Width="574"  AutoGenerateColumns="false" Canvas.Left="10" Canvas.Top="48">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding DeviceId}"/>
                     <DataGridTextColumn Header="Naam" Binding="{Binding DeviceName}"/>
@@ -24,7 +25,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Click="RowButtonClick" Content="..." Width="20"/>
+                                    <Button Content="..." Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" Width="20" />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

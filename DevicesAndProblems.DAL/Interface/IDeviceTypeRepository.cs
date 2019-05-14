@@ -7,7 +7,7 @@ namespace DevicesAndProblems.DAL.Interface
     {
         List<DeviceType> SelectList();
         void Update(DeviceType newDeviceType, int selectedDeviceTypeId);
-        int Insert(DeviceType newDeviceType);
+        void Insert(DeviceType newDeviceType);
         void Delete(DeviceType deviceType);
     }
 }

@@ -4,31 +4,35 @@ using DevicesAndProblems.App.Services;
 using DevicesAndProblems.App.Utility;
 using DevicesAndProblems.Model;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 
 namespace DevicesAndProblems.App.ViewModel
 {
-    public class DeviceTypeOverviewViewModel : OverviewViewModel, INotifyPropertyChanged
+    public class DeviceOverviewViewModel : OverviewViewModel, INotifyPropertyChanged
     {
-        private IDeviceTypeDataService deviceTypeDataService;
+        private IDeviceDataService deviceDataService;
         private IDialogService dialogService;
 
-        private ObservableCollection<DeviceType> deviceTypes;
+        private ObservableCollection<Device> devices;
 
-        public ObservableCollection<DeviceType> DeviceTypes
+        public ObservableCollection<Device> Devices
         {
-           get
-           {
-                return deviceTypes;
-           }
-           set
-           {
-               deviceTypes = value;
-               RaisePropertyChanged("DeviceTypes");
-           }
+            get
+            {
+                return devices;
+            }
+            set
+            {
+                devices = value;
+                RaisePropertyChanged("Devices");
+            }
         }
 
         private string searchInput = "";
@@ -44,20 +48,20 @@ namespace DevicesAndProblems.App.ViewModel
                 RaisePropertyChanged("SearchInput");
                 FilterDataGrid();
             }
-        } 
+        }
 
-        private DeviceType selectedDeviceType;
+        private Device selectedDevice;
 
-        public DeviceType SelectedDeviceType
+        public Device SelectedDevice
         {
             get
             {
-                return selectedDeviceType;
+                return selectedDevice;
             }
             set
             {
-                selectedDeviceType = value;
-                RaisePropertyChanged("SelectedDeviceType");
+                selectedDevice = value;
+                RaisePropertyChanged("SelectedDevice");
             }
         }
 
@@ -88,40 +92,40 @@ namespace DevicesAndProblems.App.ViewModel
                 RaisePropertyChanged("ShowAddButton");
             }
         }
-        
+
 
         public ICommand AddCommand { get; set; }
 
         public ICommand EditCommand { get; set; }
 
-        public DeviceTypeOverviewViewModel(IDeviceTypeDataService deviceTypeDataService, IDialogService dialogService)
+        public DeviceOverviewViewModel(IDeviceDataService deviceDataService, IDialogService dialogService)
         {
-            this.deviceTypeDataService = deviceTypeDataService;
+            this.deviceDataService = deviceDataService;
             this.dialogService = dialogService;
 
             LoadData();
             LoadCommands();
 
-            Messenger.Default.Register<UpdateListMessage>(this, OnUpdateListMessageReceived, "DeviceTypes");
-            Messenger.Default.Register<OpenOverviewMessage>(this, OnDeviceTypeOverviewOpened, "DeviceTypes");
+            Messenger.Default.Register<UpdateListMessage>(this, OnUpdateListMessageReceived);
+            Messenger.Default.Register<OpenOverviewMessage>(this, OnDeviceOverviewOpened, "Devices");
         }
-
 
         private void LoadData()
         {
-            DeviceTypes = deviceTypeDataService.GetAllDeviceTypes().ToObservableCollection();
+            Devices = deviceDataService.GetAllDevices().ToObservableCollection();
         }
+
 
         private void LoadCommands()
         {
-            AddCommand = new CustomCommand(AddDeviceType, CanAddDeviceType);
-            EditCommand = new CustomCommand(EditDeviceType, CanEditDeviceType);
+            AddCommand = new CustomCommand(AddDevice, CanAddDevice);
+            EditCommand = new CustomCommand(EditDevice, CanEditDevice);
         }
 
         private void FilterDataGrid()
         {
-            ICollectionView DeviceTypesView = CollectionViewSource.GetDefaultView(DeviceTypes);
-            var searchFilter = new Predicate<object>(item => ((DeviceType)item).Name.ToLower().Contains(SearchInput.ToLower()));
+            ICollectionView DeviceTypesView = CollectionViewSource.GetDefaultView(Devices);
+            var searchFilter = new Predicate<object>(item => ((Device)item).DeviceName.ToLower().Contains(SearchInput.ToLower()));
             DeviceTypesView.Filter = searchFilter;
         }
 
@@ -134,13 +138,10 @@ namespace DevicesAndProblems.App.ViewModel
                 dialogService.CloseDialog();
         }
 
-        private void OnDeviceTypeOverviewOpened(OpenOverviewMessage obj)
+        private void OnDeviceOverviewOpened(OpenOverviewMessage obj)
         {
-            ShowAddButton = true;
-            ShowEditButton = true;
-
             // temporary .. use this code for ProblemOverviewViewModel and DeviceOverviewViewModel instead
-            /*if (CurrentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
+            if (CurrentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
             {
                 ShowAddButton = false;
                 ShowEditButton = false;
@@ -149,28 +150,28 @@ namespace DevicesAndProblems.App.ViewModel
             {
                 ShowAddButton = true;
                 ShowEditButton = true;
-            }*/
+            }
         }
 
-        private void AddDeviceType(object obj)
+        private void AddDevice(object obj)
         {
-            Messenger.Default.Send("NewDeviceType");
+            Messenger.Default.Send("NewDevice");
             dialogService.ShowAddDialog();
         }
 
-        private bool CanAddDeviceType(object obj)
+        private bool CanAddDevice(object obj)
         {
             return true;
         }
 
-        private void EditDeviceType(object obj)
+        private void EditDevice(object obj)
         {
-            Messenger.Default.Send(selectedDeviceType);
-            Messenger.Default.Send(CurrentEmployee, "DeviceTypeDetailView");
+            Messenger.Default.Send(selectedDevice);
+            Messenger.Default.Send(CurrentEmployee, "DeviceDetailView");
             dialogService.ShowEditDialog();
         }
 
-        private bool CanEditDeviceType(object obj)
+        private bool CanEditDevice(object obj)
         {
             return true;
         }

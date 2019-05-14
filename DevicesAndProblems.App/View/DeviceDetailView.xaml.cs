@@ -14,7 +14,7 @@ namespace DevicesAndProblems.App.View
     public partial class DeviceDetailView : Window
     {
         private ProblemDataService problemDataService = new ProblemDataService();
-        private DeviceDataService deviceDataService = new DeviceDataService();
+        //private DeviceDataService deviceDataService = new DeviceDataService();
         public Device SelectedDevice { get; set; }
         public ObservableCollection<Problem> CurrentProblems { get; set; }
 
@@ -91,7 +91,7 @@ namespace DevicesAndProblems.App.View
                     Comments = txtOpmerkingen.Text
                 };
 
-                deviceDataService.AddDevice(newDevice);
+                //deviceDataService.AddDevice(newDevice);
                 DialogResult = true;
             }
             else
@@ -118,7 +118,7 @@ namespace DevicesAndProblems.App.View
                         Comments = txtOpmerkingen.Text
                     };
 
-                    deviceDataService.UpdateDevice(SelectedDevice, newDevice);
+                    //deviceDataService.UpdateDevice(SelectedDevice, newDevice);
 
                     btnToepassen.IsEnabled = false;
                     Button button = (Button)sender;
@@ -158,7 +158,7 @@ namespace DevicesAndProblems.App.View
             {
                 try
                 {
-                    deviceDataService.DeleteDeviceType(SelectedDevice); // Delete from the database
+                    //deviceDataService.DeleteDeviceType(SelectedDevice); // Delete from the database
                     DeviceOverviewView.Devices.Remove(DeviceOverviewView.Devices.Where(i => i.DeviceId == SelectedDevice.DeviceId).Single()); // Delete from the ObservableCollection
 
                     DialogResult = true;

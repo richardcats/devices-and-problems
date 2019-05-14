@@ -93,10 +93,12 @@
     <Compile Include="Converter\BoolToColorConverter.cs" />
     <Compile Include="Converter\DoNothingConverter.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Messages\OpenOverviewMessage.cs" />
     <Compile Include="Messages\UpdateListMessage.cs" />
     <Compile Include="Services\DeviceDataService.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\EmployeeDataService.cs" />
+    <Compile Include="Services\IDeviceDataService.cs" />
     <Compile Include="Services\IDeviceTypeDataService.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\ProblemDataService.cs" />
@@ -104,6 +106,7 @@
     <Compile Include="Utility\CustomCommand.cs" />
     <Compile Include="Utility\Messenger.cs" />
     <Compile Include="ViewModelLocator.cs" />
+    <Compile Include="ViewModel\DeviceOverviewViewModel.cs" />
     <Compile Include="ViewModel\DeviceTypeDetailViewModel.cs" />
     <Compile Include="ViewModel\OverviewViewModel.cs" />
     <Compile Include="View\DeviceDetailView.xaml.cs">

@@ -16,7 +16,7 @@ namespace DevicesAndProblems.App.View
     public partial class ProblemDetailView : Window
     {
         private ProblemDataService problemDataService = new ProblemDataService();
-        private DeviceDataService deviceDataService = new DeviceDataService();
+        //private DeviceDataService deviceDataService = new DeviceDataService();
         public static ObservableCollection<string> listStatus = FillCombobox(ComboboxType.Status);
         private int currentEmployeeID;
 
@@ -47,7 +47,7 @@ namespace DevicesAndProblems.App.View
             cboPrioriteit.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
 
             DevicesOfCurrentProblem = problemDataService.GetDevicesOfCurrentProblem(SelectedProblem.ProblemId).ToObservableCollection();
-            AllDevices = deviceDataService.GetAllDevices().ToObservableCollection();
+            //AllDevices = deviceDataService.GetAllDevices().ToObservableCollection();
             Comments = problemDataService.GetCommentsOfCurrentProblem(SelectedProblem).ToObservableCollection();
 
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
@@ -71,7 +71,7 @@ namespace DevicesAndProblems.App.View
             cboPrioriteit.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
 
             DevicesOfCurrentProblem = new ObservableCollection<Device>();
-            AllDevices = deviceDataService.GetAllDevices().ToObservableCollection();
+           // AllDevices = deviceDataService.GetAllDevices().ToObservableCollection();
 
             cvsRegistreerKnoppen.Visibility = Visibility.Visible;
             cvsBewerkKnoppen.Visibility = Visibility.Hidden;

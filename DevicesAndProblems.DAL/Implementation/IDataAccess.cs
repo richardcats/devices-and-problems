@@ -9,7 +9,7 @@ namespace DevicesAndProblems.DAL.Implementation
     public interface IDataAccess
     {
         List<T> SelectList<T>(string sql, object parameters = null);
-        int Insert<T>(string sql, object poco);
+        void Insert<T>(string sql, object poco);
         void Delete(string sql, object parameters = null);
         void Update<T>(string sql, object poco);
     }

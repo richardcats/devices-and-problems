@@ -12,7 +12,7 @@ namespace DevicesAndProblems.App.View
 {
     public partial class DeviceOverviewView : UserControl
     {
-        private DeviceDataService deviceDataService = new DeviceDataService();
+       // private DeviceDataService deviceDataService = new DeviceDataService();
         private ProblemDataService problemDataService = new ProblemDataService();
 
         public ObservableCollection<string> ComboboxDeviceTypes { get; set; }
@@ -22,9 +22,8 @@ namespace DevicesAndProblems.App.View
         {
             InitializeComponent();
 
-            Devices = deviceDataService.GetAllDevices().ToObservableCollection();
+           // Devices = deviceDataService.GetAllDevices().ToObservableCollection();
             ComboboxDeviceTypes = problemDataService.FillCombobox(ComboboxType.DeviceTypeAll);
-            Loaded += DeviceOverviewView_Loaded;
 
            /* if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
             {
@@ -33,27 +32,29 @@ namespace DevicesAndProblems.App.View
             }*/
         }
 
-        void DeviceOverviewView_Loaded(object sender, RoutedEventArgs e)
+        // As soon as a change has occurred in the search field, force the DataGrid to update
+        private void SearchInputChanged(object sender, EventArgs e)
         {
-            DataContext = this;
+            var binding = ((TextBox)sender).GetBindingExpression(TextBox.TextProperty);
+            binding.UpdateSource();
         }
 
         // When the user clicks on a device, it will set the SelectedDevice of the new window
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
-            Device selectedDevice = (Device)dgDevices.SelectedItems[0];
-            DeviceDetailView deviceDetailView = new DeviceDetailView(selectedDevice)
+            //Device selectedDevice = (Device)dgDevices.SelectedItems[0];
+           /* DeviceDetailView deviceDetailView = new DeviceDetailView(selectedDevice)
             {
                 SelectedDevice = selectedDevice
-            };
+            };*/
 
             // when the user clicks cancel, force the datagrid to refresh to show the old values (temporary)
-            if (!deviceDetailView.ShowDialog().Value)
-                RefreshDatagrid();
+            //if (!deviceDetailView.ShowDialog().Value)
+            //    RefreshDatagrid();
         }
 
         // Filters the datagrid based on a textbox and a combobox
-        private void FilterDatagrid(object sender, EventArgs e)
+      /*  private void FilterDatagrid(object sender, EventArgs e)
         {
             var _itemSourceList = new CollectionViewSource() { Source = Devices };
 
@@ -71,8 +72,8 @@ namespace DevicesAndProblems.App.View
                 Itemlist.Filter = searchFilter;
             }
 
-            dgDevices.ItemsSource = Itemlist;
-        }
+            //dgDevices.ItemsSource = Itemlist;
+        }*/
 
         private void RegistreerDeviceClick(object sender, RoutedEventArgs e)
         {
@@ -85,8 +86,8 @@ namespace DevicesAndProblems.App.View
 
         private void RefreshDatagrid()
         {
-            Devices = deviceDataService.GetAllDevices().ToObservableCollection();
-            dgDevices.ItemsSource = Devices;
+           // Devices = deviceDataService.GetAllDevices().ToObservableCollection();
+            //dgDevices.ItemsSource = Devices;
         }
     }
 }

@@ -16,6 +16,10 @@ namespace DevicesAndProblems.App
 
         private static DeviceTypeDetailViewModel deviceTypeDetailViewModel = new DeviceTypeDetailViewModel(deviceTypeDataService, dialogService);
 
+        private static IDeviceDataService deviceDataService = new DeviceDataService(new DeviceRepository());
+
+        private static DeviceOverviewViewModel deviceOverviewViewModel = new DeviceOverviewViewModel(deviceDataService, dialogService);
+
         public static OverviewViewModel OverviewViewModel
         {
             get
@@ -37,6 +41,14 @@ namespace DevicesAndProblems.App
             get
             {
                 return deviceTypeDetailViewModel;
+            }
+        }
+
+        public static DeviceOverviewViewModel DeviceOverviewViewModel
+        {
+            get
+            {
+                return deviceOverviewViewModel;
             }
         }
     }

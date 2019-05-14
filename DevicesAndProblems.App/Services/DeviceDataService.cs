@@ -1,15 +1,22 @@
-﻿using DevicesAndProblems.Model;
+﻿using DevicesAndProblems.DAL.Interface;
+using DevicesAndProblems.Model;
 using System.Collections.Generic;
 
 namespace DevicesAndProblems.App.Services
 {
-    class DeviceDataService
+    class DeviceDataService : IDeviceDataService
     {
         DatabaseConnection conn = new DatabaseConnection();
+        IDeviceRepository repository;
+
+        public DeviceDataService(IDeviceRepository repository)
+        {
+            this.repository = repository;
+        }
 
         public List<Device> GetAllDevices()
         {
-            return conn.GetDevices();
+            return repository.SelectList();
         }
 
         public void AddDevice(Device newDevice)
@@ -26,5 +33,6 @@ namespace DevicesAndProblems.App.Services
         {
             conn.DeleteDevice(selectedDevice);
         }
+
     }
 }

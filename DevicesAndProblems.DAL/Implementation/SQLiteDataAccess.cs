@@ -27,12 +27,12 @@ namespace DevicesAndProblems.DAL.Implementation
             }
         }
 
-        public int Insert<T>(string sql, object poco)
+        public void Insert<T>(string sql, object poco)
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
             {
                 conn.Open();
-                return conn.ExecuteScalar<int>(sql, (T)poco);
+                conn.ExecuteScalar<int>(sql, (T)poco);
             }
         }
 

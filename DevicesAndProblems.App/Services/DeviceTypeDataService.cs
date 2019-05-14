@@ -23,9 +23,9 @@ namespace DevicesAndProblems.App.Services
             repository.Update(newDeviceType, selectedDeviceTypeId);
         }
 
-        public int AddDeviceType(DeviceType newDeviceType)
+        public void AddDeviceType(DeviceType newDeviceType)
         {
-            return repository.Insert(newDeviceType);
+            repository.Insert(newDeviceType);
         }
 
         public void DeleteDeviceType(DeviceType deviceType)

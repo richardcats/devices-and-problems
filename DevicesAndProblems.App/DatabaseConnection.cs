@@ -106,14 +106,22 @@ namespace DevicesAndProblems.App
             return problems;
         }
 
-        public List<Device> GetDevices()
+       /* public List<Device> GetDevices()
         {
             List<Device> devices = new List<Device>();
 
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "SELECT Device.DeviceID AS ID, Device.Naam AS DeviceNaam, DeviceType.ID AS DeviceTypeValue, DeviceType.Name AS DeviceTypeName, Serienummer, Afdeling, Device.Opmerkingen AS DeviceOpmerkingen, Date(Device.DatumToegevoegd) AS Toegevoegd, COUNT(Storing.StoringID) AS Storingen FROM Device LEFT JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID LEFT JOIN Storing ON DeviceStoring.StoringID = Storing.StoringID AND Status='Open' LEFT JOIN DeviceType ON DeviceType.ID = Device.DeviceTypeID GROUP BY Device.DeviceID";
+                string query = "SELECT Device.DeviceID AS ID, Device.Name AS DeviceName, " +
+                    "DeviceType.ID AS DeviceTypeValue, DeviceType.Name AS DeviceTypeName, " +
+                    "SerialNumber, Department, Device.Comments AS DeviceComments, " +
+                    "Date(Device.FirstAddedDate) AS FirstAddedDate, COUNT(Storing.StoringID) AS Storingen " +
+                    "FROM Device " +
+                    "LEFT JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID " +
+                    "LEFT JOIN Storing ON DeviceStoring.StoringID = Storing.StoringID AND Status='Open' " +
+                    "LEFT JOIN DeviceType ON DeviceType.ID = Device.DeviceTypeID " +
+                    "GROUP BY Device.DeviceID";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 using (SQLiteDataReader reader = command.ExecuteReader())
@@ -123,13 +131,13 @@ namespace DevicesAndProblems.App
                         Device device = new Device()
                         {
                             DeviceId = Convert.ToInt32(reader["ID"]),
-                            DeviceName = Convert.ToString(reader["DeviceNaam"]),
+                            DeviceName = Convert.ToString(reader["DeviceName"]),
                             DeviceTypeValue = Convert.ToInt32(reader["DeviceTypeValue"]),
                             DeviceTypeName = Convert.ToString(reader["DeviceTypeName"]),
-                            SerialNumber = Convert.ToString(reader["Serienummer"]),
-                            Department = Convert.ToString(reader["Afdeling"]),
-                            Comments = Convert.ToString(reader["DeviceOpmerkingen"]),
-                            FirstAddedDate = Convert.ToDateTime(reader["Toegevoegd"]),
+                            SerialNumber = Convert.ToString(reader["SerialNumber"]),
+                            Department = Convert.ToString(reader["Department"]),
+                            Comments = Convert.ToString(reader["DeviceComments"]),
+                            FirstAddedDate = Convert.ToDateTime(reader["FirstAddedDate"]),
                             NumberOfFaults = Convert.ToInt32(reader["Storingen"])
                         };
                         devices.Add(device);
@@ -138,7 +146,7 @@ namespace DevicesAndProblems.App
                 
             }
             return devices;
-        }
+        }*/
 
         // Fill the combobox based on the combobox type 
         public ObservableCollection<string> FillCombobox(ComboboxType type)
@@ -159,7 +167,7 @@ namespace DevicesAndProblems.App
                 }
                 else if (type == ComboboxType.DeviceType)
                 {
-                    string query = "SELECT Naam FROM DeviceType";
+                    string query = "SELECT Name FROM DeviceType";
                     SQLiteCommand command = new SQLiteCommand(query, connection);
                     SQLiteDataReader dr = command.ExecuteReader();
 
@@ -168,14 +176,14 @@ namespace DevicesAndProblems.App
                 }
                 else if (type == ComboboxType.DeviceTypeAll)
                 {
-                    string query = "SELECT Naam FROM DeviceType";
+                    string query = "SELECT Name FROM DeviceType";
                     SQLiteCommand command = new SQLiteCommand(query, connection);
                     SQLiteDataReader dr = command.ExecuteReader();
 
                     comboboxItems.Add("Alle device-types");
 
                     while (dr.Read())
-                        comboboxItems.Add(dr["Naam"].ToString());
+                        comboboxItems.Add(dr["Name"].ToString());
                 }
                 else if (type == ComboboxType.Medewerker)
                 {

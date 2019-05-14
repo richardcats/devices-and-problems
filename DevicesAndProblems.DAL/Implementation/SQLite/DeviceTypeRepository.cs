@@ -27,12 +27,12 @@ namespace DevicesAndProblems.DAL.SQLite
             Update<DeviceType>(sql, newDeviceType);
         }
 
-        public int Insert(DeviceType newDeviceType)
+        public void Insert(DeviceType newDeviceType)
         {
             string sql = "INSERT INTO DeviceType (Name, Description) " +
                 "VALUES (@Name, @Description)";
 
-            return Insert<DeviceType>(sql, newDeviceType);
+            Insert<DeviceType>(sql, newDeviceType);
         }
 
         public void Delete(DeviceType deviceType)
