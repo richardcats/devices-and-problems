@@ -238,7 +238,7 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "INSERT INTO Device (DeviceTypeID, Naam, Serienummer, Afdeling, Opmerkingen, DatumToegevoegd) VALUES ( '" + newDevice.DeviceTypeValue + "','" + newDevice.DeviceName + "','" + newDevice.SerialNumber + "','" + newDevice.Department + "','" + newDevice.Comments + "', date('now'))";
+                string query = "INSERT INTO Device (DeviceTypeID, Naam, Serienummer, Afdeling, Opmerkingen, DatumToegevoegd) VALUES ( '" + newDevice.DeviceTypeValue + "','" + newDevice.Name + "','" + newDevice.SerialNumber + "','" + newDevice.Department + "','" + newDevice.Comments + "', date('now'))";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 command.ExecuteNonQuery();
@@ -250,7 +250,7 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "UPDATE Device SET DeviceTypeID = '" + newDevice.DeviceTypeValue + "', Naam = '" + newDevice.DeviceName + "', Serienummer = '" + newDevice.SerialNumber + "', Afdeling = '" + newDevice.Department + "', Opmerkingen = '" + newDevice.Comments + "' WHERE DeviceID = '" + selectedDevice.DeviceId + "'";
+                string query = "UPDATE Device SET DeviceTypeID = '" + newDevice.DeviceTypeValue + "', Naam = '" + newDevice.Name + "', Serienummer = '" + newDevice.SerialNumber + "', Afdeling = '" + newDevice.Department + "', Opmerkingen = '" + newDevice.Comments + "' WHERE DeviceID = '" + selectedDevice.DeviceId + "'";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 command.ExecuteNonQuery();
@@ -328,7 +328,7 @@ namespace DevicesAndProblems.App
                         Device device = new Device()
                         {
                             DeviceId = Convert.ToInt32(reader["ID"]),
-                            DeviceName = Convert.ToString(reader["Naam"]),
+                            Name = Convert.ToString(reader["Naam"]),
                             SerialNumber = Convert.ToString(reader["Serienummer"])
                         };
                         devices.Add(device);

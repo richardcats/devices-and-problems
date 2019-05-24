@@ -13,6 +13,7 @@ namespace DevicesAndProblems.App.ViewModel
     public class DeviceTypeDetailViewModel : INotifyPropertyChanged
     {
         private IDeviceTypeDataService deviceTypeDataService;
+        private IDeviceDataService deviceDataService;
         private IDialogService dialogService;
 
         private string title;
@@ -95,8 +96,9 @@ namespace DevicesAndProblems.App.ViewModel
         public ICommand DeleteCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        public DeviceTypeDetailViewModel(IDeviceTypeDataService deviceTypeDataService, IDialogService dialogService)
+        public DeviceTypeDetailViewModel(IDeviceDataService deviceDataService, IDeviceTypeDataService deviceTypeDataService, IDialogService dialogService)
         {
+            this.deviceDataService = deviceDataService;
             this.deviceTypeDataService = deviceTypeDataService;
             this.dialogService = dialogService;
 
@@ -130,7 +132,7 @@ namespace DevicesAndProblems.App.ViewModel
 
             SelectedDeviceType = deviceType;
             SelectedDeviceTypeCopy = SelectedDeviceType.Copy(); // Creates a deep copy in case the user wants to cancel the change
-            //DevicesOfCurrentDeviceType = deviceTypeDataService.GetDevicesOfDeviceType(SelectedDeviceType.Id).ToObservableCollection(); // temporary
+            DevicesOfCurrentDeviceType = deviceDataService.GetDevicesOfDeviceType(SelectedDeviceType.Id).ToObservableCollection();
             
         }
 

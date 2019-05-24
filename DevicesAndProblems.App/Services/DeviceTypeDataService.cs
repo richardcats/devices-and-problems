@@ -32,13 +32,5 @@ namespace DevicesAndProblems.App.Services
         {
             repository.Delete(deviceType);
         }
-
-        // temporary
-       // IDeviceRepository test = new DAL.SQLite.DeviceRepository();
-        public List<Device> GetDevicesOfDeviceType(int id)
-        {
-            //return test.SelectListByID(id);
-            return null;
-        }
     }
 }

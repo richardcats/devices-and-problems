@@ -83,7 +83,7 @@ namespace DevicesAndProblems.App.View
             {
                 Device newDevice = new Device
                 {
-                    DeviceName = txtNaam.Text,
+                    Name = txtNaam.Text,
                     DeviceTypeValue = cboDeviceType.SelectedIndex + 1,
                     DeviceTypeName = cboDeviceType.Text,
                     Department = cboAfdeling.Text,
@@ -110,7 +110,7 @@ namespace DevicesAndProblems.App.View
                 {
                     Device newDevice = new Device
                     {
-                        DeviceName = txtNaam.Text,
+                        Name = txtNaam.Text,
                         DeviceTypeValue = cboDeviceType.SelectedIndex + 1,
                         DeviceTypeName = cboDeviceType.Text,
                         Department = cboAfdeling.Text,

@@ -9,6 +9,5 @@ namespace DevicesAndProblems.App.Services
         void UpdateDeviceType(DeviceType newDeviceType, int selectedDeviceTypeId);
         void AddDeviceType(DeviceType newDeviceType);
         void DeleteDeviceType(DeviceType deviceType);
-        List<Device> GetDevicesOfDeviceType(int id);
     }
 }

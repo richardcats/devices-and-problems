@@ -150,7 +150,7 @@ namespace DevicesAndProblems.App.View
             ICollectionView Itemlist = _itemSourceList.View;
 
             // create and apply the filter
-            var searchFilter = new Predicate<object>(item => ((Device)item).DeviceName.ToLower().Contains(txtZoek.Text.ToLower()));
+            var searchFilter = new Predicate<object>(item => ((Device)item).Name.ToLower().Contains(txtZoek.Text.ToLower()));
             Itemlist.Filter = searchFilter;
 
             dgDevicesToevoegen.ItemsSource = Itemlist;

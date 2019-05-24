@@ -34,5 +34,9 @@ namespace DevicesAndProblems.App.Services
             conn.DeleteDevice(selectedDevice);
         }
 
+        public List<Device> GetDevicesOfDeviceType(int id)
+        {
+            return repository.SelectListByID(id);
+        }
     }
 }

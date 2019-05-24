@@ -5,7 +5,6 @@ namespace DevicesAndProblems.Model
 {
     public class Device : INotifyPropertyChanged
     {
-
         private int deviceId;
 
         public int DeviceId
@@ -21,18 +20,19 @@ namespace DevicesAndProblems.Model
             }
         }
 
-        private string deviceName;
 
-        public string DeviceName
+        private string name;
+
+        public string Name
         {
             get
             {
-                return deviceName;
+                return name;
             }
             set
             {
-                deviceName = value;
-                RaisePropertyChanged("DeviceName");
+                name = value;
+                RaisePropertyChanged("Name");
             }
         }
 

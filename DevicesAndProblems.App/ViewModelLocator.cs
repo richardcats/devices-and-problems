@@ -10,13 +10,13 @@ namespace DevicesAndProblems.App
 
         private static IDeviceTypeDataService deviceTypeDataService = new DeviceTypeDataService(new DeviceTypeRepository());
 
+        private static IDeviceDataService deviceDataService = new DeviceDataService(new DeviceRepository());
+
         private static OverviewViewModel overviewViewModel = new OverviewViewModel();
 
         private static DeviceTypeOverviewViewModel deviceTypeOverviewViewModel = new DeviceTypeOverviewViewModel(deviceTypeDataService, dialogService);
 
-        private static DeviceTypeDetailViewModel deviceTypeDetailViewModel = new DeviceTypeDetailViewModel(deviceTypeDataService, dialogService);
-
-        private static IDeviceDataService deviceDataService = new DeviceDataService(new DeviceRepository());
+        private static DeviceTypeDetailViewModel deviceTypeDetailViewModel = new DeviceTypeDetailViewModel(deviceDataService, deviceTypeDataService, dialogService);
 
         private static DeviceOverviewViewModel deviceOverviewViewModel = new DeviceOverviewViewModel(deviceDataService, dialogService);
 

@@ -24,7 +24,7 @@ namespace DevicesAndProblems.DAL.SQLite
 
         public List<Device> SelectListByID(int id)
         {
-            string sql = "SELECT DeviceID AS ID, Naam, Afdeling, Date(DatumToegevoegd) AS Datum " +
+            string sql = "SELECT DeviceID AS ID, Name, Department, Date(FirstAddedDate) AS FirstAddedDate " +
                 "FROM Device WHERE DeviceTypeID = '" + id + "'";
 
             return SelectList<Device>(sql, null).ToList();
