@@ -36,7 +36,7 @@ namespace DevicesAndProblems.App.View
 
             cboDeviceType.ItemsSource = problemDataService.FillCombobox(ComboboxType.DeviceType);
             cboAfdeling.ItemsSource = problemDataService.FillCombobox(ComboboxType.Afdeling);
-            CurrentProblems = problemDataService.GetCurrentProblemsOfDevice(SelectedDevice.DeviceId).ToObservableCollection();
+            CurrentProblems = problemDataService.GetCurrentProblemsOfDevice(SelectedDevice.Id).ToObservableCollection();
 
             cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
             cvsBewerkKnoppen.Visibility = Visibility.Visible;
@@ -154,12 +154,12 @@ namespace DevicesAndProblems.App.View
         // The user first receives a message before the device is permanently removed from the database
         private void RemoveDevice(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Device " + SelectedDevice.DeviceId + " wordt permanent verwijderd", "Device", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            if (MessageBox.Show("Device " + SelectedDevice.Id + " wordt permanent verwijderd", "Device", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 try
                 {
                     //deviceDataService.DeleteDeviceType(SelectedDevice); // Delete from the database
-                    DeviceOverviewView.Devices.Remove(DeviceOverviewView.Devices.Where(i => i.DeviceId == SelectedDevice.DeviceId).Single()); // Delete from the ObservableCollection
+                    DeviceOverviewView.Devices.Remove(DeviceOverviewView.Devices.Where(i => i.Id == SelectedDevice.Id).Single()); // Delete from the ObservableCollection
 
                     DialogResult = true;
                 }

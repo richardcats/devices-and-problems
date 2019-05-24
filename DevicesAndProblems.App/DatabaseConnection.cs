@@ -85,7 +85,7 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "SELECT Storing.StoringID AS ID, Beschrijving, Date(DatumToegevoegd) AS Datum FROM DeviceStoring LEFT JOIN Storing ON Storing.StoringID = DeviceStoring.StoringID WHERE DeviceID = '" + id + "' AND Status = 'Open'";
+                string query = "SELECT Storing.StoringID AS StoringID, Beschrijving, Date(DatumToegevoegd) AS Datum FROM DeviceStoring LEFT JOIN Storing ON Storing.StoringID = DeviceStoring.StoringID WHERE DeviceID = '" + id + "' AND Status = 'Open'";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
                 
                 using (SQLiteDataReader reader = command.ExecuteReader())
@@ -250,7 +250,7 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "UPDATE Device SET DeviceTypeID = '" + newDevice.DeviceTypeValue + "', Naam = '" + newDevice.Name + "', Serienummer = '" + newDevice.SerialNumber + "', Afdeling = '" + newDevice.Department + "', Opmerkingen = '" + newDevice.Comments + "' WHERE DeviceID = '" + selectedDevice.DeviceId + "'";
+                string query = "UPDATE Device SET DeviceTypeID = '" + newDevice.DeviceTypeValue + "', Naam = '" + newDevice.Name + "', Serienummer = '" + newDevice.SerialNumber + "', Afdeling = '" + newDevice.Department + "', Opmerkingen = '" + newDevice.Comments + "' WHERE DeviceID = '" + selectedDevice.Id + "'";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 command.ExecuteNonQuery();
@@ -262,7 +262,7 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "DELETE FROM Device WHERE DeviceID = '" + selectedDevice.DeviceId + "'";
+                string query = "DELETE FROM Device WHERE DeviceID = '" + selectedDevice.Id + "'";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 command.ExecuteNonQuery();
@@ -276,7 +276,7 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "SELECT Storing.StoringID AS ID, MedewerkerGeregistreerd, Beschrijving, Date(DatumToegevoegd) AS DatumToegevoegd, Date(DatumAfhandeling) AS DatumAfhandeling, Prioriteit, Ernst, Status, MedewerkerBehandeld, Medewerker.* FROM Storing LEFT JOIN Medewerker ON Storing.MedewerkerGeregistreerd = Medewerker.MedewerkerID";
+                string query = "SELECT Storing.StoringID AS StoringID, MedewerkerGeregistreerd, Beschrijving, Date(DatumToegevoegd) AS DatumToegevoegd, Date(DatumAfhandeling) AS DatumAfhandeling, Prioriteit, Ernst, Status, MedewerkerBehandeld, Medewerker.* FROM Storing LEFT JOIN Medewerker ON Storing.MedewerkerGeregistreerd = Medewerker.MedewerkerID";
 
                 SQLiteCommand command = new SQLiteCommand(query, connection);
                 
@@ -286,7 +286,7 @@ namespace DevicesAndProblems.App
                     {
                         Problem problem = new Problem()
                         {
-                            ProblemId = Convert.ToInt32(reader["ID"]),
+                            ProblemId = Convert.ToInt32(reader["StoringID"]),
                             Description = Convert.ToString(reader["Beschrijving"]),
                             DateRaised = Convert.ToDateTime(reader["DatumToegevoegd"]),
                             RaisedBy = Convert.ToString(reader["Voornaam"]),
@@ -318,7 +318,7 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "SELECT Device.DeviceID AS ID, Naam, Serienummer FROM Device INNER JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID WHERE DeviceStoring.StoringID ='" + id + "'";
+                string query = "SELECT Device.Id AS DeviceId, Naam, Serienummer FROM Device INNER JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.Id WHERE DeviceStoring.StoringID ='" + id + "'";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
                 
                 using (SQLiteDataReader reader = command.ExecuteReader())
@@ -327,7 +327,7 @@ namespace DevicesAndProblems.App
                     {
                         Device device = new Device()
                         {
-                            DeviceId = Convert.ToInt32(reader["ID"]),
+                            Id = Convert.ToInt32(reader["DeviceId"]),
                             Name = Convert.ToString(reader["Naam"]),
                             SerialNumber = Convert.ToString(reader["Serienummer"])
                         };
@@ -356,7 +356,7 @@ namespace DevicesAndProblems.App
 
                 foreach (Device device in DevicesOfCurrentProblem)
                 {
-                    command.CommandText = "INSERT INTO DeviceStoring (StoringID, DeviceID) VALUES ('" + Convert.ToInt32(dr["LastID"]) + "','" + device.DeviceId + "')";
+                    command.CommandText = "INSERT INTO DeviceStoring (StoringID, DeviceID) VALUES ('" + Convert.ToInt32(dr["LastID"]) + "','" + device.Id + "')";
                     command.ExecuteNonQuery();
                 }
             }
@@ -378,7 +378,7 @@ namespace DevicesAndProblems.App
 
                 foreach (Device device in DevicesOfCurrentProblem)
                 {
-                    command.CommandText = "INSERT INTO DeviceStoring (StoringID, DeviceID) VALUES ('" + selectedProblem.ProblemId + "','" + device.DeviceId + "')";
+                    command.CommandText = "INSERT INTO DeviceStoring (StoringID, DeviceID) VALUES ('" + selectedProblem.ProblemId + "','" + device.Id + "')";
                     command.ExecuteNonQuery();
                 }
             }

@@ -131,7 +131,7 @@ namespace DevicesAndProblems.App.View
         // Adds a device to a specific malfunction
         private void AddDevice(object sender, RoutedEventArgs e)
         {     
-             if (!DevicesOfCurrentProblem.Any(d => d.DeviceId == ((Device)dgDevicesToevoegen.SelectedItem).DeviceId)) // don't allow duplicate devices 
+             if (!DevicesOfCurrentProblem.Any(d => d.Id == ((Device)dgDevicesToevoegen.SelectedItem).Id)) // don't allow duplicate devices 
                  DevicesOfCurrentProblem.Add((Device)dgDevicesToevoegen.SelectedItem);
         }
 

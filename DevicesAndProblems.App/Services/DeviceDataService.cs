@@ -36,7 +36,7 @@ namespace DevicesAndProblems.App.Services
 
         public List<Device> GetDevicesOfDeviceType(int id)
         {
-            return repository.SelectListByID(id);
+            return repository.SelectListById(id);
         }
     }
 }

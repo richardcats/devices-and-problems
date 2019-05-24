@@ -14,7 +14,7 @@ namespace DevicesAndProblems.DAL.SQLite
                 "FROM DeviceType " +
                 "LEFT JOIN Device ON Device.DeviceTypeID = DeviceType.Id " +
                 "GROUP BY DeviceType.ID " +
-                "ORDER BY ID";
+                "ORDER BY DeviceType.Id";
 
             return SelectList<DeviceType>(sql, null).ToList();
         }

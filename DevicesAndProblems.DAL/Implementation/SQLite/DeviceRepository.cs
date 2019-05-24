@@ -9,23 +9,23 @@ namespace DevicesAndProblems.DAL.SQLite
     {
         public List<Device> SelectList()
         {
-            string sql = "SELECT Device.DeviceID AS ID, Device.Name AS DeviceName, " +
-                                "DeviceType.ID AS DeviceTypeValue, DeviceType.Name AS DeviceTypeName, " +
+            string sql = "SELECT Device.Id AS Id, Device.Name AS Name, " +
+                                "DeviceType.Id AS DeviceTypeValue, DeviceType.Name AS DeviceTypeName, " +
                                 "SerialNumber, Department, Device.Comments AS DeviceComments, " +
-                                "Date(Device.FirstAddedDate) AS FirstAddedDate, COUNT(Storing.StoringID) AS Storingen " +
+                                "Date(Device.FirstAddedDate) AS FirstAddedDate, COUNT(Storing.StoringID) AS NumberOfFaults " +
                                 "FROM Device " +
-                                "LEFT JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID " +
+                                "LEFT JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.Id " +
                                 "LEFT JOIN Storing ON DeviceStoring.StoringID = Storing.StoringID AND Status='Open' " +
-                                "LEFT JOIN DeviceType ON DeviceType.ID = Device.DeviceTypeID " +
-                                "GROUP BY Device.DeviceID";
+                                "LEFT JOIN DeviceType ON DeviceType.Id = Device.Id " +
+                                "GROUP BY Device.Id";
 
             return SelectList<Device>(sql, null).ToList();
         }
 
-        public List<Device> SelectListByID(int id)
+        public List<Device> SelectListById(int id)
         {
-            string sql = "SELECT DeviceID AS ID, Name, Department, Date(FirstAddedDate) AS FirstAddedDate " +
-                "FROM Device WHERE DeviceTypeID = '" + id + "'";
+            string sql = "SELECT Id, Name, Department, Date(FirstAddedDate) AS FirstAddedDate " +
+                "FROM Device WHERE Id = '" + id + "'";
 
             return SelectList<Device>(sql, null).ToList();
         }

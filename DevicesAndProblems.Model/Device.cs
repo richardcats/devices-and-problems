@@ -5,18 +5,18 @@ namespace DevicesAndProblems.Model
 {
     public class Device : INotifyPropertyChanged
     {
-        private int deviceId;
+        private int id;
 
-        public int DeviceId
+        public int Id
         {
             get
             {
-                return deviceId;
+                return id;
             }
             set
             {
-                deviceId = value;
-                RaisePropertyChanged("DeviceId");
+                id = value;
+                RaisePropertyChanged("Id");
             }
         }
 
