@@ -106,6 +106,7 @@
     <Compile Include="Utility\CustomCommand.cs" />
     <Compile Include="Utility\Messenger.cs" />
     <Compile Include="ViewModelLocator.cs" />
+    <Compile Include="ViewModel\DeviceDetailViewModel.cs" />
     <Compile Include="ViewModel\DeviceOverviewViewModel.cs" />
     <Compile Include="ViewModel\DeviceTypeDetailViewModel.cs" />
     <Compile Include="ViewModel\OverviewViewModel.cs" />

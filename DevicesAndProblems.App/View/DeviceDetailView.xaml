@@ -4,32 +4,33 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Device" Height="400" Width="410" ResizeMode="NoResize">
+        Title="Device" Height="400" Width="410" ResizeMode="NoResize"
+        DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=DeviceDetailViewModel}">
     <Window.Background>
         <ImageBrush ImageSource="..\Images\background2.jpg"></ImageBrush>
     </Window.Background>
     <Grid>
-        <TextBlock x:Name="tbNaam" HorizontalAlignment="Left" Margin="9,20,0,0" TextWrapping="Wrap" Text="Naam *" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtNaam" Text="{Binding DeviceName}" HorizontalAlignment="Left"  Margin="118,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen" MaxLength="20"/>
+        <TextBlock Foreground="{Binding MarkRedIfFieldEmptyName, Converter={StaticResource localBoolToColorConverter}}"  HorizontalAlignment="Left" Margin="9,20,0,0" TextWrapping="Wrap" Text="Naam *" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding SelectedDeviceCopy.Name, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="InputChanged" MaxLength="20"/>
 
-        <TextBlock x:Name="tbDeviceType" HorizontalAlignment="Left" Margin="9,50,0,0" TextWrapping="Wrap" Text="Device-type *" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cboDeviceType" SelectedValue="{Binding DeviceTypeName}" HorizontalAlignment="Left"  Margin="118,50,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="EnableToepassen"/>
+        <TextBlock Foreground="{Binding MarkRedIfFieldEmptyDeviceType, Converter={StaticResource localBoolToColorConverter}}"  HorizontalAlignment="Left" Margin="9,50,0,0" TextWrapping="Wrap" Text="Device-type *" VerticalAlignment="Top"/>
+        <ComboBox SelectedValue="{Binding SelectedDeviceTypeCopy.DeviceTypeName, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,50,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="InputChanged"/>
 
-        <TextBlock x:Name="tbAfdeling" HorizontalAlignment="Left" Margin="9,80,0,0" TextWrapping="Wrap" Text="Afdeling *" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cboAfdeling" SelectedValue="{Binding Department}" HorizontalAlignment="Left"  Margin="118,80,0,0" VerticalAlignment="Top" Width="150" IsEditable="True" SelectionChanged="EnableToepassen"/>
+        <TextBlock Foreground="{Binding MarkRedIfFieldEmptyDepartment, Converter={StaticResource localBoolToColorConverter}}" HorizontalAlignment="Left" Margin="9,80,0,0" TextWrapping="Wrap" Text="Afdeling *" VerticalAlignment="Top"/>
+        <ComboBox SelectedValue="{Binding SelectedDeviceTypeCopy.Department, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,80,0,0" VerticalAlignment="Top" Width="150" IsEditable="True" SelectionChanged="EnableToepassen"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="9,110,0,0" TextWrapping="Wrap" Text="Serienummer" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtSerienummer" Text="{Binding SerialNumber}" HorizontalAlignment="Left"  Margin="118,110,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen" MaxLength="20"/>
+        <TextBox Text="{Binding SelectedDeviceCopy.SerialNumber, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,110,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen" MaxLength="20"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="9,140,0,0" TextWrapping="Wrap" Text="Opmerkingen" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtOpmerkingen" Text="{Binding Comments}" HorizontalAlignment="Left"  Margin="118,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="266" Height="37" TextChanged="EnableToepassen"/>
+        <TextBox Text="{Binding SelectedDeviceCopy.Comments, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="266" Height="37" TextChanged="EnableToepassen"/>
 
-        <Canvas x:Name="cvsOpenstaandeStoringen" Margin="9,191,0,0" >
+        <Canvas x:Name="cvsActiveProblems" Margin="9,191,0,0" >
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Openstaande storingen" VerticalAlignment="Top"/>
 
-            <DataGrid x:Name="dgOpenstaandeStoringen" ItemsSource="{Binding CurrentProblems}" HorizontalAlignment="Left" Height="100" Canvas.Top ="21"  VerticalAlignment="Top" Width="374" AutoGenerateColumns="false">
+            <DataGrid ItemsSource="{Binding CurrentProblems}" HorizontalAlignment="Left" Height="100" Canvas.Top ="21"  VerticalAlignment="Top" Width="374" AutoGenerateColumns="false">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding ProblemId}"/>
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
                     <DataGridTextColumn Header="Beschrijving" Binding="{Binding Description}"/>
                     <DataGridTextColumn Header="Datum" Binding="{Binding DateRaised, StringFormat='dd-MM-yyyy'}"/>
                     <DataGridTemplateColumn>
@@ -44,16 +45,16 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Canvas>
-        <Canvas x:Name="cvsRegistreerKnoppen" Margin="0,170,0,0" >
-            <Button x:Name="btnToevoegen" Content="Toevoegen" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="AddDevice" Canvas.Left="219" Canvas.Top="36"/>
-            <Button x:Name="btnAnnuleren" Content="Annuleren" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Cancel" Canvas.Left="309" Canvas.Top="36" RenderTransformOrigin="1.205,0.552"/>
+        <Canvas x:Name="cvsRegisterButtons" Margin="0,170,0,0" >
+            <Button Content="Toevoegen" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Left="219" Canvas.Top="36"/>
+            <Button Content="Annuleren" Command="{Binding CancelCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Left="309" Canvas.Top="36"/>
         </Canvas>
 
-        <Canvas x:Name="cvsBewerkKnoppen" Margin="0,300,0,0"  >
-            <Button x:Name="btnVerwijder" Content="Verwijder" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="RemoveDevice" Canvas.Left="15" Canvas.Top="36"/>
-            <Button x:Name="btnOK" Content="OK" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="UpdateDevice" Canvas.Left="129" Canvas.Top="36"/>
-            <Button Content="Annuleren" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Cancel"  Canvas.Left="219" Canvas.Top="36"/>
-            <Button x:Name="btnToepassen" Content="Toepassen" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="UpdateDevice" Canvas.Left="309" Canvas.Top="36"/>
+        <Canvas x:Name="cvsEditButtons" Margin="0,300,0,0"  >
+            <Button Content="Verwijder" Command="{Binding DeleteCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Left="15" Canvas.Top="36"/>
+            <Button Content="OK" Command="{Binding SaveCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"  Canvas.Left="129" Canvas.Top="36"/>
+            <Button Content="Annuleren" Command="{Binding CancelCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Left="219" Canvas.Top="36"/>
+            <Button Content="Toepassen" Command="{Binding SaveWithoutCloseCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Left="309" Canvas.Top="36"/>
         </Canvas>
     </Grid>
 </Window>
