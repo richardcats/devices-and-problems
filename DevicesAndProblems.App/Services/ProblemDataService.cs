@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace DevicesAndProblems.App.Services
 {
-    public class ProblemDataService
+    public class ProblemDataService : IProblemDataService
     {
         DatabaseConnection conn = new DatabaseConnection();
 

@@ -10,9 +10,9 @@ namespace DevicesAndProblems.App.Services
     public interface IDeviceDataService
     {
         List<Device> GetAllDevices();
-        void UpdateDevice(Device selectedDevice, Device newDevice);
+        void UpdateDevice(Device newDevice, int selectedDeviceId);
         void AddDevice(Device newDevice);
-        void DeleteDeviceType(Device selectedDevice);
+        void DeleteDevice(Device selectedDevice);
         List<Device> GetDevicesOfDeviceType(int id);
     }
 }

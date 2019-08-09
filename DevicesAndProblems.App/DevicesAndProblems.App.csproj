@@ -101,6 +101,7 @@
     <Compile Include="Services\IDeviceDataService.cs" />
     <Compile Include="Services\IDeviceTypeDataService.cs" />
     <Compile Include="Services\IDialogService.cs" />
+    <Compile Include="Services\IProblemDataService.cs" />
     <Compile Include="Services\ProblemDataService.cs" />
     <Compile Include="Utility\BindingProxy.cs" />
     <Compile Include="Utility\CustomCommand.cs" />

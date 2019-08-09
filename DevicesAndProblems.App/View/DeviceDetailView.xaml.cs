@@ -45,13 +45,20 @@ namespace DevicesAndProblems.App.View
             binding.UpdateSource();
         }
 
+        // As soon as a change has occurred in one of the fields, the "submit" and "OK" button will either be enabled or disabled
+        private void InputChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var binding = ((ComboBox)sender).GetBindingExpression(ComboBox.SelectedValueProperty);
+            binding.UpdateSource();
+        }
+
         // When the IT administrator clicks on a malfunction, it will pass the ID to a new window
-        private void RowButtonClick(object sender, RoutedEventArgs e)
+        /*private void RowButtonClick(object sender, RoutedEventArgs e)
         {
             Problem row = (Problem)dgOpenstaandeStoringen.SelectedItems[0];
             //Storing storing = new Storing(Convert.ToInt32(row["ID"]));
-           // storing.Show();
-        }
+            // storing.Show();
+        }*/
 
         private void Cancel(object sender, RoutedEventArgs e)
         {
@@ -59,7 +66,7 @@ namespace DevicesAndProblems.App.View
         }
 
         // Ensures that all required fields are filled in before inserting the device into the database
-        private void AddDevice(object sender, RoutedEventArgs e)
+       /* private void AddDevice(object sender, RoutedEventArgs e)
         {
             if (txtNaam.Text != "" && cboDeviceType.SelectedIndex != -1 && cboAfdeling.Text != "")
             {
@@ -81,10 +88,10 @@ namespace DevicesAndProblems.App.View
                 MarkEmptyFieldsRed();
                 MessageBox.Show("Niet alle verplichte velden zijn ingevuld", Title, MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-        }
+        }*/
 
         // Ensures that all required fields are filled in before updating the device in the database
-        private void UpdateDevice(object sender, RoutedEventArgs e)
+        /*private void UpdateDevice(object sender, RoutedEventArgs e)
         {
             if (txtNaam.Text != "" && cboDeviceType.SelectedIndex != -1 && cboAfdeling.Text != "")
             {
@@ -117,11 +124,11 @@ namespace DevicesAndProblems.App.View
             {
                 MarkEmptyFieldsRed();
                 MessageBox.Show("Niet alle verplichte velden zijn ingevuld", Title, MessageBoxButton.OK, MessageBoxImage.Warning);
-            }           
-        }
+            }
+        }*/
 
         // As soon as a change has occurred in one of the fields, the "submit" button will be enabled again
-        private void EnableToepassen(object sender, TextChangedEventArgs e)
+       /* private void EnableToepassen(object sender, TextChangedEventArgs e)
         {
             if (btnToepassen.IsEnabled == false)
                 btnToepassen.IsEnabled = true;
@@ -131,7 +138,7 @@ namespace DevicesAndProblems.App.View
         {
             if (btnToepassen.IsEnabled == false)
                 btnToepassen.IsEnabled = true;
-        }
+        }*/
 
         // The user first receives a message before the device is permanently removed from the database
         private void RemoveDevice(object sender, RoutedEventArgs e)
@@ -153,23 +160,23 @@ namespace DevicesAndProblems.App.View
         }
 
         // Allows the user to see which required fields must be filled
-        private void MarkEmptyFieldsRed()
-        {
-            tbNaam.Foreground = Brushes.Black;
-            tbDeviceType.Foreground = Brushes.Black;
-            tbAfdeling.Foreground = Brushes.Black;
+        /* private void MarkEmptyFieldsRed()
+         {
+             tbNaam.Foreground = Brushes.Black;
+             tbDeviceType.Foreground = Brushes.Black;
+             tbAfdeling.Foreground = Brushes.Black;
 
-            if (txtNaam.Text == "")
-                tbNaam.Foreground = Brushes.Red;
+             if (txtNaam.Text == "")
+                 tbNaam.Foreground = Brushes.Red;
 
-            if (cboDeviceType.SelectedIndex == -1)
-                tbDeviceType.Foreground = Brushes.Red;
+             if (cboDeviceType.SelectedIndex == -1)
+                 tbDeviceType.Foreground = Brushes.Red;
 
-            if (cboAfdeling.SelectedIndex == -1)
-                tbAfdeling.Foreground = Brushes.Red;
-        }
+             if (cboAfdeling.SelectedIndex == -1)
+                 tbAfdeling.Foreground = Brushes.Red;
+         }*/
+        //}
     }
-
     // Registers all types of comboboxes that are used throughout the application
     public enum ComboboxType
     {

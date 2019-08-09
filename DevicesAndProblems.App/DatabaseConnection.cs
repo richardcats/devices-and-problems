@@ -94,7 +94,7 @@ namespace DevicesAndProblems.App
                     {
                         Problem problem = new Problem()
                         {
-                            ProblemId = Convert.ToInt32(reader["ID"]),
+                            ProblemId = Convert.ToInt32(reader["StoringID"]),
                             Description = Convert.ToString(reader["Beschrijving"]),
                             DateRaised = Convert.ToDateTime(reader["Datum"]),
                         };
@@ -158,12 +158,12 @@ namespace DevicesAndProblems.App
 
                 if (type == ComboboxType.Afdeling)
                 {
-                    string query = "SELECT Afdeling FROM Device GROUP BY Afdeling";
+                    string query = "SELECT Department FROM Device GROUP BY Department";
                     SQLiteCommand command = new SQLiteCommand(query, connection);
                     SQLiteDataReader dr = command.ExecuteReader();
 
                     while (dr.Read())
-                        comboboxItems.Add(dr["Afdeling"].ToString());
+                        comboboxItems.Add(dr["Department"].ToString());
                 }
                 else if (type == ComboboxType.DeviceType)
                 {
@@ -172,7 +172,7 @@ namespace DevicesAndProblems.App
                     SQLiteDataReader dr = command.ExecuteReader();
 
                     while (dr.Read())
-                        comboboxItems.Add(dr["Naam"].ToString());
+                        comboboxItems.Add(dr["Name"].ToString());
                 }
                 else if (type == ComboboxType.DeviceTypeAll)
                 {
@@ -245,12 +245,12 @@ namespace DevicesAndProblems.App
             }
         }
 
-        public void UpdateDevice(Device selectedDevice, Device newDevice)
+        public void UpdateDevice(Device newDevice, int selectedDeviceId)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "UPDATE Device SET DeviceTypeID = '" + newDevice.DeviceTypeValue + "', Naam = '" + newDevice.Name + "', Serienummer = '" + newDevice.SerialNumber + "', Afdeling = '" + newDevice.Department + "', Opmerkingen = '" + newDevice.Comments + "' WHERE DeviceID = '" + selectedDevice.Id + "'";
+                string query = "UPDATE Device SET DeviceTypeID = '" + newDevice.DeviceTypeValue + "', Naam = '" + newDevice.Name + "', Serienummer = '" + newDevice.SerialNumber + "', Afdeling = '" + newDevice.Department + "', Opmerkingen = '" + newDevice.Comments + "' WHERE DeviceID = '" + selectedDeviceId + "'";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 command.ExecuteNonQuery();

@@ -3,41 +3,45 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:utility="clr-namespace:DevicesAndProblems.App.Utility"
         mc:Ignorable="d"
-        Title="Device" Height="400" Width="410" ResizeMode="NoResize"
+        Title="{Binding Title}" Height="400" Width="410" ResizeMode="NoResize"
         DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=DeviceDetailViewModel}">
     <Window.Background>
         <ImageBrush ImageSource="..\Images\background2.jpg"></ImageBrush>
     </Window.Background>
     <Grid>
-        <TextBlock Foreground="{Binding MarkRedIfFieldEmptyName, Converter={StaticResource localBoolToColorConverter}}"  HorizontalAlignment="Left" Margin="9,20,0,0" TextWrapping="Wrap" Text="Naam *" VerticalAlignment="Top"/>
+        <TextBlock Foreground="{Binding MarkRedIfFieldEmptyName, Converter={StaticResource localBoolToColorConverter}}"  HorizontalAlignment="Left" Margin="9,20,0,0" Text="Naam *" VerticalAlignment="Top"/>
         <TextBox Text="{Binding SelectedDeviceCopy.Name, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="InputChanged" MaxLength="20"/>
 
-        <TextBlock Foreground="{Binding MarkRedIfFieldEmptyDeviceType, Converter={StaticResource localBoolToColorConverter}}"  HorizontalAlignment="Left" Margin="9,50,0,0" TextWrapping="Wrap" Text="Device-type *" VerticalAlignment="Top"/>
-        <ComboBox SelectedValue="{Binding SelectedDeviceTypeCopy.DeviceTypeName, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,50,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="InputChanged"/>
+        <TextBlock Foreground="{Binding MarkRedIfFieldEmptyDeviceType, Converter={StaticResource localBoolToColorConverter}}"  HorizontalAlignment="Left" Margin="9,50,0,0" Text="Device-type *" VerticalAlignment="Top"/>
+        <ComboBox ItemsSource="{Binding ComboBoxDeviceTypes}" SelectedValue="{Binding SelectedDeviceCopy.DeviceTypeName, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,50,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="InputChanged"/>
 
-        <TextBlock Foreground="{Binding MarkRedIfFieldEmptyDepartment, Converter={StaticResource localBoolToColorConverter}}" HorizontalAlignment="Left" Margin="9,80,0,0" TextWrapping="Wrap" Text="Afdeling *" VerticalAlignment="Top"/>
-        <ComboBox SelectedValue="{Binding SelectedDeviceTypeCopy.Department, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,80,0,0" VerticalAlignment="Top" Width="150" IsEditable="True" SelectionChanged="EnableToepassen"/>
+        <TextBlock Foreground="{Binding MarkRedIfFieldEmptyDepartment, Converter={StaticResource localBoolToColorConverter}}" HorizontalAlignment="Left" Margin="9,80,0,0" Text="Afdeling *" VerticalAlignment="Top"/>
+        <ComboBox ItemsSource="{Binding ComboBoxDepartments}" SelectedValue="{Binding SelectedDeviceCopy.Department, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,80,0,0" VerticalAlignment="Top" Width="150" IsEditable="True" SelectionChanged="InputChanged"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="9,110,0,0" TextWrapping="Wrap" Text="Serienummer" VerticalAlignment="Top"/>
-        <TextBox Text="{Binding SelectedDeviceCopy.SerialNumber, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,110,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="EnableToepassen" MaxLength="20"/>
+        <TextBox Text="{Binding SelectedDeviceCopy.SerialNumber, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,110,0,0" VerticalAlignment="Top" Width="150" TextChanged="InputChanged" MaxLength="20"/>
 
         <TextBlock HorizontalAlignment="Left" Margin="9,140,0,0" TextWrapping="Wrap" Text="Opmerkingen" VerticalAlignment="Top"/>
-        <TextBox Text="{Binding SelectedDeviceCopy.Comments, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="266" Height="37" TextChanged="EnableToepassen"/>
+        <TextBox Text="{Binding SelectedDeviceCopy.Comments, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,140,0,0" VerticalAlignment="Top" Width="266" Height="37" TextChanged="InputChanged"/>
 
         <Canvas x:Name="cvsActiveProblems" Margin="9,191,0,0" >
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Openstaande storingen" VerticalAlignment="Top"/>
 
             <DataGrid ItemsSource="{Binding CurrentProblems}" HorizontalAlignment="Left" Height="100" Canvas.Top ="21"  VerticalAlignment="Top" Width="374" AutoGenerateColumns="false">
+                <DataGrid.Resources>
+                    <utility:BindingProxy x:Key="proxy" Data="{Binding}" />
+                </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
                     <DataGridTextColumn Header="Beschrijving" Binding="{Binding Description}"/>
                     <DataGridTextColumn Header="Datum" Binding="{Binding DateRaised, StringFormat='dd-MM-yyyy'}"/>
-                    <DataGridTemplateColumn>
+                    <DataGridTemplateColumn Visibility="{Binding Data.ShowEditButton, Converter={StaticResource booleanToVisibilityConverter}, Source={StaticResource proxy}}" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Click="RowButtonClick" Content="..." Width="20"/>
+                                    <Button Content="..." Width="20"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

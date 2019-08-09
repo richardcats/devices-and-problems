@@ -155,7 +155,7 @@ namespace DevicesAndProblems.App.ViewModel
         private void AddDeviceType(object obj)
         {
             Messenger.Default.Send("NewDeviceType");
-            dialogService.ShowAddDialog();
+            dialogService.ShowAddDialog(DialogType.DeviceType);
         }
 
         private bool CanAddDeviceType(object obj)
@@ -167,7 +167,7 @@ namespace DevicesAndProblems.App.ViewModel
         {
             Messenger.Default.Send(selectedDeviceType);
             Messenger.Default.Send(CurrentEmployee, "DeviceTypeDetailView");
-            dialogService.ShowEditDialog();
+            dialogService.ShowEditDialog(DialogType.DeviceType);
         }
 
         private bool CanEditDeviceType(object obj)

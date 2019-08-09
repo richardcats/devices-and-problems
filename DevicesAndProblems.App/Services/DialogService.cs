@@ -6,24 +6,36 @@ namespace DevicesAndProblems.App.Services
 {
     public class DialogService : IDialogService
     {
-        Window deviceTypeDetailView = null;
+        Window window = null;
 
-        public void ShowEditDialog()
+        public void ShowEditDialog(DialogType dialogType)
         {
-            deviceTypeDetailView = new DeviceTypeDetailView(true);
-            deviceTypeDetailView.ShowDialog();
+            if (dialogType == DialogType.Problem)
+                window = new DeviceTypeDetailView(true);
+            else if (dialogType == DialogType.Device)
+                window = new DeviceDetailView(true);
+            else if (dialogType == DialogType.DeviceType)
+                window = new DeviceTypeDetailView(true);
+
+            window.ShowDialog();
         }
 
-        public void ShowAddDialog()
+        public void ShowAddDialog(DialogType dialogType)
         {
-            deviceTypeDetailView = new DeviceTypeDetailView(false);
-            deviceTypeDetailView.ShowDialog();
+            if (dialogType == DialogType.Problem)
+                window = new DeviceTypeDetailView(false);
+            else if (dialogType == DialogType.Device)
+                window = new DeviceDetailView(false);
+            else if (dialogType == DialogType.DeviceType)
+                window = new DeviceTypeDetailView(false);
+
+            window.ShowDialog();
         }
 
         public void CloseDialog()
         {
-            if (deviceTypeDetailView != null)
-                deviceTypeDetailView.Close();
+            if (window != null)
+                window.Close();
         }
 
         public bool ShowRemoveWarningMessageBox(string type, int id)
@@ -40,4 +52,6 @@ namespace DevicesAndProblems.App.Services
             MessageBox.Show("Niet alle verplichte velden zijn ingevuld", "Ontbrekende informatie", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
+
+    public enum DialogType { Problem, Device, DeviceType };
 }

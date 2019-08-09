@@ -2,8 +2,8 @@
 {
     public interface IDialogService
     {
-        void ShowEditDialog();
-        void ShowAddDialog();
+        void ShowEditDialog(DialogType dialogType);
+        void ShowAddDialog(DialogType dialogType);
         void CloseDialog();
         bool ShowRemoveWarningMessageBox(string type, int id);
         void CanNotRemoveMessageBox(string deletableType, string preventingTypes);

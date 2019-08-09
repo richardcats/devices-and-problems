@@ -13,9 +13,9 @@ namespace DevicesAndProblems.App.View
     public partial class DeviceOverviewView : UserControl
     {
        // private DeviceDataService deviceDataService = new DeviceDataService();
-        private ProblemDataService problemDataService = new ProblemDataService();
 
-        public ObservableCollection<string> ComboboxDeviceTypes { get; set; }
+
+
         public static ObservableCollection<Device> Devices { get; set; }
 
         public DeviceOverviewView()
@@ -23,7 +23,7 @@ namespace DevicesAndProblems.App.View
             InitializeComponent();
 
            // Devices = deviceDataService.GetAllDevices().ToObservableCollection();
-            ComboboxDeviceTypes = problemDataService.FillCombobox(ComboboxType.DeviceTypeAll);
+
 
            /* if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
             {
@@ -38,6 +38,13 @@ namespace DevicesAndProblems.App.View
             var binding = ((TextBox)sender).GetBindingExpression(TextBox.TextProperty);
             binding.UpdateSource();
         }
+
+        private void DeviceTypeChanged(object sender, EventArgs e)
+        {
+            var binding = ((ComboBox)sender).GetBindingExpression(ComboBox.SelectedValueProperty);
+            binding.UpdateSource();
+        }
+        
 
         // When the user clicks on a device, it will set the SelectedDevice of the new window
         private void RowButtonClick(object sender, RoutedEventArgs e)
@@ -75,14 +82,14 @@ namespace DevicesAndProblems.App.View
             //dgDevices.ItemsSource = Itemlist;
         }*/
 
-        private void RegistreerDeviceClick(object sender, RoutedEventArgs e)
+       /* private void RegistreerDeviceClick(object sender, RoutedEventArgs e)
         {
             DeviceDetailView deviceDetailView = new DeviceDetailView();
 
             // Force the datagrid to refresh after a device is registered (temporary)
             if (deviceDetailView.ShowDialog().Value)
                 RefreshDatagrid();
-        }
+        }*/
 
         private void RefreshDatagrid()
         {

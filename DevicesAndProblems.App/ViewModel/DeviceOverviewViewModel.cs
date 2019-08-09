@@ -2,6 +2,7 @@
 using DevicesAndProblems.App.Messages;
 using DevicesAndProblems.App.Services;
 using DevicesAndProblems.App.Utility;
+using DevicesAndProblems.App.View;
 using DevicesAndProblems.Model;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,9 @@ namespace DevicesAndProblems.App.ViewModel
     {
         private IDeviceDataService deviceDataService;
         private IDialogService dialogService;
+        private ProblemDataService problemDataService = new ProblemDataService();
 
+        public ObservableCollection<string> ComboboxDeviceTypes { get; set; }
         private ObservableCollection<Device> devices;
 
         public ObservableCollection<Device> Devices
@@ -65,6 +68,22 @@ namespace DevicesAndProblems.App.ViewModel
             }
         }
 
+        private string selectedDeviceTypeValue;
+
+        public string SelectedDeviceTypeValue
+        {
+            get
+            {
+                return selectedDeviceTypeValue;
+            }
+            set
+            {
+                selectedDeviceTypeValue = value;
+                RaisePropertyChanged("SelectedDeviceTypeValue");
+                FilterDataGrid();
+            }
+        }
+
         private bool showEditButton;
         public bool ShowEditButton
         {
@@ -106,13 +125,14 @@ namespace DevicesAndProblems.App.ViewModel
             LoadData();
             LoadCommands();
 
-            Messenger.Default.Register<UpdateListMessage>(this, OnUpdateListMessageReceived);
+            Messenger.Default.Register<UpdateListMessage>(this, OnUpdateListMessageReceived, "Devices");
             Messenger.Default.Register<OpenOverviewMessage>(this, OnDeviceOverviewOpened, "Devices");
         }
 
         private void LoadData()
         {
             Devices = deviceDataService.GetAllDevices().ToObservableCollection();
+            ComboboxDeviceTypes = problemDataService.FillCombobox(ComboboxType.DeviceTypeAll);
         }
 
 
@@ -125,7 +145,7 @@ namespace DevicesAndProblems.App.ViewModel
         private void FilterDataGrid()
         {
             ICollectionView DeviceTypesView = CollectionViewSource.GetDefaultView(Devices);
-            var searchFilter = new Predicate<object>(item => ((Device)item).Name.ToLower().Contains(SearchInput.ToLower()));
+            var searchFilter = new Predicate<object>(item => ((Device)item).Name.ToLower().Contains(SearchInput.ToLower()) && ((Device)item).DeviceTypeName.Equals(SelectedDeviceTypeValue));
             DeviceTypesView.Filter = searchFilter;
         }
 
@@ -156,7 +176,7 @@ namespace DevicesAndProblems.App.ViewModel
         private void AddDevice(object obj)
         {
             Messenger.Default.Send("NewDevice");
-            dialogService.ShowAddDialog();
+            dialogService.ShowAddDialog(DialogType.Device);
         }
 
         private bool CanAddDevice(object obj)
@@ -167,8 +187,7 @@ namespace DevicesAndProblems.App.ViewModel
         private void EditDevice(object obj)
         {
             Messenger.Default.Send(selectedDevice);
-            Messenger.Default.Send(CurrentEmployee, "DeviceDetailView");
-            dialogService.ShowEditDialog();
+            dialogService.ShowEditDialog(DialogType.Device);
         }
 
         private bool CanEditDevice(object obj)

@@ -24,12 +24,12 @@ namespace DevicesAndProblems.App.Services
             conn.AddDevice(newDevice);
         }
 
-        public void UpdateDevice(Device selectedDevice, Device newDevice)
+        public void UpdateDevice(Device newDevice, int selectedDeviceId)
         {
-            conn.UpdateDevice(selectedDevice, newDevice);
+            conn.UpdateDevice(newDevice, selectedDeviceId);
         }
 
-        public void DeleteDeviceType(Device selectedDevice)
+        public void DeleteDevice(Device selectedDevice)
         {
             conn.DeleteDevice(selectedDevice);
         }
