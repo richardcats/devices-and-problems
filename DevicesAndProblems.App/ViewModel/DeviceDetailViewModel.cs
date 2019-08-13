@@ -137,12 +137,12 @@ namespace DevicesAndProblems.App.ViewModel
 
             LoadCommands();
 
-            Messenger.Default.Register<string>(this, OnNewDeviceWindow);
-            Messenger.Default.Register<Device>(this, OnDeviceReceived);
+            Messenger.Default.Register<OpenDetailViewMessage>(this, OnNewDeviceWindow, ViewType.Device);
+            Messenger.Default.Register<Device>(this, OnDeviceReceived, ViewType.DeviceType);
         }
 
         // When showing the add new device-type window, set the title, make all TextBlocks black and make sure all fields are empty
-        private void OnNewDeviceWindow(string obj)
+        private void OnNewDeviceWindow(OpenDetailViewMessage message)
         {
             Title = "Device registreren";
 

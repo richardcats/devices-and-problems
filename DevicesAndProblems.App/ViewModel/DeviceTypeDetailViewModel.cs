@@ -104,13 +104,13 @@ namespace DevicesAndProblems.App.ViewModel
 
             LoadCommands();
 
-            Messenger.Default.Register<string>(this, OnNewDeviceTypeWindow);
-            Messenger.Default.Register<DeviceType>(this, OnDeviceTypeReceived);
-            Messenger.Default.Register<EmployeeDataService>(this, OnCurrentEmployeeReceived, "DeviceTypeDetailView");
+            Messenger.Default.Register<OpenDetailViewMessage>(this, OnNewDeviceTypeWindow, ViewType.DeviceType);
+            Messenger.Default.Register<DeviceType>(this, OnDeviceTypeReceived, ViewType.DeviceType); // TO DO: use OpenDetailViewMessage, but pass DeviceType with it
+            Messenger.Default.Register<EmployeeDataService>(this, OnCurrentEmployeeReceived, ViewType.DeviceType);
         }
 
         // When showing the add new device-type window, set the title, make all TextBlocks black and make sure all fields are empty
-        private void OnNewDeviceTypeWindow(string obj)
+        private void OnNewDeviceTypeWindow(OpenDetailViewMessage message)
         {
             Title = "Device-type registreren";
 

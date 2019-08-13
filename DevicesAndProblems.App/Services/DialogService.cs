@@ -8,25 +8,25 @@ namespace DevicesAndProblems.App.Services
     {
         Window window = null;
 
-        public void ShowEditDialog(DialogType dialogType)
+        public void ShowEditDialog(ViewType viewType)
         {
-            if (dialogType == DialogType.Problem)
+            if (viewType == ViewType.Problem)
                 window = new DeviceTypeDetailView(true);
-            else if (dialogType == DialogType.Device)
+            else if (viewType == ViewType.Device)
                 window = new DeviceDetailView(true);
-            else if (dialogType == DialogType.DeviceType)
+            else if (viewType == ViewType.DeviceType)
                 window = new DeviceTypeDetailView(true);
 
             window.ShowDialog();
         }
 
-        public void ShowAddDialog(DialogType dialogType)
+        public void ShowAddDialog(ViewType viewType)
         {
-            if (dialogType == DialogType.Problem)
+            if (viewType == ViewType.Problem)
                 window = new DeviceTypeDetailView(false);
-            else if (dialogType == DialogType.Device)
+            else if (viewType == ViewType.Device)
                 window = new DeviceDetailView(false);
-            else if (dialogType == DialogType.DeviceType)
+            else if (viewType == ViewType.DeviceType)
                 window = new DeviceTypeDetailView(false);
 
             window.ShowDialog();
@@ -53,5 +53,5 @@ namespace DevicesAndProblems.App.Services
         }
     }
 
-    public enum DialogType { Problem, Device, DeviceType };
+    public enum ViewType { Problem, Device, DeviceType };
 }

@@ -138,24 +138,12 @@ namespace DevicesAndProblems.App.ViewModel
         {
             ShowAddButton = true;
             ShowEditButton = true;
-
-            // temporary .. use this code for ProblemOverviewViewModel and DeviceOverviewViewModel instead
-            /*if (CurrentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
-            {
-                ShowAddButton = false;
-                ShowEditButton = false;
-            }
-            else
-            {
-                ShowAddButton = true;
-                ShowEditButton = true;
-            }*/
         }
 
         private void AddDeviceType(object obj)
         {
-            Messenger.Default.Send("NewDeviceType");
-            dialogService.ShowAddDialog(DialogType.DeviceType);
+            Messenger.Default.Send(new OpenDetailViewMessage(), ViewType.DeviceType);
+            dialogService.ShowAddDialog(ViewType.DeviceType);
         }
 
         private bool CanAddDeviceType(object obj)
@@ -165,9 +153,9 @@ namespace DevicesAndProblems.App.ViewModel
 
         private void EditDeviceType(object obj)
         {
-            Messenger.Default.Send(selectedDeviceType);
-            Messenger.Default.Send(CurrentEmployee, "DeviceTypeDetailView");
-            dialogService.ShowEditDialog(DialogType.DeviceType);
+            Messenger.Default.Send(selectedDeviceType, ViewType.DeviceType);
+            Messenger.Default.Send(CurrentEmployee, ViewType.DeviceType);
+            dialogService.ShowEditDialog(ViewType.DeviceType);
         }
 
         private bool CanEditDeviceType(object obj)

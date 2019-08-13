@@ -12,7 +12,7 @@
             <TextBlock HorizontalAlignment="Left" Text="Zoek device:" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
             <TextBox Text="{Binding SearchInput}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" TextChanged="SearchInputChanged" Canvas.Left="84" Canvas.Top="10"/>
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Device-type:" VerticalAlignment="Top" Canvas.Left="230" Canvas.Top="10"/>
-            <ComboBox x:Name="cboType" SelectedValue="{Binding SelectedDeviceTypeValue}" ItemsSource="{Binding ComboboxDeviceTypes}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120"  SelectionChanged="DeviceTypeChanged" Canvas.Left="312" Canvas.Top="9" Text="Alle device-types" IsReadOnly="True" IsEditable="True"/>
+            <ComboBox x:Name="cboType" SelectedIndex="{Binding SelectedDeviceTypeValue}" ItemsSource="{Binding ComboboxDeviceTypes}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120"  SelectionChanged="DeviceTypeChanged" Canvas.Left="312" Canvas.Top="9" Text="Alle device-types" IsReadOnly="True" IsEditable="True"/>
             <Button Content="Registreer device" Command="{Binding AddCommand}" Visibility="{Binding Path=ShowAddButton, Converter={StaticResource booleanToVisibilityConverter}}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Canvas.Left="464" Canvas.Top="10" />
             <DataGrid ItemsSource="{Binding Devices}" SelectedItem="{Binding SelectedDevice}" HorizontalAlignment="Left" Height="220" VerticalAlignment="Top" Width="574"  AutoGenerateColumns="false" Canvas.Left="10" Canvas.Top="48">
                 <DataGrid.Resources>

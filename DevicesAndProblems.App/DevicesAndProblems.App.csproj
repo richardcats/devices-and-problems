@@ -93,6 +93,7 @@
     <Compile Include="Converter\BoolToColorConverter.cs" />
     <Compile Include="Converter\DoNothingConverter.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Messages\OpenDetailViewMessage.cs" />
     <Compile Include="Messages\OpenOverviewMessage.cs" />
     <Compile Include="Messages\UpdateListMessage.cs" />
     <Compile Include="Services\DeviceDataService.cs" />

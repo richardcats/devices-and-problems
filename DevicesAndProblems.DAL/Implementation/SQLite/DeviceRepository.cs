@@ -16,7 +16,7 @@ namespace DevicesAndProblems.DAL.SQLite
                                 "FROM Device " +
                                 "LEFT JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.Id " +
                                 "LEFT JOIN Storing ON DeviceStoring.StoringID = Storing.StoringID AND Status='Open' " +
-                                "LEFT JOIN DeviceType ON DeviceType.Id = Device.Id " +
+                                "LEFT JOIN DeviceType ON DeviceType.Id = Device.DeviceTypeId  " +
                                 "GROUP BY Device.Id";
 
             return SelectList<Device>(sql, null).ToList();

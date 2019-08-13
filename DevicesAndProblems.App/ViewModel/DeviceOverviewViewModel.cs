@@ -68,9 +68,9 @@ namespace DevicesAndProblems.App.ViewModel
             }
         }
 
-        private string selectedDeviceTypeValue;
+        private int selectedDeviceTypeValue;
 
-        public string SelectedDeviceTypeValue
+        public int SelectedDeviceTypeValue
         {
             get
             {
@@ -145,8 +145,16 @@ namespace DevicesAndProblems.App.ViewModel
         private void FilterDataGrid()
         {
             ICollectionView DeviceTypesView = CollectionViewSource.GetDefaultView(Devices);
-            var searchFilter = new Predicate<object>(item => ((Device)item).Name.ToLower().Contains(SearchInput.ToLower()) && ((Device)item).DeviceTypeName.Equals(SelectedDeviceTypeValue));
-            DeviceTypesView.Filter = searchFilter;
+            if (SelectedDeviceTypeValue == 0 || SelectedDeviceTypeValue == -1)
+            {
+                var searchFilter = new Predicate<object>(item => ((Device)item).Name.ToLower().Contains(SearchInput.ToLower()));
+                DeviceTypesView.Filter = searchFilter;
+            }
+            else
+            {
+                var searchFilter = new Predicate<object>(item => ((Device)item).Name.ToLower().Contains(SearchInput.ToLower()) && ((Device)item).DeviceTypeValue == SelectedDeviceTypeValue);
+                DeviceTypesView.Filter = searchFilter;
+            }
         }
 
         private void OnUpdateListMessageReceived(UpdateListMessage obj)
@@ -175,8 +183,8 @@ namespace DevicesAndProblems.App.ViewModel
 
         private void AddDevice(object obj)
         {
-            Messenger.Default.Send("NewDevice");
-            dialogService.ShowAddDialog(DialogType.Device);
+            Messenger.Default.Send(new OpenDetailViewMessage(), ViewType.Device);
+            dialogService.ShowAddDialog(ViewType.Device);
         }
 
         private bool CanAddDevice(object obj)
@@ -186,8 +194,8 @@ namespace DevicesAndProblems.App.ViewModel
 
         private void EditDevice(object obj)
         {
-            Messenger.Default.Send(selectedDevice);
-            dialogService.ShowEditDialog(DialogType.Device);
+            Messenger.Default.Send(selectedDevice, ViewType.DeviceType);
+            dialogService.ShowEditDialog(ViewType.Device);
         }
 
         private bool CanEditDevice(object obj)

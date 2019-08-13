@@ -21,15 +21,6 @@ namespace DevicesAndProblems.App.View
         public DeviceOverviewView()
         {
             InitializeComponent();
-
-           // Devices = deviceDataService.GetAllDevices().ToObservableCollection();
-
-
-           /* if (currentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
-            {
-                btnRegistreerDevice.Visibility = Visibility.Hidden;
-                dgDevices.Columns[6].Visibility = Visibility.Hidden;
-            }*/
         }
 
         // As soon as a change has occurred in the search field, force the DataGrid to update
@@ -41,7 +32,7 @@ namespace DevicesAndProblems.App.View
 
         private void DeviceTypeChanged(object sender, EventArgs e)
         {
-            var binding = ((ComboBox)sender).GetBindingExpression(ComboBox.SelectedValueProperty);
+            var binding = ((ComboBox)sender).GetBindingExpression(ComboBox.SelectedIndexProperty);
             binding.UpdateSource();
         }
         
@@ -60,27 +51,6 @@ namespace DevicesAndProblems.App.View
             //    RefreshDatagrid();
         }
 
-        // Filters the datagrid based on a textbox and a combobox
-      /*  private void FilterDatagrid(object sender, EventArgs e)
-        {
-            var _itemSourceList = new CollectionViewSource() { Source = Devices };
-
-            // ICollectionView the View/UI part 
-            ICollectionView Itemlist = _itemSourceList.View;
-            Predicate<object> searchFilter;
-            if (cboType.SelectedIndex == 0 || cboType.SelectedIndex == -1)
-            {
-                searchFilter = new Predicate<object>(item => ((Device)item).DeviceName.ToLower().Contains(txtZoek.Text.ToLower()));
-                Itemlist.Filter = searchFilter;
-            }
-            else
-            {
-                searchFilter = new Predicate<object>(item => ((Device)item).DeviceName.ToLower().Contains(txtZoek.Text.ToLower()) && ((Device)item).DeviceTypeName == (string)cboType.SelectedItem);
-                Itemlist.Filter = searchFilter;
-            }
-
-            //dgDevices.ItemsSource = Itemlist;
-        }*/
 
        /* private void RegistreerDeviceClick(object sender, RoutedEventArgs e)
         {
