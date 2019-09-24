@@ -11,7 +11,7 @@ namespace DevicesAndProblems.DAL.SQLite
         {
             string sql = "SELECT Device.Id AS Id, Device.Name AS Name, " +
                                 "DeviceType.Id AS DeviceTypeValue, DeviceType.Name AS DeviceTypeName, " +
-                                "SerialNumber, Department, Device.Comments AS DeviceComments, " +
+                                "SerialNumber, Department, Device.Comments AS Comments, " +
                                 "Date(Device.FirstAddedDate) AS FirstAddedDate, COUNT(Storing.StoringID) AS NumberOfFaults " +
                                 "FROM Device " +
                                 "LEFT JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.Id " +
@@ -28,6 +28,15 @@ namespace DevicesAndProblems.DAL.SQLite
                 "FROM Device WHERE Id = '" + id + "'";
 
             return SelectList<Device>(sql, null).ToList();
+        }
+
+        public void Update(Device newDevice, int selectedDeviceId)
+        {
+            string sql = "UPDATE Device SET DeviceTypeId = @DeviceTypeValue, Name = @Name, " +
+                "SerialNumber = @SerialNumber, Department = @Department, Comments = @Comments " +
+                "WHERE Id = '" + selectedDeviceId + "'";
+
+            Update<Device>(sql, newDevice);
         }
     }
 }

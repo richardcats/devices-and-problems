@@ -11,5 +11,6 @@ namespace DevicesAndProblems.DAL.Interface
     {
         List<Device> SelectList();
         List<Device> SelectListById(int id);
+        void Update(Device newDevice, int selectedDeviceId);
     }
 }

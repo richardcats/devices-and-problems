@@ -175,6 +175,7 @@ namespace DevicesAndProblems.App.ViewModel
             ComboBoxDepartments = problemDataService.FillCombobox(View.ComboboxType.Afdeling);
 
             SelectedDevice = device;
+            SelectedDevice.DeviceTypeValue--; //TODO: this binds the ComboBox index to DeviceType ID. Find a better solution.
             SelectedDeviceCopy = SelectedDevice.Copy(); // Creates a deep copy in case the user wants to cancel the change
             CurrentProblems = problemDataService.GetCurrentProblemsOfDevice(SelectedDevice.Id).ToObservableCollection();
         }
@@ -218,6 +219,7 @@ namespace DevicesAndProblems.App.ViewModel
             {
                 SelectedDevice = SelectedDeviceCopy.Copy(); // Creates a deep copy so that CanSaveDeviceWithoutClose knows when a change is taking place in one of the fields again
                 deviceDataService.UpdateDevice(SelectedDeviceCopy, SelectedDeviceCopy.Id);
+                SelectedDeviceCopy.DeviceTypeValue--; //TODO: this binds the ComboBox index to DeviceType ID. Find a better solution.
                 Messenger.Default.Send(new UpdateListMessage(false), "Devices");
             }
         }

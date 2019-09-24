@@ -46,7 +46,7 @@ namespace DevicesAndProblems.App.View
             cboErnst.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
             cboPrioriteit.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
 
-            DevicesOfCurrentProblem = problemDataService.GetDevicesOfCurrentProblem(SelectedProblem.ProblemId).ToObservableCollection();
+            DevicesOfCurrentProblem = problemDataService.GetDevicesOfCurrentProblem(SelectedProblem.Id).ToObservableCollection();
             //AllDevices = deviceDataService.GetAllDevices().ToObservableCollection();
             Comments = problemDataService.GetCommentsOfCurrentProblem(SelectedProblem).ToObservableCollection();
 
@@ -230,10 +230,10 @@ namespace DevicesAndProblems.App.View
         // The user first receives a message before the malfunction is permanently removed from the database
         private void RemoveProblem(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Storing " + SelectedProblem.ProblemId + " wordt permanent verwijderd", "Storing", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            if (MessageBox.Show("Storing " + SelectedProblem.Id + " wordt permanent verwijderd", "Storing", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 problemDataService.DeleteProblem(SelectedProblem); // Delete from the database
-                ProblemOverviewView.Problems.Remove(ProblemOverviewView.Problems.Where(i => i.ProblemId == SelectedProblem.ProblemId).Single()); // Delete from the ObservableCollection
+                ProblemOverviewView.Problems.Remove(ProblemOverviewView.Problems.Where(i => i.Id == SelectedProblem.Id).Single()); // Delete from the ObservableCollection
 
                 DialogResult = true;
             }

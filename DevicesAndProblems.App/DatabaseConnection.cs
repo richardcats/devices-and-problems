@@ -94,7 +94,7 @@ namespace DevicesAndProblems.App
                     {
                         Problem problem = new Problem()
                         {
-                            ProblemId = Convert.ToInt32(reader["StoringID"]),
+                            Id = Convert.ToInt32(reader["StoringID"]),
                             Description = Convert.ToString(reader["Beschrijving"]),
                             DateRaised = Convert.ToDateTime(reader["Datum"]),
                         };
@@ -245,17 +245,6 @@ namespace DevicesAndProblems.App
             }
         }
 
-        public void UpdateDevice(Device newDevice, int selectedDeviceId)
-        {
-            using (SQLiteConnection connection = new SQLiteConnection(connString))
-            {
-                connection.Open();
-                string query = "UPDATE Device SET DeviceTypeID = '" + newDevice.DeviceTypeValue + "', Naam = '" + newDevice.Name + "', Serienummer = '" + newDevice.SerialNumber + "', Afdeling = '" + newDevice.Department + "', Opmerkingen = '" + newDevice.Comments + "' WHERE DeviceID = '" + selectedDeviceId + "'";
-                SQLiteCommand command = new SQLiteCommand(query, connection);
-
-                command.ExecuteNonQuery();
-            }
-        }
 
         public void DeleteDevice(Device selectedDevice)
         {
@@ -286,7 +275,7 @@ namespace DevicesAndProblems.App
                     {
                         Problem problem = new Problem()
                         {
-                            ProblemId = Convert.ToInt32(reader["StoringID"]),
+                            Id = Convert.ToInt32(reader["StoringID"]),
                             Description = Convert.ToString(reader["Beschrijving"]),
                             DateRaised = Convert.ToDateTime(reader["DatumToegevoegd"]),
                             RaisedBy = Convert.ToString(reader["Voornaam"]),
@@ -367,18 +356,18 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "UPDATE Storing SET Beschrijving = '" + newProblem.Description + "', Prioriteit = '" + newProblem.Priority + "', Ernst = '" + newProblem.Severity + "', Status = '" + newProblem.Status + "', DatumAfhandeling = '" + newProblem.ClosureDate + "', MedewerkerBehandeld = '" + newProblem.HandledBy + "' WHERE StoringID = '" + selectedProblem.ProblemId + "'";
+                string query = "UPDATE Storing SET Beschrijving = '" + newProblem.Description + "', Prioriteit = '" + newProblem.Priority + "', Ernst = '" + newProblem.Severity + "', Status = '" + newProblem.Status + "', DatumAfhandeling = '" + newProblem.ClosureDate + "', MedewerkerBehandeld = '" + newProblem.HandledBy + "' WHERE StoringID = '" + selectedProblem.Id + "'";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 command.ExecuteNonQuery();
 
-                command.CommandText = "DELETE FROM DeviceStoring WHERE StoringID = '" + selectedProblem.ProblemId + "'";
+                command.CommandText = "DELETE FROM DeviceStoring WHERE StoringID = '" + selectedProblem.Id + "'";
 
                 command.ExecuteNonQuery();
 
                 foreach (Device device in DevicesOfCurrentProblem)
                 {
-                    command.CommandText = "INSERT INTO DeviceStoring (StoringID, DeviceID) VALUES ('" + selectedProblem.ProblemId + "','" + device.Id + "')";
+                    command.CommandText = "INSERT INTO DeviceStoring (StoringID, DeviceID) VALUES ('" + selectedProblem.Id + "','" + device.Id + "')";
                     command.ExecuteNonQuery();
                 }
             }
@@ -389,12 +378,12 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "DELETE FROM DeviceStoring WHERE StoringID = '" + selectedProblem.ProblemId + "'";
+                string query = "DELETE FROM DeviceStoring WHERE StoringID = '" + selectedProblem.Id + "'";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 command.ExecuteNonQuery();
 
-                command.CommandText = "DELETE FROM Storing WHERE StoringID = '" + selectedProblem.ProblemId + "'";
+                command.CommandText = "DELETE FROM Storing WHERE StoringID = '" + selectedProblem.Id + "'";
 
                 command.ExecuteNonQuery();
             }
@@ -407,7 +396,7 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "SELECT OpmerkingID, Date(Datum) AS Datum, Beschrijving FROM Opmerking WHERE StoringID = '" + selectedProblem.ProblemId + "'";
+                string query = "SELECT OpmerkingID, Date(Datum) AS Datum, Beschrijving FROM Opmerking WHERE StoringID = '" + selectedProblem.Id + "'";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 using (SQLiteDataReader reader = command.ExecuteReader())
@@ -433,7 +422,7 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "INSERT INTO Opmerking (StoringID, Datum, Beschrijving) VALUES ('" + selectedProblem.ProblemId + "', date('now'), '" + newComment.Text + "')";
+                string query = "INSERT INTO Opmerking (StoringID, Datum, Beschrijving) VALUES ('" + selectedProblem.Id + "', date('now'), '" + newComment.Text + "')";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 command.ExecuteNonQuery();
@@ -445,7 +434,7 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "DELETE FROM Opmerking WHERE Beschrijving = '" + selectedComment.Text + "' AND StoringID = '" + selectedProblem.ProblemId + "'";
+                string query = "DELETE FROM Opmerking WHERE Beschrijving = '" + selectedComment.Text + "' AND StoringID = '" + selectedProblem.Id + "'";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 command.ExecuteNonQuery();

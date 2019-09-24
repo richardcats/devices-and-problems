@@ -5,11 +5,18 @@ namespace DevicesAndProblems.Model
 {
     public class Problem : INotifyPropertyChanged
     {
-
-        public int ProblemId
+        private int id;
+        public int Id
         {
-            get;
-            set;
+            get
+            {
+                return id;
+            }
+            set
+            {
+                id = value;
+                RaisePropertyChanged("Id");
+            }
         }
 
         private string raisedBy;

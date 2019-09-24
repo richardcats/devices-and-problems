@@ -14,7 +14,7 @@
             <Button x:Name="btnRegistreerStoring" Content="Registreer storing" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.541,3.635" Width="120" Click="RegistreerStoringClick" Canvas.Left="464" Canvas.Top="10" />
             <DataGrid x:Name="dgStoringen" ItemsSource="{Binding Problems}" HorizontalAlignment="Left" Height="220" VerticalAlignment="Top" Width="574" Canvas.Left="10" Canvas.Top="48" AutoGenerateColumns="false">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding ProblemId}"/>
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
                     <DataGridTextColumn Header="Beschrijving" Binding="{Binding Description}"/>
                     <DataGridTextColumn Header="Datum" Binding="{Binding DateRaised, StringFormat='dd-MM-yyyy'}"/>
                     <DataGridTextColumn Header="Prioriteit" Binding="{Binding Priority}"/>
