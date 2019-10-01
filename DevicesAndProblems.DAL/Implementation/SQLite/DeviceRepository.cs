@@ -7,6 +7,14 @@ namespace DevicesAndProblems.DAL.SQLite
 {
     public class DeviceRepository : Implementation.SQLiteDataAccess, IDeviceRepository
     {
+        public void Insert(Device newDevice)
+        {
+            string sql = "INSERT INTO Device (DeviceTypeId, Name, SerialNumber, Department, Comments, FirstAddedDate) " +
+                "VALUES (@DeviceTypeValue, @Name, @SerialNumber, @Department, @Comments, date('now'))";
+
+            Insert<Device>(sql, newDevice);
+        }
+
         public List<Device> SelectList()
         {
             string sql = "SELECT Device.Id AS Id, Device.Name AS Name, " +

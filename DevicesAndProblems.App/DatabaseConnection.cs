@@ -233,18 +233,6 @@ namespace DevicesAndProblems.App
             return comboboxItems;
         }
 
-        public void AddDevice(Device newDevice)
-        {
-            using (SQLiteConnection connection = new SQLiteConnection(connString))
-            {
-                connection.Open();
-                string query = "INSERT INTO Device (DeviceTypeID, Naam, Serienummer, Afdeling, Opmerkingen, DatumToegevoegd) VALUES ( '" + newDevice.DeviceTypeValue + "','" + newDevice.Name + "','" + newDevice.SerialNumber + "','" + newDevice.Department + "','" + newDevice.Comments + "', date('now'))";
-                SQLiteCommand command = new SQLiteCommand(query, connection);
-
-                command.ExecuteNonQuery();
-            }
-        }
-
 
         public void DeleteDevice(Device selectedDevice)
         {

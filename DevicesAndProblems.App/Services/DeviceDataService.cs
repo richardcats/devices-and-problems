@@ -21,7 +21,8 @@ namespace DevicesAndProblems.App.Services
 
         public void AddDevice(Device newDevice)
         {
-            conn.AddDevice(newDevice);
+            newDevice.DeviceTypeValue++; //TODO: this binds the ComboBox index to DeviceType ID. Find a better solution.
+            repository.Insert(newDevice);
         }
 
         public void UpdateDevice(Device newDevice, int selectedDeviceId)
