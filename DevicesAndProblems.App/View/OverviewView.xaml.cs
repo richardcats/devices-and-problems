@@ -1,4 +1,5 @@
 ﻿using DevicesAndProblems.App.Messages;
+using DevicesAndProblems.App.Services;
 using DevicesAndProblems.App.Utility;
 using System.Windows;
 
@@ -25,7 +26,7 @@ namespace DevicesAndProblems.App.View
             overviewContainer.Children.Clear();
             problemOverviewView = new ProblemOverviewView();
             overviewContainer.Children.Add(problemOverviewView);
-            Messenger.Default.Send(new OpenOverviewMessage(), "Problems");
+            Messenger.Default.Send(new OpenOverviewMessage(), ViewType.Problem);
         }
 
         private void DevicesClick(object sender, RoutedEventArgs e)
@@ -34,7 +35,7 @@ namespace DevicesAndProblems.App.View
             overviewContainer.Children.Clear();
             DeviceOverviewView deviceOverviewView = new DeviceOverviewView();
             overviewContainer.Children.Add(deviceOverviewView);
-            Messenger.Default.Send(new OpenOverviewMessage(), "Devices");
+            Messenger.Default.Send(new OpenOverviewMessage(), ViewType.Device);
         }
 
         private void DeviceTypesClick(object sender, RoutedEventArgs e)
@@ -43,7 +44,7 @@ namespace DevicesAndProblems.App.View
             overviewContainer.Children.Clear();
             DeviceTypeOverviewView deviceTypeOverviewView = new DeviceTypeOverviewView();
             overviewContainer.Children.Add(deviceTypeOverviewView);
-            Messenger.Default.Send(new OpenOverviewMessage(), "DeviceTypes");
+            Messenger.Default.Send(new OpenOverviewMessage(), ViewType.DeviceType);
         }
 
         private void RapportagesClick(object sender, RoutedEventArgs e)

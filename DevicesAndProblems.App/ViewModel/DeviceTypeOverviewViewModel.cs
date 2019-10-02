@@ -102,8 +102,8 @@ namespace DevicesAndProblems.App.ViewModel
             LoadData();
             LoadCommands();
 
-            Messenger.Default.Register<UpdateListMessage>(this, OnUpdateListMessageReceived, "DeviceTypes");
-            Messenger.Default.Register<OpenOverviewMessage>(this, OnDeviceTypeOverviewOpened, "DeviceTypes");
+            Messenger.Default.Register<UpdateListMessage>(this, OnUpdateListMessageReceived, ViewType.DeviceType);
+            Messenger.Default.Register<OpenOverviewMessage>(this, OnDeviceTypeOverviewOpened, ViewType.DeviceType);
         }
 
 

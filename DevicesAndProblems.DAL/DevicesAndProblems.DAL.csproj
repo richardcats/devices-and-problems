@@ -63,11 +63,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementation\SQLiteDataAccess.cs" />
+    <Compile Include="Implementation\SQLite\ProblemRepository.cs" />
     <Compile Include="Interface\IDeviceRepository.cs" />
     <Compile Include="Implementation\IDataAccess.cs" />
     <Compile Include="Implementation\SQLite\DeviceRepository.cs" />
     <Compile Include="Implementation\SQLite\DeviceTypeRepository.cs" />
     <Compile Include="Interface\IDeviceTypeRepository.cs" />
+    <Compile Include="Interface\IProblemRepository.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />

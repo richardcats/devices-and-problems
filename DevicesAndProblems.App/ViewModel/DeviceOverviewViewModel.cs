@@ -68,18 +68,18 @@ namespace DevicesAndProblems.App.ViewModel
             }
         }
 
-        private int selectedDeviceTypeValue;
+        private string selectedDeviceTypeName;
 
-        public int SelectedDeviceTypeValue
+        public string SelectedDeviceTypeName
         {
             get
             {
-                return selectedDeviceTypeValue;
+                return selectedDeviceTypeName;
             }
             set
             {
-                selectedDeviceTypeValue = value;
-                RaisePropertyChanged("SelectedDeviceTypeValue");
+                selectedDeviceTypeName = value;
+                RaisePropertyChanged("SelectedDeviceTypeName");
                 FilterDataGrid();
             }
         }
@@ -125,8 +125,8 @@ namespace DevicesAndProblems.App.ViewModel
             LoadData();
             LoadCommands();
 
-            Messenger.Default.Register<UpdateListMessage>(this, OnUpdateListMessageReceived, "Devices");
-            Messenger.Default.Register<OpenOverviewMessage>(this, OnDeviceOverviewOpened, "Devices");
+            Messenger.Default.Register<UpdateListMessage>(this, OnUpdateListMessageReceived, ViewType.Device);
+            Messenger.Default.Register<OpenOverviewMessage>(this, OnDeviceOverviewOpened, ViewType.Device);
         }
 
         private void LoadData()
@@ -145,14 +145,14 @@ namespace DevicesAndProblems.App.ViewModel
         private void FilterDataGrid()
         {
             ICollectionView DeviceTypesView = CollectionViewSource.GetDefaultView(Devices);
-            if (SelectedDeviceTypeValue == 0 || SelectedDeviceTypeValue == -1)
+            if (SelectedDeviceTypeName == null || SelectedDeviceTypeName == "Alle device-types")
             {
                 var searchFilter = new Predicate<object>(item => ((Device)item).Name.ToLower().Contains(SearchInput.ToLower()));
                 DeviceTypesView.Filter = searchFilter;
             }
             else
             {
-                var searchFilter = new Predicate<object>(item => ((Device)item).Name.ToLower().Contains(SearchInput.ToLower()) && ((Device)item).DeviceTypeValue == SelectedDeviceTypeValue);
+                var searchFilter = new Predicate<object>(item => ((Device)item).Name.ToLower().Contains(SearchInput.ToLower()) && ((Device)item).DeviceTypeName == SelectedDeviceTypeName);
                 DeviceTypesView.Filter = searchFilter;
             }
         }

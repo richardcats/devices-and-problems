@@ -15,7 +15,7 @@
         <TextBox Text="{Binding SelectedDeviceCopy.Name, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="InputChanged" MaxLength="20"/>
 
         <TextBlock Foreground="{Binding MarkRedIfFieldEmptyDeviceType, Converter={StaticResource localBoolToColorConverter}}"  HorizontalAlignment="Left" Margin="9,50,0,0" Text="Device-type *" VerticalAlignment="Top"/>
-        <ComboBox ItemsSource="{Binding ComboBoxDeviceTypes}" SelectedValue="{Binding SelectedDeviceCopy.DeviceTypeName, Mode=TwoWay}" SelectedIndex="{Binding SelectedDeviceCopy.DeviceTypeValue, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,50,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="InputChanged"/>
+        <ComboBox ItemsSource="{Binding ComboBoxDeviceTypes}" SelectedValue="{Binding SelectedDeviceCopy.DeviceTypeName, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,50,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="InputChanged" />
 
         <TextBlock Foreground="{Binding MarkRedIfFieldEmptyDepartment, Converter={StaticResource localBoolToColorConverter}}" HorizontalAlignment="Left" Margin="9,80,0,0" Text="Afdeling *" VerticalAlignment="Top"/>
         <ComboBox ItemsSource="{Binding ComboBoxDepartments}" SelectedValue="{Binding SelectedDeviceCopy.Department, Mode=TwoWay}" HorizontalAlignment="Left"  Margin="118,80,0,0" VerticalAlignment="Top" Width="150" IsEditable="True" SelectionChanged="InputChanged"/>

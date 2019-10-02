@@ -36,6 +36,7 @@ namespace DevicesAndProblems.Model
             }
         }
 
+
         private string deviceTypeName;
 
         public string DeviceTypeName
@@ -50,23 +51,6 @@ namespace DevicesAndProblems.Model
                 RaisePropertyChanged("DeviceTypeName");
             }
         }
-
-        private int deviceTypeValue;
-
-        public int DeviceTypeValue
-        {
-            get
-            {
-                return deviceTypeValue;
-            }
-            set
-            {
-                deviceTypeValue = value;
-                RaisePropertyChanged("DeviceTypeValue");
-            }
-        }
-
-        
 
         private string serialNumber;
         public string SerialNumber

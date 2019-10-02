@@ -106,47 +106,6 @@ namespace DevicesAndProblems.App
             return problems;
         }
 
-       /* public List<Device> GetDevices()
-        {
-            List<Device> devices = new List<Device>();
-
-            using (SQLiteConnection connection = new SQLiteConnection(connString))
-            {
-                connection.Open();
-                string query = "SELECT Device.DeviceID AS ID, Device.Name AS DeviceName, " +
-                    "DeviceType.ID AS DeviceTypeValue, DeviceType.Name AS DeviceTypeName, " +
-                    "SerialNumber, Department, Device.Comments AS DeviceComments, " +
-                    "Date(Device.FirstAddedDate) AS FirstAddedDate, COUNT(Storing.StoringID) AS Storingen " +
-                    "FROM Device " +
-                    "LEFT JOIN DeviceStoring ON DeviceStoring.DeviceID = Device.DeviceID " +
-                    "LEFT JOIN Storing ON DeviceStoring.StoringID = Storing.StoringID AND Status='Open' " +
-                    "LEFT JOIN DeviceType ON DeviceType.ID = Device.DeviceTypeID " +
-                    "GROUP BY Device.DeviceID";
-                SQLiteCommand command = new SQLiteCommand(query, connection);
-
-                using (SQLiteDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        Device device = new Device()
-                        {
-                            DeviceId = Convert.ToInt32(reader["ID"]),
-                            DeviceName = Convert.ToString(reader["DeviceName"]),
-                            DeviceTypeValue = Convert.ToInt32(reader["DeviceTypeValue"]),
-                            DeviceTypeName = Convert.ToString(reader["DeviceTypeName"]),
-                            SerialNumber = Convert.ToString(reader["SerialNumber"]),
-                            Department = Convert.ToString(reader["Department"]),
-                            Comments = Convert.ToString(reader["DeviceComments"]),
-                            FirstAddedDate = Convert.ToDateTime(reader["FirstAddedDate"]),
-                            NumberOfFaults = Convert.ToInt32(reader["Storingen"])
-                        };
-                        devices.Add(device);
-                    }
-                }
-                
-            }
-            return devices;
-        }*/
 
         // Fill the combobox based on the combobox type 
         public ObservableCollection<string> FillCombobox(ComboboxType type)
@@ -234,17 +193,7 @@ namespace DevicesAndProblems.App
         }
 
 
-        public void DeleteDevice(Device selectedDevice)
-        {
-            using (SQLiteConnection connection = new SQLiteConnection(connString))
-            {
-                connection.Open();
-                string query = "DELETE FROM Device WHERE DeviceID = '" + selectedDevice.Id + "'";
-                SQLiteCommand command = new SQLiteCommand(query, connection);
 
-                command.ExecuteNonQuery();
-            }
-        }
 
         public List<Problem> GetProblems()
         {

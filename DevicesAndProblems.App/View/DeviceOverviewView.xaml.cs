@@ -32,7 +32,7 @@ namespace DevicesAndProblems.App.View
 
         private void DeviceTypeChanged(object sender, EventArgs e)
         {
-            var binding = ((ComboBox)sender).GetBindingExpression(ComboBox.SelectedIndexProperty);
+            var binding = ((ComboBox)sender).GetBindingExpression(ComboBox.SelectedValueProperty);
             binding.UpdateSource();
         }
         

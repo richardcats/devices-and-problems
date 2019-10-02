@@ -10,7 +10,7 @@ namespace DevicesAndProblems.DAL.SQLite
         public void Insert(Device newDevice)
         {
             string sql = "INSERT INTO Device (DeviceTypeId, Name, SerialNumber, Department, Comments, FirstAddedDate) " +
-                "VALUES (@DeviceTypeValue, @Name, @SerialNumber, @Department, @Comments, date('now'))";
+                "VALUES ((SELECT Id FROM DeviceType WHERE Name = @DeviceTypeName), @Name, @SerialNumber, @Department, @Comments, date('now'))";
 
             Insert<Device>(sql, newDevice);
         }
@@ -18,7 +18,7 @@ namespace DevicesAndProblems.DAL.SQLite
         public List<Device> SelectList()
         {
             string sql = "SELECT Device.Id AS Id, Device.Name AS Name, " +
-                                "DeviceType.Id AS DeviceTypeValue, DeviceType.Name AS DeviceTypeName, " +
+                                "DeviceType.Name AS DeviceTypeName, " +
                                 "SerialNumber, Department, Device.Comments AS Comments, " +
                                 "Date(Device.FirstAddedDate) AS FirstAddedDate, COUNT(Storing.StoringID) AS NumberOfFaults " +
                                 "FROM Device " +
@@ -40,11 +40,19 @@ namespace DevicesAndProblems.DAL.SQLite
 
         public void Update(Device newDevice, int selectedDeviceId)
         {
-            string sql = "UPDATE Device SET DeviceTypeId = @DeviceTypeValue, Name = @Name, " +
+            string sql = "UPDATE Device SET DeviceTypeId = (SELECT Id FROM DeviceType WHERE Name = @DeviceTypeName), Name = @Name, " +
                 "SerialNumber = @SerialNumber, Department = @Department, Comments = @Comments " +
                 "WHERE Id = '" + selectedDeviceId + "'";
 
             Update<Device>(sql, newDevice);
+        }
+
+        public void Delete(Device device)
+        {
+            string sql = "DELETE FROM Device " +
+                "WHERE Id = @Id";
+
+            Delete(sql, device);
         }
     }
 }

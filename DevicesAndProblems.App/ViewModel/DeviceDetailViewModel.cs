@@ -159,9 +159,6 @@ namespace DevicesAndProblems.App.ViewModel
                 SerialNumber = "",
                 Comments = ""
             };
-
-            ComboBoxDeviceTypes = problemDataService.FillCombobox(View.ComboboxType.DeviceType);
-            ComboBoxDepartments = problemDataService.FillCombobox(View.ComboboxType.Afdeling);
         }
 
         // When showing the edit device-type window, set the title, make all TextBlocks black and set the selected devicetype
@@ -175,7 +172,7 @@ namespace DevicesAndProblems.App.ViewModel
             ComboBoxDepartments = problemDataService.FillCombobox(View.ComboboxType.Afdeling);
 
             SelectedDevice = device;
-            SelectedDevice.DeviceTypeValue--; //TODO: this binds the ComboBox index to DeviceType ID. Find a better solution.
+           // SelectedDevice.DeviceTypeValue--; //TODO: this binds the ComboBox index to DeviceType ID. Find a better solution.
             SelectedDeviceCopy = SelectedDevice.Copy(); // Creates a deep copy in case the user wants to cancel the change
             CurrentProblems = problemDataService.GetCurrentProblemsOfDevice(SelectedDevice.Id).ToObservableCollection();
         }
@@ -204,7 +201,7 @@ namespace DevicesAndProblems.App.ViewModel
             else
             {
                 deviceDataService.AddDevice(SelectedDeviceCopy);
-                Messenger.Default.Send(new UpdateListMessage(true), "Devices");
+                Messenger.Default.Send(new UpdateListMessage(true), ViewType.Device);
             }
         }
 
@@ -219,8 +216,8 @@ namespace DevicesAndProblems.App.ViewModel
             {
                 SelectedDevice = SelectedDeviceCopy.Copy(); // Creates a deep copy so that CanSaveDeviceWithoutClose knows when a change is taking place in one of the fields again
                 deviceDataService.UpdateDevice(SelectedDeviceCopy, SelectedDeviceCopy.Id);
-                SelectedDeviceCopy.DeviceTypeValue--; //TODO: this binds the ComboBox index to DeviceType ID. Find a better solution.
-                Messenger.Default.Send(new UpdateListMessage(false), "Devices");
+               // SelectedDeviceCopy.DeviceTypeValue--; //TODO: this binds the ComboBox index to DeviceType ID. Find a better solution.
+                Messenger.Default.Send(new UpdateListMessage(false), ViewType.Device);
             }
         }
 
@@ -248,7 +245,7 @@ namespace DevicesAndProblems.App.ViewModel
             {
                 SelectedDevice = SelectedDeviceCopy;
                 deviceDataService.UpdateDevice(SelectedDevice, SelectedDevice.Id);
-                Messenger.Default.Send(new UpdateListMessage(true), "Devices");
+                Messenger.Default.Send(new UpdateListMessage(true), ViewType.Device);
             }
         }
 
@@ -264,7 +261,7 @@ namespace DevicesAndProblems.App.ViewModel
 
         private void Cancel(object obj)
         {
-            Messenger.Default.Send(new UpdateListMessage(true), "Devices");
+            Messenger.Default.Send(new UpdateListMessage(true), ViewType.Device);
         }
 
         private bool CanDeleteDevice(object obj)
@@ -285,7 +282,7 @@ namespace DevicesAndProblems.App.ViewModel
             if (dialogService.ShowRemoveWarningMessageBox("Device", selectedDevice.Id))
             {
                 deviceDataService.DeleteDevice(SelectedDevice);
-                Messenger.Default.Send(new UpdateListMessage(true), "Devices");
+                Messenger.Default.Send(new UpdateListMessage(true), ViewType.Device);
             }
         }
 

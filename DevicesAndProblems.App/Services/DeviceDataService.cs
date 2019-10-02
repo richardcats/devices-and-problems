@@ -6,7 +6,6 @@ namespace DevicesAndProblems.App.Services
 {
     class DeviceDataService : IDeviceDataService
     {
-        DatabaseConnection conn = new DatabaseConnection();
         IDeviceRepository repository;
 
         public DeviceDataService(IDeviceRepository repository)
@@ -21,19 +20,19 @@ namespace DevicesAndProblems.App.Services
 
         public void AddDevice(Device newDevice)
         {
-            newDevice.DeviceTypeValue++; //TODO: this binds the ComboBox index to DeviceType ID. Find a better solution.
+           // newDevice.DeviceTypeId++; //TODO: this binds the ComboBox index to DeviceType ID. Find a better solution.
             repository.Insert(newDevice);
         }
 
         public void UpdateDevice(Device newDevice, int selectedDeviceId)
         {
-            newDevice.DeviceTypeValue++; //TODO: this binds the ComboBox index to DeviceType ID. Find a better solution.
+          //  newDevice.DeviceTypeId++; //TODO: this binds the ComboBox index to DeviceType ID. Find a better solution.
             repository.Update(newDevice, selectedDeviceId);
         }
 
         public void DeleteDevice(Device selectedDevice)
         {
-            conn.DeleteDevice(selectedDevice);
+            repository.Delete(selectedDevice);
         }
 
         public List<Device> GetDevicesOfDeviceType(int id)
