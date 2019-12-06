@@ -18,7 +18,7 @@ namespace DevicesAndProblems.DAL.Implementation
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
 
-        public List<T> SelectList<T>(string sql, object parameters = null)
+        public List<T> GetAll<T>(string sql, object parameters = null)
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -27,7 +27,7 @@ namespace DevicesAndProblems.DAL.Implementation
             }
         }
 
-        public void Insert<T>(string sql, object poco)
+        public void Add<T>(string sql, object poco)
         {
             using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
             {

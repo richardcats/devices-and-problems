@@ -33,31 +33,31 @@ namespace DevicesAndProblems.Model
             }
         }
 
-        private int raisedByID;
-        public int RaisedByID
+        private int raisedByEmployeeId;
+        public int RaisedByEmployeeId
         {
             get
             {
-                return raisedByID;
+                return raisedByEmployeeId;
             }
             set
             {
-                raisedByID = value;
-                RaisePropertyChanged("RaisedByID");
+                raisedByEmployeeId = value;
+                RaisePropertyChanged("RaisedByEmployeeId");
             }
         }
 
-        private int handledBy;
-        public int HandledBy
+        private int handledByEmployeeId;
+        public int HandledByEmployeeId
         {
             get
             {
-                return handledBy;
+                return handledByEmployeeId;
             }
             set
             {
-                handledBy = value;
-                RaisePropertyChanged("HandledBy");
+                handledByEmployeeId = value;
+                RaisePropertyChanged("HandledByEmployeeId");
             }
         }
 

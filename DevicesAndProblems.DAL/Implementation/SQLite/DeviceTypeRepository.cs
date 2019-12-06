@@ -7,7 +7,7 @@ namespace DevicesAndProblems.DAL.SQLite
 {
     public class DeviceTypeRepository : Implementation.SQLiteDataAccess, IDeviceTypeRepository
     {
-        public List<DeviceType> SelectList()
+        public List<DeviceType> GetAll()
         {
             string sql = "SELECT DeviceType.Id, DeviceType.Name, " +
                 "COUNT(Device.DeviceTypeID) AS DeviceAmount, DeviceType.Description " +
@@ -16,7 +16,7 @@ namespace DevicesAndProblems.DAL.SQLite
                 "GROUP BY DeviceType.ID " +
                 "ORDER BY DeviceType.Id";
 
-            return SelectList<DeviceType>(sql, null).ToList();
+            return GetAll<DeviceType>(sql, null).ToList();
         }
 
         public void Update(DeviceType newDeviceType, int selectedDeviceTypeId)
@@ -27,12 +27,12 @@ namespace DevicesAndProblems.DAL.SQLite
             Update<DeviceType>(sql, newDeviceType);
         }
 
-        public void Insert(DeviceType newDeviceType)
+        public void Add(DeviceType newDeviceType)
         {
             string sql = "INSERT INTO DeviceType (Name, Description) " +
                 "VALUES (@Name, @Description)";
 
-            Insert<DeviceType>(sql, newDeviceType);
+            Add<DeviceType>(sql, newDeviceType);
         }
 
         public void Delete(DeviceType deviceType)

@@ -102,6 +102,7 @@
     <Compile Include="Services\IDeviceDataService.cs" />
     <Compile Include="Services\IDeviceTypeDataService.cs" />
     <Compile Include="Services\IDialogService.cs" />
+    <Compile Include="Services\IEmployeeDataService.cs" />
     <Compile Include="Services\IProblemDataService.cs" />
     <Compile Include="Services\ProblemDataService.cs" />
     <Compile Include="Utility\BindingProxy.cs" />
@@ -112,6 +113,8 @@
     <Compile Include="ViewModel\DeviceOverviewViewModel.cs" />
     <Compile Include="ViewModel\DeviceTypeDetailViewModel.cs" />
     <Compile Include="ViewModel\OverviewViewModel.cs" />
+    <Compile Include="ViewModel\ProblemDetailViewModel.cs" />
+    <Compile Include="ViewModel\ProblemOverviewViewModel.cs" />
     <Compile Include="View\DeviceDetailView.xaml.cs">
       <DependentUpon>DeviceDetailView.xaml</DependentUpon>
     </Compile>

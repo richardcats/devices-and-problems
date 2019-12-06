@@ -18,12 +18,12 @@ namespace DevicesAndProblems.App.View
         {
             InitializeComponent();
 
-            if (editMode) // When an existing device-type is clicked
+            if (editMode) // When an existing device is clicked
             {
                 cvsRegisterButtons.Visibility = Visibility.Hidden;
                 cvsEditButtons.Visibility = Visibility.Visible;
             }
-            else // When a new device-type is registered
+            else // When a new device is registered
             {
                 cvsRegisterButtons.Visibility = Visibility.Visible;
                 cvsEditButtons.Visibility = Visibility.Hidden;
@@ -58,8 +58,5 @@ namespace DevicesAndProblems.App.View
 
     }
     // Registers all types of comboboxes that are used throughout the application
-    public enum ComboboxType
-    {
-        Afdeling, DeviceType, DeviceTypeAll, Status, StatusAll, Medewerker, PrioriteitErnst, Month, Year
-    };
+
 }

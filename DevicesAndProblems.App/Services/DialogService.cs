@@ -11,7 +11,7 @@ namespace DevicesAndProblems.App.Services
         public void ShowEditDialog(ViewType viewType)
         {
             if (viewType == ViewType.Problem)
-                window = new DeviceTypeDetailView(true);
+                window = new ProblemDetailView(true);
             else if (viewType == ViewType.Device)
                 window = new DeviceDetailView(true);
             else if (viewType == ViewType.DeviceType)
@@ -23,7 +23,7 @@ namespace DevicesAndProblems.App.Services
         public void ShowAddDialog(ViewType viewType)
         {
             if (viewType == ViewType.Problem)
-                window = new DeviceTypeDetailView(false);
+                window = new ProblemDetailView(false);
             else if (viewType == ViewType.Device)
                 window = new DeviceDetailView(false);
             else if (viewType == ViewType.DeviceType)

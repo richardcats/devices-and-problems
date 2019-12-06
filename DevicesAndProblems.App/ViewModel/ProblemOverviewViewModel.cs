@@ -2,6 +2,7 @@
 using DevicesAndProblems.App.Messages;
 using DevicesAndProblems.App.Services;
 using DevicesAndProblems.App.Utility;
+using DevicesAndProblems.App.View;
 using DevicesAndProblems.DAL.SQLite;
 using DevicesAndProblems.Model;
 using System;
@@ -12,25 +13,25 @@ using System.Windows.Input;
 
 namespace DevicesAndProblems.App.ViewModel
 {
-    public class DeviceOverviewViewModel : OverviewViewModel, INotifyPropertyChanged
+    public class ProblemOverviewViewModel : OverviewViewModel, INotifyPropertyChanged
     {
-        private IDeviceDataService deviceDataService;
+        private IProblemDataService problemDataService;
         private IDialogService dialogService;
-        private ProblemDataService problemDataService = new ProblemDataService(new ProblemRepository()); //TO DO interface van maken??
 
-        public ObservableCollection<string> ComboboxDeviceTypes { get; set; }
-        private ObservableCollection<Device> devices;
+        public ObservableCollection<string> ComboboxProblemStatus { get; set; }
 
-        public ObservableCollection<Device> Devices
+        private ObservableCollection<Problem> problems;
+
+        public ObservableCollection<Problem> Problems
         {
             get
             {
-                return devices;
+                return problems;
             }
             set
             {
-                devices = value;
-                RaisePropertyChanged("Devices");
+                problems = value;
+                RaisePropertyChanged("Problems");
             }
         }
 
@@ -49,33 +50,33 @@ namespace DevicesAndProblems.App.ViewModel
             }
         }
 
-        private Device selectedDevice;
+        private Problem selectedProblem;
 
-        public Device SelectedDevice
+        public Problem SelectedProblem
         {
             get
             {
-                return selectedDevice;
+                return selectedProblem;
             }
             set
             {
-                selectedDevice = value;
-                RaisePropertyChanged("SelectedDevice");
+                selectedProblem = value;
+                RaisePropertyChanged("SelectedProblem");
             }
         }
 
-        private string selectedDeviceTypeName;
+        private string selectedProblemStatusName;
 
-        public string SelectedDeviceTypeName
+        public string SelectedProblemStatusName
         {
             get
             {
-                return selectedDeviceTypeName;
+                return selectedProblemStatusName;
             }
             set
             {
-                selectedDeviceTypeName = value;
-                RaisePropertyChanged("SelectedDeviceTypeName");
+                selectedProblemStatusName = value;
+                RaisePropertyChanged("SelectedProblemStatusName");
                 FilterDataGrid();
             }
         }
@@ -113,43 +114,42 @@ namespace DevicesAndProblems.App.ViewModel
 
         public ICommand EditCommand { get; set; }
 
-        public DeviceOverviewViewModel(IDeviceDataService deviceDataService, IDialogService dialogService)
+        public ProblemOverviewViewModel(IProblemDataService problemDataService, IDialogService dialogService)
         {
-            this.deviceDataService = deviceDataService;
+            this.problemDataService = problemDataService;
             this.dialogService = dialogService;
 
             LoadData();
             LoadCommands();
 
             Messenger.Default.Register<UpdateListMessage>(this, OnUpdateListMessageReceived, ViewType.Device);
-            Messenger.Default.Register<OpenOverviewMessage>(this, OnDeviceOverviewOpened, ViewType.Device);
+            Messenger.Default.Register<OpenOverviewMessage>(this, OnProblemOverviewOpened, ViewType.Device);
         }
 
         private void LoadData()
         {
-            Devices = deviceDataService.GetAllDevices().ToObservableCollection();
-            ComboboxDeviceTypes = problemDataService.FillCombobox(ComboboxType.DeviceTypeAll);
+            Problems = problemDataService.GetAllProblems().ToObservableCollection();
+            ComboboxProblemStatus = ProblemDetailView.FillCombobox(ComboboxType.StatusAll);
         }
-
 
         private void LoadCommands()
         {
-            AddCommand = new CustomCommand(AddDevice, CanAddDevice);
-            EditCommand = new CustomCommand(EditDevice, CanEditDevice);
+            AddCommand = new CustomCommand(AddProblem, CanAddProblem);
+            EditCommand = new CustomCommand(EditProblem, CanEditProblem);
         }
 
         private void FilterDataGrid()
         {
-            ICollectionView DeviceTypesView = CollectionViewSource.GetDefaultView(Devices);
-            if (SelectedDeviceTypeName == null || SelectedDeviceTypeName == "Alle device-types")
+            ICollectionView ProblemsView = CollectionViewSource.GetDefaultView(Problems);
+            if (SelectedProblemStatusName == null || SelectedProblemStatusName == "Alle storingen")
             {
-                var searchFilter = new Predicate<object>(item => ((Device)item).Name.ToLower().Contains(SearchInput.ToLower()));
-                DeviceTypesView.Filter = searchFilter;
+                var searchFilter = new Predicate<object>(item => ((Problem)item).Description.ToLower().Contains(SearchInput.ToLower()));
+                ProblemsView.Filter = searchFilter;
             }
             else
             {
-                var searchFilter = new Predicate<object>(item => ((Device)item).Name.ToLower().Contains(SearchInput.ToLower()) && ((Device)item).DeviceTypeName == SelectedDeviceTypeName);
-                DeviceTypesView.Filter = searchFilter;
+                var searchFilter = new Predicate<object>(item => ((Problem)item).Description.ToLower().Contains(SearchInput.ToLower()) && ((Problem)item).Status == SelectedProblemStatusName);
+                ProblemsView.Filter = searchFilter;
             }
         }
 
@@ -162,7 +162,7 @@ namespace DevicesAndProblems.App.ViewModel
                 dialogService.CloseDialog();
         }
 
-        private void OnDeviceOverviewOpened(OpenOverviewMessage obj)
+        private void OnProblemOverviewOpened(OpenOverviewMessage obj)
         {
             // temporary .. use this code for ProblemOverviewViewModel and DeviceOverviewViewModel instead
             if (CurrentEmployee.AccountTypeOfCurrentEmployee() == "IT-manager")
@@ -177,24 +177,24 @@ namespace DevicesAndProblems.App.ViewModel
             }
         }
 
-        private void AddDevice(object obj)
+        private void AddProblem(object obj)
         {
-            Messenger.Default.Send(new OpenDetailViewMessage(), ViewType.Device);
-            dialogService.ShowAddDialog(ViewType.Device);
+            Messenger.Default.Send(new OpenDetailViewMessage(), ViewType.Problem);
+            dialogService.ShowAddDialog(ViewType.Problem);
         }
 
-        private bool CanAddDevice(object obj)
+        private bool CanAddProblem(object obj)
         {
             return true;
         }
 
-        private void EditDevice(object obj)
+        private void EditProblem(object obj)
         {
-            Messenger.Default.Send(selectedDevice, ViewType.DeviceType); // TO DO bug?
-            dialogService.ShowEditDialog(ViewType.Device);
+            Messenger.Default.Send(selectedProblem, ViewType.Problem);
+            dialogService.ShowEditDialog(ViewType.Problem);
         }
 
-        private bool CanEditDevice(object obj)
+        private bool CanEditProblem(object obj)
         {
             return true;
         }

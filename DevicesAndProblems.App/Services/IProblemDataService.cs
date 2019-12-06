@@ -1,11 +1,7 @@
-﻿using DevicesAndProblems.App.View;
+﻿using DevicesAndProblems.DAL.SQLite;
 using DevicesAndProblems.Model;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DevicesAndProblems.App.Services
 {

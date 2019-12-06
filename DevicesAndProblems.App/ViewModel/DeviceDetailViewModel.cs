@@ -2,6 +2,7 @@
 using DevicesAndProblems.App.Messages;
 using DevicesAndProblems.App.Services;
 using DevicesAndProblems.App.Utility;
+using DevicesAndProblems.DAL.SQLite;
 using DevicesAndProblems.Model;
 using System;
 using System.Collections.ObjectModel;
@@ -148,8 +149,8 @@ namespace DevicesAndProblems.App.ViewModel
 
             MarkTextBlocksBlack();
 
-            ComboBoxDeviceTypes = problemDataService.FillCombobox(View.ComboboxType.DeviceType);
-            ComboBoxDepartments = problemDataService.FillCombobox(View.ComboboxType.Afdeling);
+            ComboBoxDeviceTypes = problemDataService.FillCombobox(ComboboxType.DeviceType);
+            ComboBoxDepartments = problemDataService.FillCombobox(ComboboxType.Afdeling);
 
             SelectedDeviceCopy = new Device()
             {
@@ -168,11 +169,10 @@ namespace DevicesAndProblems.App.ViewModel
 
             MarkTextBlocksBlack();
 
-            ComboBoxDeviceTypes = problemDataService.FillCombobox(View.ComboboxType.DeviceType);
-            ComboBoxDepartments = problemDataService.FillCombobox(View.ComboboxType.Afdeling);
+            ComboBoxDeviceTypes = problemDataService.FillCombobox(ComboboxType.DeviceType);
+            ComboBoxDepartments = problemDataService.FillCombobox(ComboboxType.Afdeling);
 
             SelectedDevice = device;
-           // SelectedDevice.DeviceTypeValue--; //TODO: this binds the ComboBox index to DeviceType ID. Find a better solution.
             SelectedDeviceCopy = SelectedDevice.Copy(); // Creates a deep copy in case the user wants to cancel the change
             CurrentProblems = problemDataService.GetCurrentProblemsOfDevice(SelectedDevice.Id).ToObservableCollection();
         }
@@ -216,7 +216,6 @@ namespace DevicesAndProblems.App.ViewModel
             {
                 SelectedDevice = SelectedDeviceCopy.Copy(); // Creates a deep copy so that CanSaveDeviceWithoutClose knows when a change is taking place in one of the fields again
                 deviceDataService.UpdateDevice(SelectedDeviceCopy, SelectedDeviceCopy.Id);
-               // SelectedDeviceCopy.DeviceTypeValue--; //TODO: this binds the ComboBox index to DeviceType ID. Find a better solution.
                 Messenger.Default.Send(new UpdateListMessage(false), ViewType.Device);
             }
         }

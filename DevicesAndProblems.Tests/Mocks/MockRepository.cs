@@ -71,7 +71,7 @@ namespace DevicesAndProblems.Tests
             return null;
         }
 
-        public List<DeviceType> SelectList()
+        public List<DeviceType> GetAll()
         {
             throw new System.NotImplementedException();
         }
@@ -81,7 +81,7 @@ namespace DevicesAndProblems.Tests
             throw new System.NotImplementedException();
         }
 
-        public int Insert(DeviceType newDeviceType)
+        public int Add(DeviceType newDeviceType)
         {
             throw new System.NotImplementedException();
         }

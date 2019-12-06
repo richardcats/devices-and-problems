@@ -15,7 +15,7 @@ namespace DevicesAndProblems.App.Services
 
         public List<DeviceType> GetAllDeviceTypes()
         {
-            return repository.SelectList();
+            return repository.GetAll();
         }
 
         public void UpdateDeviceType(DeviceType newDeviceType, int selectedDeviceTypeId)
@@ -25,7 +25,7 @@ namespace DevicesAndProblems.App.Services
 
         public void AddDeviceType(DeviceType newDeviceType)
         {
-            repository.Insert(newDeviceType);
+            repository.Add(newDeviceType);
         }
 
         public void DeleteDeviceType(DeviceType deviceType)

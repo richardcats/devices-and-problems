@@ -9,12 +9,12 @@ namespace DevicesAndProblems.Tests
     public class DeviceTypeRepositoryTest
     {
         [TestMethod]
-        public void SelectListTest()
+        public void GetAllTest()
         {
             // arrange
 
             // act 
-            var repository = new DeviceTypeRepository().SelectList();
+            var repository = new DeviceTypeRepository().GetAll();
 
             // assert 
             Assert.IsTrue(repository.Count > 0);

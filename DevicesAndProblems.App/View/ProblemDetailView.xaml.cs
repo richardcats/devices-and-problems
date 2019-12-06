@@ -1,5 +1,6 @@
 ﻿using DevicesAndProblems.App.Extensions;
 using DevicesAndProblems.App.Services;
+using DevicesAndProblems.DAL.SQLite;
 using DevicesAndProblems.Model;
 using System;
 using System.Collections.ObjectModel;
@@ -15,7 +16,7 @@ namespace DevicesAndProblems.App.View
 {
     public partial class ProblemDetailView : Window
     {
-        private ProblemDataService problemDataService = new ProblemDataService();
+        private ProblemDataService problemDataService; //= new ProblemDataService();
         //private DeviceDataService deviceDataService = new DeviceDataService();
         public static ObservableCollection<string> listStatus = FillCombobox(ComboboxType.Status);
         private int currentEmployeeID;
@@ -29,7 +30,7 @@ namespace DevicesAndProblems.App.View
         {
             DataContext = SelectedProblem;
             dgBetrokkenDevices.DataContext = this;
-            dgDevicesToevoegen.DataContext = this;
+            dgAddDevices.DataContext = this;
             dgOpmerkingen.DataContext = this;
         }
 
@@ -50,8 +51,8 @@ namespace DevicesAndProblems.App.View
             //AllDevices = deviceDataService.GetAllDevices().ToObservableCollection();
             Comments = problemDataService.GetCommentsOfCurrentProblem(SelectedProblem).ToObservableCollection();
 
-            cvsRegistreerKnoppen.Visibility = Visibility.Hidden;
-            cvsBewerkKnoppen.Visibility = Visibility.Visible;
+            cvsRegisterButtons.Visibility = Visibility.Hidden;
+            cvsEditButtons.Visibility = Visibility.Visible;
             datDatumAfhandeling.IsEnabled = true;
 
             Loaded += ProblemDetailView_Loaded;
@@ -71,10 +72,10 @@ namespace DevicesAndProblems.App.View
             cboPrioriteit.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
 
             DevicesOfCurrentProblem = new ObservableCollection<Device>();
-           // AllDevices = deviceDataService.GetAllDevices().ToObservableCollection();
+            // AllDevices = deviceDataService.GetAllDevices().ToObservableCollection();
 
-            cvsRegistreerKnoppen.Visibility = Visibility.Visible;
-            cvsBewerkKnoppen.Visibility = Visibility.Hidden;
+            cvsRegisterButtons.Visibility = Visibility.Visible;
+            cvsEditButtons.Visibility = Visibility.Hidden;
 
             currentEmployeeID = currentEmployee.IDOfCurrentEmployee();
 
@@ -82,6 +83,24 @@ namespace DevicesAndProblems.App.View
             txtToegevoegdDoor.Text = currentEmployee.FirstNameOfCurrentEmployee(); // tijdelijk
         }
 
+        public ProblemDetailView(bool editMode)
+        {
+            InitializeComponent();
+
+            if (editMode) // When an existing problem is clicked
+            {
+                //cvsRegisterButtons.Visibility = Visibility.Hidden;
+                //cvsEditButtons.Visibility = Visibility.Visible;
+            }
+            else // When a new device-type is registered
+            {
+                //cvsRegisterButtons.Visibility = Visibility.Visible;
+                //cvsEditButtons.Visibility = Visibility.Hidden;
+                //cvsActiveProblems.Visibility = Visibility.Hidden;
+
+                Height = 270;
+            }
+        }
 
         // Fill the combobox based on the combobox type 
         public static ObservableCollection<string> FillCombobox(ComboboxType type)
@@ -107,8 +126,8 @@ namespace DevicesAndProblems.App.View
 
             else if (type == ComboboxType.Medewerker)
             {
-                EmployeeDataService employeeDataService = new EmployeeDataService();
-                comboboxItems = employeeDataService.GetAllEmployees();
+               // EmployeeDataService employeeDataService = new EmployeeDataService();
+               // comboboxItems = employeeDataService.GetAllEmployees();
             }
 
             else if (type == ComboboxType.PrioriteitErnst)
@@ -131,8 +150,8 @@ namespace DevicesAndProblems.App.View
         // Adds a device to a specific malfunction
         private void AddDevice(object sender, RoutedEventArgs e)
         {     
-             if (!DevicesOfCurrentProblem.Any(d => d.Id == ((Device)dgDevicesToevoegen.SelectedItem).Id)) // don't allow duplicate devices 
-                 DevicesOfCurrentProblem.Add((Device)dgDevicesToevoegen.SelectedItem);
+             if (!DevicesOfCurrentProblem.Any(d => d.Id == ((Device)dgAddDevices.SelectedItem).Id)) // don't allow duplicate devices 
+                 DevicesOfCurrentProblem.Add((Device)dgAddDevices.SelectedItem);
         }
 
         // Removes the device from the malfunction
@@ -153,7 +172,7 @@ namespace DevicesAndProblems.App.View
             var searchFilter = new Predicate<object>(item => ((Device)item).Name.ToLower().Contains(txtZoek.Text.ToLower()));
             Itemlist.Filter = searchFilter;
 
-            dgDevicesToevoegen.ItemsSource = Itemlist;
+            dgAddDevices.ItemsSource = Itemlist;
         }
 
         // Ensures that all required fields are filled in before inserting the malfunction into the database
@@ -161,19 +180,7 @@ namespace DevicesAndProblems.App.View
         {
             if (txtBeschrijving.Text != "" && dgBetrokkenDevices.Items.Count > 0)
             {
-                Problem newProblem = new Problem
-                {
-                    Description = txtBeschrijving.Text,
-                    Priority = cboPrioriteit.SelectedIndex,
-                    Severity = cboErnst.SelectedIndex,
-                    RaisedByID = currentEmployeeID,
-                    Status = cboStatus.Text,
-                    ClosureDate = datDatumAfhandeling.SelectedDate,
-                    HandledBy = cboBehandeldDoor.SelectedIndex + 1
-                };
-
-                problemDataService.AddProblem(newProblem, DevicesOfCurrentProblem);
-                DialogResult = true;   
+                // zie detailview devicetype
             }
             else
             {
@@ -192,9 +199,9 @@ namespace DevicesAndProblems.App.View
                     Description = txtBeschrijving.Text,
                     Priority = cboPrioriteit.SelectedIndex,
                     Severity = cboErnst.SelectedIndex,
-                    RaisedByID = currentEmployeeID,
+                    RaisedByEmployeeId = currentEmployeeID,
                     Status = cboStatus.Text,
-                    HandledBy = cboBehandeldDoor.SelectedIndex + 1,
+                    HandledByEmployeeId = cboBehandeldDoor.SelectedIndex + 1,
                     ClosureDate = datDatumAfhandeling.SelectedDate
                 };
 
@@ -233,7 +240,7 @@ namespace DevicesAndProblems.App.View
             if (MessageBox.Show("Storing " + SelectedProblem.Id + " wordt permanent verwijderd", "Storing", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 problemDataService.DeleteProblem(SelectedProblem); // Delete from the database
-                ProblemOverviewView.Problems.Remove(ProblemOverviewView.Problems.Where(i => i.Id == SelectedProblem.Id).Single()); // Delete from the ObservableCollection
+               // ProblemOverviewView.Problems.Remove(ProblemOverviewView.Problems.Where(i => i.Id == SelectedProblem.Id).Single()); // Delete from the ObservableCollection // TO DO fix mbt MVVM
 
                 DialogResult = true;
             }

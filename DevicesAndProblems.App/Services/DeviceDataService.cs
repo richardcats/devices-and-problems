@@ -15,18 +15,16 @@ namespace DevicesAndProblems.App.Services
 
         public List<Device> GetAllDevices()
         {
-            return repository.SelectList();
+            return repository.GetAll();
         }
 
         public void AddDevice(Device newDevice)
         {
-           // newDevice.DeviceTypeId++; //TODO: this binds the ComboBox index to DeviceType ID. Find a better solution.
-            repository.Insert(newDevice);
+            repository.Add(newDevice);
         }
 
         public void UpdateDevice(Device newDevice, int selectedDeviceId)
         {
-          //  newDevice.DeviceTypeId++; //TODO: this binds the ComboBox index to DeviceType ID. Find a better solution.
             repository.Update(newDevice, selectedDeviceId);
         }
 
@@ -37,7 +35,7 @@ namespace DevicesAndProblems.App.Services
 
         public List<Device> GetDevicesOfDeviceType(int id)
         {
-            return repository.SelectListById(id);
+            return repository.GetById(id);
         }
     }
 }

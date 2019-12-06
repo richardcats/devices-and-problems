@@ -20,7 +20,7 @@ namespace DevicesAndProblems.Tests
 
         public void AddDeviceType(DeviceType newDeviceType)
         {
-            repository.Insert(newDeviceType);
+            repository.Add(newDeviceType);
         }
 
         public void DeleteDeviceType(DeviceType deviceType)

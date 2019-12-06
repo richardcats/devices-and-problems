@@ -14,10 +14,6 @@ namespace DevicesAndProblems.App.View
     {
        // private DeviceDataService deviceDataService = new DeviceDataService();
 
-
-
-        public static ObservableCollection<Device> Devices { get; set; }
-
         public DeviceOverviewView()
         {
             InitializeComponent();
@@ -40,11 +36,13 @@ namespace DevicesAndProblems.App.View
         // When the user clicks on a device, it will set the SelectedDevice of the new window
         private void RowButtonClick(object sender, RoutedEventArgs e)
         {
+            //TO DO ruim code in commentaar op
+
             //Device selectedDevice = (Device)dgDevices.SelectedItems[0];
-           /* DeviceDetailView deviceDetailView = new DeviceDetailView(selectedDevice)
-            {
-                SelectedDevice = selectedDevice
-            };*/
+            /* DeviceDetailView deviceDetailView = new DeviceDetailView(selectedDevice)
+             {
+                 SelectedDevice = selectedDevice
+             };*/
 
             // when the user clicks cancel, force the datagrid to refresh to show the old values (temporary)
             //if (!deviceDetailView.ShowDialog().Value)
@@ -52,14 +50,14 @@ namespace DevicesAndProblems.App.View
         }
 
 
-       /* private void RegistreerDeviceClick(object sender, RoutedEventArgs e)
-        {
-            DeviceDetailView deviceDetailView = new DeviceDetailView();
+        /* private void RegistreerDeviceClick(object sender, RoutedEventArgs e)
+         {
+             DeviceDetailView deviceDetailView = new DeviceDetailView();
 
-            // Force the datagrid to refresh after a device is registered (temporary)
-            if (deviceDetailView.ShowDialog().Value)
-                RefreshDatagrid();
-        }*/
+             // Force the datagrid to refresh after a device is registered (temporary)
+             if (deviceDetailView.ShowDialog().Value)
+                 RefreshDatagrid();
+         }*/
 
         private void RefreshDatagrid()
         {

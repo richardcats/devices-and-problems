@@ -16,7 +16,7 @@ namespace DevicesAndProblems.App.View
 {
     public partial class ReportsView : UserControl, INotifyPropertyChanged
     {
-        private ProblemDataService problemDataService = new ProblemDataService();
+        private ProblemDataService problemDataService; // = new ProblemDataService();
 
 
         public ObservableCollection<int> SelectableYears { get; set; }

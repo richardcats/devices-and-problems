@@ -8,13 +8,15 @@ namespace DevicesAndProblems.App
     {
         private static IDialogService dialogService = new DialogService();
 
-        private static IProblemDataService problemDataService = new ProblemDataService(); // TODO
+        private static IProblemDataService problemDataService = new ProblemDataService(new ProblemRepository());
 
         private static IDeviceTypeDataService deviceTypeDataService = new DeviceTypeDataService(new DeviceTypeRepository());
 
         private static IDeviceDataService deviceDataService = new DeviceDataService(new DeviceRepository());
 
         private static OverviewViewModel overviewViewModel = new OverviewViewModel();
+
+        private static ProblemOverviewViewModel problemOverviewViewModel = new ProblemOverviewViewModel(problemDataService, dialogService);
 
         private static DeviceTypeOverviewViewModel deviceTypeOverviewViewModel = new DeviceTypeOverviewViewModel(deviceTypeDataService, dialogService);
 
@@ -29,6 +31,14 @@ namespace DevicesAndProblems.App
             get
             {
                 return overviewViewModel;
+            }
+        }
+
+        public static ProblemOverviewViewModel ProblemOverviewViewModel
+        {
+            get
+            {
+                return problemOverviewViewModel;
             }
         }
 

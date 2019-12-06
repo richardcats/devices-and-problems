@@ -1,45 +1,53 @@
-﻿using DevicesAndProblems.App.View;
+﻿
+using DevicesAndProblems.App.View;
+using DevicesAndProblems.DAL.Interface;
+using DevicesAndProblems.DAL.SQLite;
 using System.Collections.ObjectModel;
 
 namespace DevicesAndProblems.App.Services
 {
-    public class EmployeeDataService
+    public class EmployeeDataService : IEmployeeDataService
     {
-        DatabaseConnection conn = new DatabaseConnection();
-        public string EmailAddress { get; }
+        IEmployeeRepository repository;
 
-        public EmployeeDataService(string emailaddress)
+        public EmployeeDataService(IEmployeeRepository repository, string emailaddress)
         {
+            this.repository = repository;
             EmailAddress = emailaddress;
         }
 
-        public EmployeeDataService()
+        public EmployeeDataService(string emailaddress)
         {
+            this.repository = new EmployeeRepository();
+            EmailAddress = emailaddress;
         }
+
+        public string EmailAddress { get; }
 
         public bool CheckLoginDetails(string emailaddress, string password)
         {
-            return conn.CheckLoginDetails(emailaddress, password);
+            return repository.CheckLoginDetails(emailaddress, password);
         }
 
         public string FirstNameOfCurrentEmployee()
         {
-            return conn.FirstNameOfCurrentEmployee(EmailAddress);
+            return repository.FirstNameOfCurrentEmployee(EmailAddress);
         }
 
         public int IDOfCurrentEmployee()
         {
-            return conn.IDOfCurrentEmployee(EmailAddress);
+            return repository.IDOfCurrentEmployee(EmailAddress);
         }
 
         public string AccountTypeOfCurrentEmployee()
         {
-            return conn.AccountTypeOfCurrentEmployee(EmailAddress);
+            return repository.AccountTypeOfCurrentEmployee(EmailAddress);
         }
 
         public ObservableCollection<string> GetAllEmployees()
         {
-            return conn.FillCombobox(ComboboxType.Medewerker);
+            // return repository.FillCombobox(ComboboxType.Medewerker);3
+            return null;
         }
     }
 }

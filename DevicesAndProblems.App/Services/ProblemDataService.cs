@@ -1,4 +1,5 @@
-﻿using DevicesAndProblems.App.View;
+﻿using DevicesAndProblems.DAL.Interface;
+using DevicesAndProblems.DAL.SQLite;
 using DevicesAndProblems.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,10 +9,16 @@ namespace DevicesAndProblems.App.Services
     public class ProblemDataService : IProblemDataService
     {
         DatabaseConnection conn = new DatabaseConnection();
+        IProblemRepository repository;
+
+        public ProblemDataService(IProblemRepository repository)
+        {
+            this.repository = repository;
+        }
 
         public List<Problem> GetAllProblems()
         {
-            return conn.GetProblems();
+            return repository.GetAll();
         }
 
         public List<Problem> GetCurrentProblemsOfDevice(int id)

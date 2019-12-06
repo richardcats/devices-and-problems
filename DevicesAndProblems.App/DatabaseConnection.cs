@@ -1,4 +1,4 @@
-﻿using DevicesAndProblems.App.View;
+﻿using DevicesAndProblems.DAL.SQLite;
 using DevicesAndProblems.Model;
 using System;
 using System.Collections.Generic;
@@ -13,70 +13,6 @@ namespace DevicesAndProblems.App
     {
         private readonly string connString = ConfigurationManager.ConnectionStrings["Default"].ToString();
 
-        public bool CheckLoginDetails(string emailaddress, string password)
-        {
-            bool loginDetailsCorrect;
-            using (SQLiteConnection connection = new SQLiteConnection(connString))
-            {
-                connection.Open();
-                string query = "SELECT COUNT(1) FROM Medewerker WHERE Emailadres=@Emailaddress AND Wachtwoord=@Password";
-                SQLiteCommand command = new SQLiteCommand(query, connection);
-                command.CommandType = System.Data.CommandType.Text;
-                command.Parameters.AddWithValue("@Emailaddress", emailaddress);
-                command.Parameters.AddWithValue("@Password", password);
-                loginDetailsCorrect = Convert.ToBoolean(command.ExecuteScalar());
-            }
-            return loginDetailsCorrect;
-        }
-
-        public string FirstNameOfCurrentEmployee(string emailAddress)
-        {
-            string firstName;
-            using (SQLiteConnection connection = new SQLiteConnection(connString))
-            {
-                connection.Open();
-                string query = "SELECT * FROM Medewerker WHERE Emailadres='" + emailAddress + "'";
-                SQLiteCommand command = new SQLiteCommand(query, connection);
-                SQLiteDataReader dr = command.ExecuteReader();
-                dr.Read();
-                firstName = dr["Voornaam"].ToString();
-            }
-            return firstName;
-        }
-
-        public int IDOfCurrentEmployee(string emailAddress)
-        {
-            int id;
-            using (SQLiteConnection connection = new SQLiteConnection(connString))
-            {
-                connection.Open();
-                string query = "SELECT * FROM Medewerker WHERE Emailadres='" + emailAddress + "'";
-                SQLiteCommand command = new SQLiteCommand(query, connection);
-                SQLiteDataReader dr = command.ExecuteReader();
-                dr.Read();
-                id = Convert.ToInt32(dr["MedewerkerID"]);
-            }
-            return id;
-        }
-
-        public string AccountTypeOfCurrentEmployee(string emailAddress)
-        {
-            string accountTypeName;
-            using (SQLiteConnection connection = new SQLiteConnection(connString))
-            {
-                connection.Open();
-
-                string query = "SELECT Naam FROM Medewerker INNER JOIN AccountType ON Medewerker.AccountTypeID = AccountType.AccountTypeID WHERE Emailadres='" + emailAddress + "'";
-                SQLiteCommand command = new SQLiteCommand(query, connection);
-                SQLiteDataReader dr = command.ExecuteReader();
-                dr.Read();
-                accountTypeName = dr["Naam"].ToString();
-            }
-            return accountTypeName;
-        }
-
-
-
 
         public List<Problem> GetCurrentProblemsOfDevice(int id)
         {
@@ -85,7 +21,7 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "SELECT Storing.StoringID AS StoringID, Beschrijving, Date(DatumToegevoegd) AS Datum FROM DeviceStoring LEFT JOIN Storing ON Storing.StoringID = DeviceStoring.StoringID WHERE DeviceID = '" + id + "' AND Status = 'Open'";
+                string query = "SELECT Storing.Id AS Id, Description, Date(DateRaised) AS Datum FROM DeviceStoring LEFT JOIN Storing ON Storing.Id = DeviceStoring.StoringID WHERE DeviceID = '" + id + "' AND Status = 'Open'";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
                 
                 using (SQLiteDataReader reader = command.ExecuteReader())
@@ -94,8 +30,8 @@ namespace DevicesAndProblems.App
                     {
                         Problem problem = new Problem()
                         {
-                            Id = Convert.ToInt32(reader["StoringID"]),
-                            Description = Convert.ToString(reader["Beschrijving"]),
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Description = Convert.ToString(reader["Description"]),
                             DateRaised = Convert.ToDateTime(reader["Datum"]),
                         };
                         problems.Add(problem);
@@ -165,7 +101,7 @@ namespace DevicesAndProblems.App
             {
                 connection.Open();
 
-                string query = "SELECT strftime('%Y', DatumToegevoegd) as Year FROM Storing GROUP BY Year";
+                string query = "SELECT strftime('%Y', DateRaised) as Year FROM Storing GROUP BY Year";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
                 SQLiteDataReader dr = command.ExecuteReader();
 
@@ -182,7 +118,7 @@ namespace DevicesAndProblems.App
             {
                 connection.Open();
 
-                string query = "SELECT strftime('%m', DatumToegevoegd) as Month, strftime('%Y', DatumToegevoegd) AS Year FROM Storing WHERE Year = '" + selectedYear + "' GROUP BY Month";
+                string query = "SELECT strftime('%m', DateRaised) as Month, strftime('%Y', DateRaised) AS Year FROM Storing WHERE Year = '" + selectedYear + "' GROUP BY Month";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
                 SQLiteDataReader dr = command.ExecuteReader();
 
@@ -192,49 +128,6 @@ namespace DevicesAndProblems.App
             return comboboxItems;
         }
 
-
-
-
-        public List<Problem> GetProblems()
-        {
-            List<Problem> problems = new List<Problem>();
-
-            using (SQLiteConnection connection = new SQLiteConnection(connString))
-            {
-                connection.Open();
-                string query = "SELECT Storing.StoringID AS StoringID, MedewerkerGeregistreerd, Beschrijving, Date(DatumToegevoegd) AS DatumToegevoegd, Date(DatumAfhandeling) AS DatumAfhandeling, Prioriteit, Ernst, Status, MedewerkerBehandeld, Medewerker.* FROM Storing LEFT JOIN Medewerker ON Storing.MedewerkerGeregistreerd = Medewerker.MedewerkerID";
-
-                SQLiteCommand command = new SQLiteCommand(query, connection);
-                
-                using (SQLiteDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        Problem problem = new Problem()
-                        {
-                            Id = Convert.ToInt32(reader["StoringID"]),
-                            Description = Convert.ToString(reader["Beschrijving"]),
-                            DateRaised = Convert.ToDateTime(reader["DatumToegevoegd"]),
-                            RaisedBy = Convert.ToString(reader["Voornaam"]),
-                            
-                            Priority = Convert.ToInt32(reader["Prioriteit"]),
-                            Severity = Convert.ToInt32(reader["Ernst"]),
-                            Status = Convert.ToString(reader["Status"])
-                         };
-
-
-                        if (!DBNull.Value.Equals(reader["MedewerkerBehandeld"]))
-                            problem.HandledBy = Convert.ToInt32(reader["MedewerkerBehandeld"]) - 1;
-
-                        if (!DBNull.Value.Equals(reader["DatumAfhandeling"]))
-                            problem.ClosureDate = Convert.ToDateTime(reader["DatumAfhandeling"]).Date;
-
-                        problems.Add(problem);
-                    }
-                }
-            }
-            return problems;
-        }
 
 
         public List<Device> GetDevicesOfCurrentProblem(int id)
@@ -266,26 +159,7 @@ namespace DevicesAndProblems.App
 
         public void AddProblem(Problem newProblem, ObservableCollection<Device> DevicesOfCurrentProblem)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(connString))
-            {
-                connection.Open();
-                string query = "INSERT INTO Storing(Beschrijving, MedewerkerGeregistreerd, MedewerkerBehandeld, Prioriteit, Ernst, Status, DatumToegevoegd) VALUES('" + newProblem.Description + "', '" + newProblem.RaisedByID + "', '" + newProblem.HandledBy + "', '" + newProblem.Priority + "', '" + newProblem.Severity + "', '" + newProblem.Status + "', date('now'))";
-                SQLiteCommand command = new SQLiteCommand(query, connection);
 
-                command.ExecuteNonQuery();
-
-                string query2 = "SELECT last_insert_rowid() AS LastID;";
-                SQLiteCommand command2 = new SQLiteCommand(query2, connection);
-
-                SQLiteDataReader dr = command2.ExecuteReader();
-                dr.Read();
-
-                foreach (Device device in DevicesOfCurrentProblem)
-                {
-                    command.CommandText = "INSERT INTO DeviceStoring (StoringID, DeviceID) VALUES ('" + Convert.ToInt32(dr["LastID"]) + "','" + device.Id + "')";
-                    command.ExecuteNonQuery();
-                }
-            }
         }
 
         public void UpdateProblem(Problem selectedProblem, Problem newProblem, ObservableCollection<Device> DevicesOfCurrentProblem)
@@ -293,7 +167,7 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "UPDATE Storing SET Beschrijving = '" + newProblem.Description + "', Prioriteit = '" + newProblem.Priority + "', Ernst = '" + newProblem.Severity + "', Status = '" + newProblem.Status + "', DatumAfhandeling = '" + newProblem.ClosureDate + "', MedewerkerBehandeld = '" + newProblem.HandledBy + "' WHERE StoringID = '" + selectedProblem.Id + "'";
+                string query = "UPDATE Storing SET Description = '" + newProblem.Description + "', Priority = '" + newProblem.Priority + "', Severity = '" + newProblem.Severity + "', Status = '" + newProblem.Status + "', ClosureDate = '" + newProblem.ClosureDate + "', HandledByEmployeeId = '" + newProblem.HandledByEmployeeId + "' WHERE Id = '" + selectedProblem.Id + "'";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 command.ExecuteNonQuery();
@@ -320,7 +194,7 @@ namespace DevicesAndProblems.App
 
                 command.ExecuteNonQuery();
 
-                command.CommandText = "DELETE FROM Storing WHERE StoringID = '" + selectedProblem.Id + "'";
+                command.CommandText = "DELETE FROM Storing WHERE Id = '" + selectedProblem.Id + "'";
 
                 command.ExecuteNonQuery();
             }
@@ -333,7 +207,7 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "SELECT OpmerkingID, Date(Datum) AS Datum, Beschrijving FROM Opmerking WHERE StoringID = '" + selectedProblem.Id + "'";
+                string query = "SELECT OpmerkingID, Date(Datum) AS Datum, Description FROM Opmerking WHERE StoringID = '" + selectedProblem.Id + "'";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 using (SQLiteDataReader reader = command.ExecuteReader())
@@ -344,7 +218,7 @@ namespace DevicesAndProblems.App
                         {
                             CommentID = Convert.ToInt32(reader["OpmerkingID"]),
                             Date = Convert.ToDateTime(reader["Datum"]),
-                            Text = Convert.ToString(reader["Beschrijving"])
+                            Text = Convert.ToString(reader["Description"])
                         };
                         comments.Add(comment);
                     }
@@ -359,7 +233,7 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "INSERT INTO Opmerking (StoringID, Datum, Beschrijving) VALUES ('" + selectedProblem.Id + "', date('now'), '" + newComment.Text + "')";
+                string query = "INSERT INTO Opmerking (StoringID, Datum, Description) VALUES ('" + selectedProblem.Id + "', date('now'), '" + newComment.Text + "')";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 command.ExecuteNonQuery();
@@ -371,7 +245,7 @@ namespace DevicesAndProblems.App
             using (SQLiteConnection connection = new SQLiteConnection(connString))
             {
                 connection.Open();
-                string query = "DELETE FROM Opmerking WHERE Beschrijving = '" + selectedComment.Text + "' AND StoringID = '" + selectedProblem.Id + "'";
+                string query = "DELETE FROM Opmerking WHERE Description = '" + selectedComment.Text + "' AND StoringID = '" + selectedProblem.Id + "'";
                 SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 command.ExecuteNonQuery();
