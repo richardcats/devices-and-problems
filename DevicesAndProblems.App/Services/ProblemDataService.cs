@@ -36,10 +36,13 @@ namespace DevicesAndProblems.App.Services
             conn.AddProblem(newProblem, DevicesOfCurrentProblem);
         }
 
-        public void UpdateProblem(Problem selectedProblem, Problem newProblem, ObservableCollection<Device> DevicesOfCurrentProblem)
+        public void UpdateProblem(Problem newProblem, int selectedProblemId, ObservableCollection<Device> DevicesOfCurrentProblem)
         {
-            conn.UpdateProblem(selectedProblem, newProblem, DevicesOfCurrentProblem);
+            throw new System.NotImplementedException();
+            // conn.UpdateProblem(selectedProblem, newProblem, DevicesOfCurrentProblem);
         }
+
+
 
         public void DeleteProblem(Problem selectedProblem)
         {

@@ -150,7 +150,7 @@ namespace DevicesAndProblems.App.ViewModel
             MarkTextBlocksBlack();
 
             ComboBoxDeviceTypes = problemDataService.FillCombobox(ComboboxType.DeviceType);
-            ComboBoxDepartments = problemDataService.FillCombobox(ComboboxType.Afdeling);
+            ComboBoxDepartments = problemDataService.FillCombobox(ComboboxType.Department);
 
             SelectedDeviceCopy = new Device()
             {
@@ -170,7 +170,7 @@ namespace DevicesAndProblems.App.ViewModel
             MarkTextBlocksBlack();
 
             ComboBoxDeviceTypes = problemDataService.FillCombobox(ComboboxType.DeviceType);
-            ComboBoxDepartments = problemDataService.FillCombobox(ComboboxType.Afdeling);
+            ComboBoxDepartments = problemDataService.FillCombobox(ComboboxType.Department);
 
             SelectedDevice = device;
             SelectedDeviceCopy = SelectedDevice.Copy(); // Creates a deep copy in case the user wants to cancel the change

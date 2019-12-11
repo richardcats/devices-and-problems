@@ -11,5 +11,8 @@ namespace DevicesAndProblems.App.Services
         List<Problem> GetCurrentProblemsOfDevice(int id);
         List<Device> GetDevicesOfCurrentProblem(int id);
         ObservableCollection<string> FillCombobox(ComboboxType type);
+        void UpdateProblem(Problem newProblem, int selectedProblemId, ObservableCollection<Device> DevicesOfCurrentProblem);
+        void AddProblem(Problem newProblem, ObservableCollection<Device> DevicesOfCurrentProblem);
+        void DeleteProblem(Problem selectedProblem);
     }
 }

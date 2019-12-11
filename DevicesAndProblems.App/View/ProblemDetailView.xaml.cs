@@ -18,8 +18,8 @@ namespace DevicesAndProblems.App.View
     {
         private ProblemDataService problemDataService; //= new ProblemDataService();
         //private DeviceDataService deviceDataService = new DeviceDataService();
-        public static ObservableCollection<string> listStatus = FillCombobox(ComboboxType.Status);
-        private int currentEmployeeID;
+
+        
 
         public Problem SelectedProblem { get; set; }
         public ObservableCollection<Device> DevicesOfCurrentProblem { get; set; }
@@ -37,23 +37,6 @@ namespace DevicesAndProblems.App.View
         // When an existing problem is clicked
         public ProblemDetailView(Problem selectedProblem)
         {
-            InitializeComponent();
-
-            Title = "Storing bewerken";
-            SelectedProblem = selectedProblem;
-
-            cboStatus.ItemsSource = FillCombobox(ComboboxType.Status);
-            cboBehandeldDoor.ItemsSource = FillCombobox(ComboboxType.Medewerker);
-            cboErnst.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
-            cboPrioriteit.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
-
-            DevicesOfCurrentProblem = problemDataService.GetDevicesOfCurrentProblem(SelectedProblem.Id).ToObservableCollection();
-            //AllDevices = deviceDataService.GetAllDevices().ToObservableCollection();
-            Comments = problemDataService.GetCommentsOfCurrentProblem(SelectedProblem).ToObservableCollection();
-
-            cvsRegisterButtons.Visibility = Visibility.Hidden;
-            cvsEditButtons.Visibility = Visibility.Visible;
-            datDatumAfhandeling.IsEnabled = true;
 
             Loaded += ProblemDetailView_Loaded;
             txtToegevoegdDoor.Text = SelectedProblem.RaisedBy; // tijdelijk
@@ -66,21 +49,13 @@ namespace DevicesAndProblems.App.View
 
             Title = "Storing registreren";
 
-            cboStatus.ItemsSource = FillCombobox(ComboboxType.Status);
-            cboBehandeldDoor.ItemsSource = FillCombobox(ComboboxType.Medewerker);
-            cboErnst.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
-            cboPrioriteit.ItemsSource = FillCombobox(ComboboxType.PrioriteitErnst);
 
-            DevicesOfCurrentProblem = new ObservableCollection<Device>();
-            // AllDevices = deviceDataService.GetAllDevices().ToObservableCollection();
 
-            cvsRegisterButtons.Visibility = Visibility.Visible;
-            cvsEditButtons.Visibility = Visibility.Hidden;
 
-            currentEmployeeID = currentEmployee.IDOfCurrentEmployee();
+            //currentEmployeeID = currentEmployee.IDOfCurrentEmployee();
 
             Loaded += ProblemDetailView_Loaded;
-            txtToegevoegdDoor.Text = currentEmployee.FirstNameOfCurrentEmployee(); // tijdelijk
+            //txtToegevoegdDoor.Text = currentEmployee.FirstNameOfCurrentEmployee(); // tijdelijk
         }
 
         public ProblemDetailView(bool editMode)
@@ -89,66 +64,26 @@ namespace DevicesAndProblems.App.View
 
             if (editMode) // When an existing problem is clicked
             {
-                //cvsRegisterButtons.Visibility = Visibility.Hidden;
-                //cvsEditButtons.Visibility = Visibility.Visible;
+                cvsRegisterButtons.Visibility = Visibility.Hidden;
+                cvsEditButtons.Visibility = Visibility.Visible;
+                datDatumAfhandeling.IsEnabled = true;
             }
-            else // When a new device-type is registered
+            else // When a new problem is registered
             {
-                //cvsRegisterButtons.Visibility = Visibility.Visible;
-                //cvsEditButtons.Visibility = Visibility.Hidden;
-                //cvsActiveProblems.Visibility = Visibility.Hidden;
+                cvsRegisterButtons.Visibility = Visibility.Visible;
+                cvsEditButtons.Visibility = Visibility.Hidden;
+                cvsActiveProblems.Visibility = Visibility.Hidden;
 
                 Height = 270;
             }
         }
 
-        // Fill the combobox based on the combobox type 
-        public static ObservableCollection<string> FillCombobox(ComboboxType type)
-        {
-            ObservableCollection<string> comboboxItems = new ObservableCollection<string>();
-            DatabaseConnection conn = new DatabaseConnection();
-
-            if (type == ComboboxType.Status)
-            {
-                comboboxItems = new ObservableCollection<string>();
-                comboboxItems.Add("Open");
-                comboboxItems.Add("In behandeling");
-                comboboxItems.Add("Afgehandeld");
-            }
-            else if (type == ComboboxType.StatusAll)
-            {
-                comboboxItems = new ObservableCollection<string>();
-                comboboxItems.Add("Alle storingen");
-                comboboxItems.Add("Open");
-                comboboxItems.Add("In behandeling");
-                comboboxItems.Add("Afgehandeld");
-            }
-
-            else if (type == ComboboxType.Medewerker)
-            {
-               // EmployeeDataService employeeDataService = new EmployeeDataService();
-               // comboboxItems = employeeDataService.GetAllEmployees();
-            }
-
-            else if (type == ComboboxType.PrioriteitErnst)
-            {
-                comboboxItems = new ObservableCollection<string>();
-                comboboxItems.Add("0");
-                comboboxItems.Add("1");
-                comboboxItems.Add("2");
-                comboboxItems.Add("3");
-            }
-            return comboboxItems;
-        }
 
 
-        private void Cancel(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+
 
         // Adds a device to a specific malfunction
-        private void AddDevice(object sender, RoutedEventArgs e)
+       /* private void AddDevice(object sender, RoutedEventArgs e)
         {     
              if (!DevicesOfCurrentProblem.Any(d => d.Id == ((Device)dgAddDevices.SelectedItem).Id)) // don't allow duplicate devices 
                  DevicesOfCurrentProblem.Add((Device)dgAddDevices.SelectedItem);
@@ -158,10 +93,10 @@ namespace DevicesAndProblems.App.View
         private void RemoveDevice(object sender, RoutedEventArgs e)
         {
              DevicesOfCurrentProblem.Remove((Device)dgBetrokkenDevices.SelectedItem);
-        }
+        }*/
 
 
-        private void FilterDatagrid(object sender, TextChangedEventArgs e)
+       /* private void FilterDatagrid(object sender, TextChangedEventArgs e)
         {
             var _itemSourceList = new CollectionViewSource() { Source = AllDevices };
 
@@ -173,91 +108,22 @@ namespace DevicesAndProblems.App.View
             Itemlist.Filter = searchFilter;
 
             dgAddDevices.ItemsSource = Itemlist;
-        }
+        }*/
 
-        // Ensures that all required fields are filled in before inserting the malfunction into the database
-        private void AddProblem(object sender, RoutedEventArgs e)
+
+        // As soon as a change has occurred in one of the fields, the "submit" and "OK" button will either be enabled or disabled
+        private void InputChanged(object sender, TextChangedEventArgs e)
         {
-            if (txtBeschrijving.Text != "" && dgBetrokkenDevices.Items.Count > 0)
-            {
-                // zie detailview devicetype
-            }
-            else
-            {
-                MarkEmptyFieldsRed();
-                MessageBox.Show("Niet alle verplichte velden zijn ingevuld", Title, MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            var binding = ((TextBox)sender).GetBindingExpression(TextBox.TextProperty);
+            binding.UpdateSource();
         }
 
-        // Ensures that all required fields are filled in before updating the malfunction in the database
-        private void UpdateProblem(object sender, RoutedEventArgs e)
+        private void InputChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (txtBeschrijving.Text != "" && dgBetrokkenDevices.Items.Count > 0)
-            {
-                Problem newProblem = new Problem
-                {
-                    Description = txtBeschrijving.Text,
-                    Priority = cboPrioriteit.SelectedIndex,
-                    Severity = cboErnst.SelectedIndex,
-                    RaisedByEmployeeId = currentEmployeeID,
-                    Status = cboStatus.Text,
-                    HandledByEmployeeId = cboBehandeldDoor.SelectedIndex + 1,
-                    ClosureDate = datDatumAfhandeling.SelectedDate
-                };
-
-                problemDataService.UpdateProblem(SelectedProblem, newProblem, DevicesOfCurrentProblem);
-      
-                
-                btnToepassen.IsEnabled = false;
-                Button button = (Button)sender;
-
-                if (button.Name == "btnOK")
-                    DialogResult = true;
-            }
-            else
-            {
-                MarkEmptyFieldsRed();
-                MessageBox.Show("Niet alle verplichte velden zijn ingevuld", Title, MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            var binding = ((ComboBox)sender).GetBindingExpression(ComboBox.SelectedValueProperty);
+            binding.UpdateSource();
         }
 
-        // As soon as a change has occurred in one of the fields, the "submit" button will be enabled again
-        private void EnableToepassen(object sender, TextChangedEventArgs e)
-        {
-            if (btnToepassen.IsEnabled == false)
-                btnToepassen.IsEnabled = true;
-        }
-
-        private void EnableToepassen(object sender, SelectionChangedEventArgs e)
-        {
-            if (btnToepassen.IsEnabled == false)
-                btnToepassen.IsEnabled = true;
-        }
-
-        // The user first receives a message before the malfunction is permanently removed from the database
-        private void RemoveProblem(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show("Storing " + SelectedProblem.Id + " wordt permanent verwijderd", "Storing", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                problemDataService.DeleteProblem(SelectedProblem); // Delete from the database
-               // ProblemOverviewView.Problems.Remove(ProblemOverviewView.Problems.Where(i => i.Id == SelectedProblem.Id).Single()); // Delete from the ObservableCollection // TO DO fix mbt MVVM
-
-                DialogResult = true;
-            }
-        }
-
-        // Allows the user to see which required fields must be filled
-        private void MarkEmptyFieldsRed()
-        {
-            tbBeschrijving.Foreground = Brushes.Black;
-            tbBetrokkenDevices.Foreground = Brushes.Black;
-
-            if (txtBeschrijving.Text == "")
-                tbBeschrijving.Foreground = Brushes.Red;
-
-            if (dgBetrokkenDevices.Items.Count == 0)
-                tbBetrokkenDevices.Foreground = Brushes.Red;
-        }
 
         private void RemoveComment(object sender, RoutedEventArgs e)
         {

@@ -113,6 +113,6 @@ namespace DevicesAndProblems.DAL.SQLite
 
     public enum ComboboxType
     {
-        Afdeling, DeviceType, DeviceTypeAll, Status, StatusAll, Medewerker, PrioriteitErnst, Month, Year
+        Department, DeviceType, DeviceTypeAll, Status, StatusAll, Employee, PrioritySeverity, Month, Year
     };
 }
