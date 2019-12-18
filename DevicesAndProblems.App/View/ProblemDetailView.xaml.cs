@@ -34,13 +34,6 @@ namespace DevicesAndProblems.App.View
             dgOpmerkingen.DataContext = this;
         }
 
-        // When an existing problem is clicked
-        public ProblemDetailView(Problem selectedProblem)
-        {
-
-            Loaded += ProblemDetailView_Loaded;
-            txtToegevoegdDoor.Text = SelectedProblem.RaisedBy; // tijdelijk
-        }
 
         // When a new malfunction is registered. It also passes an object of the employee, so this name will be displayed in the database
         public ProblemDetailView(EmployeeDataService currentEmployee)
@@ -50,12 +43,6 @@ namespace DevicesAndProblems.App.View
             Title = "Storing registreren";
 
 
-
-
-            //currentEmployeeID = currentEmployee.IDOfCurrentEmployee();
-
-            Loaded += ProblemDetailView_Loaded;
-            //txtToegevoegdDoor.Text = currentEmployee.FirstNameOfCurrentEmployee(); // tijdelijk
         }
 
         public ProblemDetailView(bool editMode)
@@ -129,7 +116,7 @@ namespace DevicesAndProblems.App.View
         {
             Comment selectedComment = (Comment)dgOpmerkingen.SelectedItems[0];
 
-            problemDataService.RemoveComment(selectedComment, SelectedProblem); // Delete from the database
+            problemDataService.RemoveComment(selectedComment, SelectedProblem.Id); // Delete from the database
             Comments.Remove(Comments.Where(i => i.CommentID == selectedComment.CommentID).Single()); // Delete from the ObservableCollection
         }
 
@@ -143,7 +130,7 @@ namespace DevicesAndProblems.App.View
                     Text = txtOpmerking.Text
                 };
 
-                problemDataService.AddComment(SelectedProblem, newComment); // Add to the database
+                problemDataService.AddComment(newComment, SelectedProblem.Id); // Add to the database
                 Comments.Add(newComment); // Add to the ObservableCollection
 
                 txtOpmerking.Text = "";

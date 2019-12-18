@@ -19,20 +19,20 @@ namespace DevicesAndProblems.DAL.SQLite
             return GetAll<DeviceType>(sql, null).ToList();
         }
 
-        public void Update(DeviceType newDeviceType, int selectedDeviceTypeId)
-        {
-            string sql = "UPDATE DeviceType SET Name = @Name, Description = @Description" +
-                " WHERE Id = '" + selectedDeviceTypeId + "'";
-
-            Update<DeviceType>(sql, newDeviceType);
-        }
-
-        public void Add(DeviceType newDeviceType)
+        public void Add(DeviceType deviceType)
         {
             string sql = "INSERT INTO DeviceType (Name, Description) " +
                 "VALUES (@Name, @Description)";
 
-            Add<DeviceType>(sql, newDeviceType);
+            Add<DeviceType>(sql, deviceType);
+        }
+
+        public void Update(DeviceType deviceType, int deviceTypeId)
+        {
+            string sql = "UPDATE DeviceType SET Name = @Name, Description = @Description" +
+                " WHERE Id = '" + deviceTypeId + "'";
+
+            Update<DeviceType>(sql, deviceType);
         }
 
         public void Delete(DeviceType deviceType)

@@ -10,9 +10,10 @@ namespace DevicesAndProblems.DAL.Interface
     public interface IDeviceRepository
     {
         List<Device> GetAll();
-        List<Device> GetById(int id);
-        void Update(Device newDevice, int selectedDeviceId);
-        void Add(Device newDevice);
+        List<Device> GetByDeviceTypeId(int deviceTypeId);
+        List<Device> GetDevicesByProblemId(int problemId);
+        void Add(Device device);
+        void Update(Device device, int deviceId);
         void Delete(Device device);
     }
 }

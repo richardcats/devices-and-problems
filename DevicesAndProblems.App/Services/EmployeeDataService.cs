@@ -8,46 +8,46 @@ namespace DevicesAndProblems.App.Services
 {
     public class EmployeeDataService : IEmployeeDataService
     {
-        IEmployeeRepository repository;
+        private IEmployeeRepository _employeeRepository;
+        private IProblemRepository _problemRepository;
+        public string EmailAddress { get; }
 
-        public EmployeeDataService(IEmployeeRepository repository, string emailaddress)
+        public EmployeeDataService(IEmployeeRepository employeeRepository, IProblemRepository problemRepository, string emailaddress)
         {
-            this.repository = repository;
+            _employeeRepository = employeeRepository;
+            _problemRepository = problemRepository;
             EmailAddress = emailaddress;
         }
 
         public EmployeeDataService(string emailaddress)
         {
-            this.repository = new EmployeeRepository();
+            _employeeRepository = new EmployeeRepository();
             EmailAddress = emailaddress;
         }
 
-        public string EmailAddress { get; }
-
         public bool CheckLoginDetails(string emailaddress, string password)
         {
-            return repository.CheckLoginDetails(emailaddress, password);
+            return _employeeRepository.CheckLoginDetails(emailaddress, password);
         }
 
         public string FirstNameOfCurrentEmployee()
         {
-            return repository.FirstNameOfCurrentEmployee(EmailAddress);
+            return _employeeRepository.GetFirstNameByEmailAddress(EmailAddress);
         }
 
-        public int IDOfCurrentEmployee()
+        public int IdOfCurrentEmployee()
         {
-            return repository.IDOfCurrentEmployee(EmailAddress);
+            return _employeeRepository.GetIdByEmailAddress(EmailAddress);
         }
 
         public string AccountTypeOfCurrentEmployee()
         {
-            return repository.AccountTypeOfCurrentEmployee(EmailAddress);
+            return _employeeRepository.GetAccountTypeByEmailAddress(EmailAddress);
         }
 
         public ObservableCollection<string> GetAllEmployees()
         {
-            // return repository.FillCombobox(ComboboxType.Medewerker);3
-            return null;
+            return _problemRepository.GetComboboxItemsByComboboxType(ComboboxType.Employee);
         }
     }
 }

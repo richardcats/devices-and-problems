@@ -8,75 +8,86 @@ namespace DevicesAndProblems.App.Services
 {
     public class ProblemDataService : IProblemDataService
     {
-        DatabaseConnection conn = new DatabaseConnection();
-        IProblemRepository repository;
+        private IProblemRepository _problemRepository;
+        private IDeviceRepository _deviceRepository;
+        private ICommentRepository _commentRepository;
 
-        public ProblemDataService(IProblemRepository repository)
+        public ProblemDataService(IProblemRepository problemRepository, IDeviceRepository deviceRepository, ICommentRepository commentRepository)
         {
-            this.repository = repository;
+            _problemRepository = problemRepository;
+            _deviceRepository = deviceRepository;
+            _commentRepository = commentRepository;
         }
 
         public List<Problem> GetAllProblems()
         {
-            return repository.GetAll();
+            return _problemRepository.GetAll();
         }
 
-        public List<Problem> GetCurrentProblemsOfDevice(int id)
+        public List<Problem> GetProblemsOfDevice(int deviceId)
         {
-            return conn.GetCurrentProblemsOfDevice(id);
+            //return conn.GetCurrentProblemsOfDevice(id);
+            return _problemRepository.GetProblemsByDeviceId(deviceId);
         }
 
-        public List<Device> GetDevicesOfCurrentProblem(int id)
+        public List<Device> GetDevicesOfProblem(int problemId)
         {
-            return conn.GetDevicesOfCurrentProblem(id);
+            //return conn.GetDevicesOfCurrentProblem(id);
+            return _deviceRepository.GetDevicesByProblemId(problemId);
         }
         
-        public void AddProblem(Problem newProblem, ObservableCollection<Device> DevicesOfCurrentProblem)
+        public void AddProblem(Problem newProblem, ObservableCollection<Device> devicesOfCurrentProblem)
         {
-            conn.AddProblem(newProblem, DevicesOfCurrentProblem);
+            _problemRepository.Add(newProblem, devicesOfCurrentProblem);
+            //conn.AddProblem(newProblem, DevicesOfCurrentProblem);
         }
 
-        public void UpdateProblem(Problem newProblem, int selectedProblemId, ObservableCollection<Device> DevicesOfCurrentProblem)
+        public void UpdateProblem(Problem newProblem, int selectedProblemId, ObservableCollection<Device> devicesOfCurrentProblem)
         {
-            throw new System.NotImplementedException();
+            _problemRepository.Update(newProblem, devicesOfCurrentProblem, selectedProblemId);
             // conn.UpdateProblem(selectedProblem, newProblem, DevicesOfCurrentProblem);
         }
 
-
-
         public void DeleteProblem(Problem selectedProblem)
         {
-            conn.DeleteProblem(selectedProblem);
+            //conn.DeleteProblem(selectedProblem);
+            _problemRepository.Delete(selectedProblem);
         }
 
-        public void AddComment(Problem selectedProblem, Comment newComment)
+        public void AddComment(Comment newComment, int selectedProblemId)
         {
-            conn.AddComment(selectedProblem, newComment);
+            // conn.AddComment(selectedProblem, newComment);
+            _commentRepository.Add(newComment, selectedProblemId);
         }
 
-        public void RemoveComment(Comment selectedComment, Problem selectedProblem)
+        public void RemoveComment(Comment selectedComment, int selectedProblemId)
         {
-            conn.RemoveComment(selectedComment, selectedProblem);
+            // conn.RemoveComment(selectedComment, selectedProblem);
+            _commentRepository.Delete(selectedComment, selectedProblemId);
         }
 
-        public List<Comment> GetCommentsOfCurrentProblem(Problem selectedProblem)
+        public List<Comment> GetCommentsOfCurrentProblem(int selectedProblemId)
         {
-            return conn.GetCommentsOfCurrentProblem(selectedProblem);
+            // return conn.GetCommentsOfCurrentProblem(selectedProblem);
+            return _commentRepository.GetCommentsByProblemId(selectedProblemId);
         }
 
         public ObservableCollection<string> FillCombobox(ComboboxType type)
         {
-            return conn.FillCombobox(type);
+            //return conn.FillCombobox(type);
+            return _problemRepository.GetComboboxItemsByComboboxType(type);
         }
 
         public ObservableCollection<int> FillComboboxMonthsBasedOnYear(int selectedYear)
         {
-            return conn.FillComboboxMonthsBasedOnYear(selectedYear);
+            // return conn.FillComboboxMonthsBasedOnYear(selectedYear);
+            return _problemRepository.GetComboboxMonthsByYear(selectedYear);
         }
 
         public ObservableCollection<int> FillComboboxYears()
         {
-            return conn.FillComboboxYears();
+            // return conn.FillComboboxYears();
+            return _problemRepository.GetComboboxYears();
         }
     }
 }

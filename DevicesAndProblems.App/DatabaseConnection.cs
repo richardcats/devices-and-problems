@@ -157,10 +157,6 @@ namespace DevicesAndProblems.App
             return devices;
         }
 
-        public void AddProblem(Problem newProblem, ObservableCollection<Device> DevicesOfCurrentProblem)
-        {
-
-        }
 
         public void UpdateProblem(Problem selectedProblem, Problem newProblem, ObservableCollection<Device> DevicesOfCurrentProblem)
         {
@@ -195,58 +191,6 @@ namespace DevicesAndProblems.App
                 command.ExecuteNonQuery();
 
                 command.CommandText = "DELETE FROM Storing WHERE Id = '" + selectedProblem.Id + "'";
-
-                command.ExecuteNonQuery();
-            }
-        }
-
-        public List<Comment> GetCommentsOfCurrentProblem(Problem selectedProblem)
-        {
-            List<Comment> comments = new List<Comment>();
-
-            using (SQLiteConnection connection = new SQLiteConnection(connString))
-            {
-                connection.Open();
-                string query = "SELECT OpmerkingID, Date(Datum) AS Datum, Description FROM Opmerking WHERE StoringID = '" + selectedProblem.Id + "'";
-                SQLiteCommand command = new SQLiteCommand(query, connection);
-
-                using (SQLiteDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        Comment comment = new Comment()
-                        {
-                            CommentID = Convert.ToInt32(reader["OpmerkingID"]),
-                            Date = Convert.ToDateTime(reader["Datum"]),
-                            Text = Convert.ToString(reader["Description"])
-                        };
-                        comments.Add(comment);
-                    }
-                }
-            }
-
-            return comments;
-        }
-
-        public void AddComment(Problem selectedProblem, Comment newComment)
-        {
-            using (SQLiteConnection connection = new SQLiteConnection(connString))
-            {
-                connection.Open();
-                string query = "INSERT INTO Opmerking (StoringID, Datum, Description) VALUES ('" + selectedProblem.Id + "', date('now'), '" + newComment.Text + "')";
-                SQLiteCommand command = new SQLiteCommand(query, connection);
-
-                command.ExecuteNonQuery();
-            }
-        }
-
-        public void RemoveComment(Comment selectedComment, Problem selectedProblem)
-        {
-            using (SQLiteConnection connection = new SQLiteConnection(connString))
-            {
-                connection.Open();
-                string query = "DELETE FROM Opmerking WHERE Description = '" + selectedComment.Text + "' AND StoringID = '" + selectedProblem.Id + "'";
-                SQLiteCommand command = new SQLiteCommand(query, connection);
 
                 command.ExecuteNonQuery();
             }

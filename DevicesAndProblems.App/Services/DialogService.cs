@@ -6,7 +6,7 @@ namespace DevicesAndProblems.App.Services
 {
     public class DialogService : IDialogService
     {
-        Window window = null;
+        private Window window = null;
 
         public void ShowEditDialog(ViewType viewType)
         {

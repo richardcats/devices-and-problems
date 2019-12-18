@@ -140,7 +140,8 @@ namespace DevicesAndProblems.App.ViewModel
             DevicesOfCurrentProblem = new ObservableCollection<Device>();
             AllDevices = deviceDataService.GetAllDevices().ToObservableCollection();
 
-            currentEmployeeID = currentEmployee.IDOfCurrentEmployee();
+            //currentEmployeeID = currentEmployee.IDOfCurrentEmployee();
+            //txtToegevoegdDoor.Text = currentEmployee.FirstNameOfCurrentEmployee(); // tijdelijk
 
             SelectedProblemCopy = new Problem()
             {
@@ -150,6 +151,8 @@ namespace DevicesAndProblems.App.ViewModel
                 Status = "Open",
                 HandledByEmployeeId = 0
             };
+
+
         }
 
         // When showing the edit problem window, set the title, make all TextBlocks black and set the selected problem
@@ -169,10 +172,10 @@ namespace DevicesAndProblems.App.ViewModel
             SelectedProblemCopy = SelectedProblem.Copy(); // Creates a deep copy in case the user wants to cancel the change
                                                           
 
-            Comments = problemDataService.GetCommentsOfCurrentProblem(SelectedProblem).ToObservableCollection();
+            Comments = problemDataService.GetCommentsOfCurrentProblem(SelectedProblem.Id).ToObservableCollection();
             AllDevices = deviceDataService.GetAllDevices().ToObservableCollection();
-            DevicesOfCurrentProblem = problemDataService.GetDevicesOfCurrentProblem(SelectedProblem.Id).ToObservableCollection();
-
+            DevicesOfCurrentProblem = problemDataService.GetDevicesOfProblem(SelectedProblem.Id).ToObservableCollection();
+            // txtToegevoegdDoor.Text = SelectedProblem.RaisedBy; // tijdelijk
         }
 
         private void LoadCommands()

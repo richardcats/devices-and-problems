@@ -9,8 +9,8 @@ namespace DevicesAndProblems.DAL.Interface
     public interface IEmployeeRepository
     {
         bool CheckLoginDetails(string emailaddress, string password);
-        string FirstNameOfCurrentEmployee(string emailAddress);
-        int IDOfCurrentEmployee(string emailAddress);
-        string AccountTypeOfCurrentEmployee(string emailAddress);
+        string GetFirstNameByEmailAddress(string emailAddress);
+        int GetIdByEmailAddress(string emailAddress);
+        string GetAccountTypeByEmailAddress(string emailAddress);
     }
 }

@@ -6,8 +6,8 @@ namespace DevicesAndProblems.DAL.Interface
     public interface IDeviceTypeRepository
     {
         List<DeviceType> GetAll();
-        void Update(DeviceType newDeviceType, int selectedDeviceTypeId);
-        void Add(DeviceType newDeviceType);
+        void Add(DeviceType deviceType);
+        void Update(DeviceType deviceType, int deviceTypeId);
         void Delete(DeviceType deviceType);
     }
 }

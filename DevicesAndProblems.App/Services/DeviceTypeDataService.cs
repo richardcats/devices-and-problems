@@ -6,31 +6,31 @@ namespace DevicesAndProblems.App.Services
 {
     public class DeviceTypeDataService : IDeviceTypeDataService
     {
-        IDeviceTypeRepository repository;
+        private IDeviceTypeRepository _repository;
 
         public DeviceTypeDataService(IDeviceTypeRepository repository)
         {
-            this.repository = repository;
+            _repository = repository;
         }
 
         public List<DeviceType> GetAllDeviceTypes()
         {
-            return repository.GetAll();
+            return _repository.GetAll();
         }
 
         public void UpdateDeviceType(DeviceType newDeviceType, int selectedDeviceTypeId)
         {
-            repository.Update(newDeviceType, selectedDeviceTypeId);
+            _repository.Update(newDeviceType, selectedDeviceTypeId);
         }
 
         public void AddDeviceType(DeviceType newDeviceType)
         {
-            repository.Add(newDeviceType);
+            _repository.Add(newDeviceType);
         }
 
         public void DeleteDeviceType(DeviceType deviceType)
         {
-            repository.Delete(deviceType);
+            _repository.Delete(deviceType);
         }
     }
 }

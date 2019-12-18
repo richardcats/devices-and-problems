@@ -63,8 +63,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementation\SQLiteDataAccess.cs" />
+    <Compile Include="Implementation\SQLite\CommentRepository.cs" />
     <Compile Include="Implementation\SQLite\EmployeeRepository.cs" />
     <Compile Include="Implementation\SQLite\ProblemRepository.cs" />
+    <Compile Include="Interface\ICommentRepository.cs" />
     <Compile Include="Interface\IDeviceRepository.cs" />
     <Compile Include="Implementation\IDataAccess.cs" />
     <Compile Include="Implementation\SQLite\DeviceRepository.cs" />

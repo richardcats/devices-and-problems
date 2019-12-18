@@ -28,7 +28,7 @@ namespace DevicesAndProblems.DAL.SQLite
             return loginDetailsCorrect;
         }
         // TODO: Generieker maken
-        public string FirstNameOfCurrentEmployee(string emailAddress)
+        public string GetFirstNameByEmailAddress(string emailAddress)
         {
             string firstName;
             using (SQLiteConnection connection = new SQLiteConnection(connString))
@@ -43,7 +43,7 @@ namespace DevicesAndProblems.DAL.SQLite
             return firstName;
         }
 
-        public int IDOfCurrentEmployee(string emailAddress)
+        public int GetIdByEmailAddress(string emailAddress)
         {
             int id;
             using (SQLiteConnection connection = new SQLiteConnection(connString))
@@ -58,7 +58,7 @@ namespace DevicesAndProblems.DAL.SQLite
             return id;
         }
 
-        public string AccountTypeOfCurrentEmployee(string emailAddress)
+        public string GetAccountTypeByEmailAddress(string emailAddress)
         {
             string accountTypeName;
             using (SQLiteConnection connection = new SQLiteConnection(connString))

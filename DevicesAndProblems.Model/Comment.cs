@@ -5,7 +5,7 @@ namespace DevicesAndProblems.Model
     public class Comment 
     {
 
-        public int CommentID
+        public int Id
         {
             get;
             set;

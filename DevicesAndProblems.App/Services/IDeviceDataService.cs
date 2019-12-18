@@ -13,6 +13,6 @@ namespace DevicesAndProblems.App.Services
         void UpdateDevice(Device newDevice, int selectedDeviceId);
         void AddDevice(Device newDevice);
         void DeleteDevice(Device selectedDevice);
-        List<Device> GetDevicesOfDeviceType(int id);
+        List<Device> GetDevicesOfDeviceType(int deviceTypeId);
     }
 }

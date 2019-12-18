@@ -7,14 +7,6 @@ namespace DevicesAndProblems.DAL.SQLite
 {
     public class DeviceRepository : Implementation.SQLiteDataAccess, IDeviceRepository
     {
-        public void Add(Device newDevice)
-        {
-            string sql = "INSERT INTO Device (DeviceTypeId, Name, SerialNumber, Department, Comments, FirstAddedDate) " +
-                "VALUES ((SELECT Id FROM DeviceType WHERE Name = @DeviceTypeName), @Name, @SerialNumber, @Department, @Comments, date('now'))";
-
-            Add<Device>(sql, newDevice);
-        }
-
         public List<Device> GetAll()
         {
             string sql = "SELECT Device.Id AS Id, Device.Name AS Name, " +
@@ -30,21 +22,34 @@ namespace DevicesAndProblems.DAL.SQLite
             return GetAll<Device>(sql, null).ToList();
         }
 
-        public List<Device> GetById(int id)
+        public List<Device> GetByDeviceTypeId(int deviceTypeId)
         {
             string sql = "SELECT Id, Name, Department, Date(FirstAddedDate) AS FirstAddedDate " +
-                "FROM Device WHERE Id = '" + id + "'";
+                "FROM Device WHERE Id = '" + deviceId + "'";
 
             return GetAll<Device>(sql, null).ToList();
         }
 
-        public void Update(Device newDevice, int selectedDeviceId)
+        public List<Device> GetDevicesByProblemId(int problemId)
+        {
+
+        }
+
+        public void Add(Device device)
+        {
+            string sql = "INSERT INTO Device (DeviceTypeId, Name, SerialNumber, Department, Comments, FirstAddedDate) " +
+                "VALUES ((SELECT Id FROM DeviceType WHERE Name = @DeviceTypeName), @Name, @SerialNumber, @Department, @Comments, date('now'))";
+
+            Add<Device>(sql, device);
+        }
+
+        public void Update(Device device, int deviceId)
         {
             string sql = "UPDATE Device SET DeviceTypeId = (SELECT Id FROM DeviceType WHERE Name = @DeviceTypeName), Name = @Name, " +
                 "SerialNumber = @SerialNumber, Department = @Department, Comments = @Comments " +
-                "WHERE Id = '" + selectedDeviceId + "'";
+                "WHERE Id = '" + deviceId + "'";
 
-            Update<Device>(sql, newDevice);
+            Update<Device>(sql, device);
         }
 
         public void Delete(Device device)
